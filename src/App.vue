@@ -14,12 +14,13 @@
   color: #2c3e50;
 }
 
-body {
-  font-family: "Lato", sans-serif;
+html, body, #app {
+  height: 100%;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+body {
+  margin: 0px 0px;
 }
+
 </style>
 

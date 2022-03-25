@@ -79,9 +79,10 @@ export default {
 /* This is for all the content outside the sidebar.
 It enables to fit to the different widths when the bqr is minimized or not */
 #main {
-  padding: 16px;
+  height: 100%;
   margin-left: var(--main-margin-left);
   transition: margin-left 0.5s;
+  padding: 0px 5px 0px 5px;
 }
 
 .sidebar {
