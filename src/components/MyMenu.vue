@@ -3,7 +3,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
   <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
     <a href="#"><span class="material-icons">info</span><span class="icon-text">About EE</span></a><br>
-    <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Weierstrass</span></a><br>
+    <a href="#" v-on:click="click('weirstrass')"><span class="material-icons">chevron_right</span><span class="icon-text">Weierstrass</span></a><br>
     <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Montgomery</span></a><br>
     <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Edwards</span></a>
     <a href="#" onclick="changePinStatus();"><span id="pin" class="material-icons">push_pin</span></a>
@@ -49,7 +49,7 @@
       }
     }
   </component>
-
+  
 </template>
 
 
@@ -62,6 +62,9 @@ export default {
     MenuParametre
   }
 };
+
+
+
 </script>
 
 
