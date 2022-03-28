@@ -12,7 +12,7 @@ import MyMenu from '@/components/MyMenu.vue'
 export default {
   name: "AboutView",
   components: {
-    MyMenu
+    MyMenu,
   }
 }
 </script>

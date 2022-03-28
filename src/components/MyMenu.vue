@@ -3,9 +3,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
   <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()">
     <a href="#"><span class="material-icons">info</span><span class="icon-text">About EE</span></a><br>
-    <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Weierstrass</span></a><br>
-    <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Edwards</span></a><br>
-    <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">L'élite</span></a>
+    <a href="@/components/Menu_parametre"><span class="material-icons">chevron_right</span><span class="icon-text">Weierstrass</span></a><br>
+    <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Montgomery</span></a><br>
+    <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Edwards</span></a>
     <a href="#" onclick="changePinStatus();"><span id="pin" class="material-icons">push_pin</span></a>
   </div>
 
@@ -53,8 +53,9 @@
 
 
 <script>
+
 export default {
-  name: "MyMenu",
+  name: "MyMenu"
 };
 </script>
 
