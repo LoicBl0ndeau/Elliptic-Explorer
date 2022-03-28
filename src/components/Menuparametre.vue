@@ -23,5 +23,8 @@
 
 export default {
   name: "Menu_parametre",
+  props: {
+    msg1: String
+  }
 };
 </script>
