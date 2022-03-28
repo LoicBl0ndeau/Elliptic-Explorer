@@ -4,7 +4,6 @@
     <MyGraph />
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <Menuparametre msg1="Paramètres courbe Weirstrass"/>
   </div>
 </template>
 
@@ -13,7 +12,6 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 import MyMenu from '@/components/MyMenu.vue'
 import MyGraph from '@/components/MyGraph.vue'
-import Menuparametre from '@/components/Menuparametre.vue'
 
 export default {
   name: 'HomeView',
@@ -21,7 +19,6 @@ export default {
     HelloWorld,
     MyMenu,
     MyGraph,
-    Menuparametre
   }
 }
 </script>
