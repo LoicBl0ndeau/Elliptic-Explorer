@@ -6,12 +6,12 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: GraphView
+    component: GraphViewTest
   },
   {
     path: '/test',
     name: 'test',
-    component: GraphViewTest
+    component: GraphView
   },
   {
     path: '/about',

@@ -1,18 +1,25 @@
 <template>
-  <div id="calculator" ></div>
+    <div id="calculator" ></div>
 </template>
 
 <script>
+import { WeierstrassGraph } from 'ecgraph'
 
 export default {
   name: "ContinuousShortWeierstrass",
   props: {
-      id: {
+      id_graph_wrapper: {
           type: String
       }
   },
   mounted() {
-    console.log(1);
+    let graph = new WeierstrassGraph("calculator", 0, 0, 0, 2, 1);
+    graph.showCurve();
+    graph.addCurvePoint(1);
+    graph.addCurvePoint(2);
+    graph.addDraggablePoint([3,2],'XY');
+    graph.addLine(1,1);
+    graph.lines['1'].linkLineToPoints(graph.points['1'],graph.points['2']);
   }
 };
 </script>

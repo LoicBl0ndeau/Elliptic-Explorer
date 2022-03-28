@@ -7,7 +7,6 @@
     <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Montgomery</span></a><br>
     <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Edwards</span></a>
     <a href="#" onclick="changePinStatus();"><span id="pin" class="material-icons">push_pin</span></a>
-    <MenuParametre msg1="Courbes Weirstrass"/>
   </div>
 
   <component :is="'script'">
@@ -54,13 +53,9 @@
 
 
 <script>
-import MenuParametre from '@/components/MenuParametre'
 
 export default {
-  name: "MyMenu",
-  components: {
-    MenuParametre
-  }
+  name: "MyMenu"
 };
 </script>
 

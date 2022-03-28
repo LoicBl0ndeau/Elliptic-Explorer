@@ -1,5 +1,5 @@
 <template>
-  <div id="calculator" style="width: 1200px; height: 600px;"></div>
+  <div id="calculator"></div>
   <button type="button" id="button1">Reset</button>
 </template>
 
