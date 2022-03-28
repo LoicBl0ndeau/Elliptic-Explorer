@@ -1,20 +1,20 @@
 <template>
   <MyMenu />
   <div id="main">
-    <MyGraph :graphId="graph1" :latexEquation="'y^2 = x^3 + 0.5*x + 2'" />
+    <ContinuousShortWeierstrass />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import MyMenu from '@/components/MyMenu.vue'
-import MyGraph from '@/components/graph/MyGraph.vue'
+import ContinuousShortWeierstrass from '@/components/graph/ContinuousShortWeierstrass.vue'
 
 export default {
   name: 'GraphView',
   components: {
     MyMenu,
-    MyGraph
+    ContinuousShortWeierstrass
   }
 }
 </script>
