@@ -54,10 +54,6 @@ export default {
     }
   },
   methods: {
-    weierstrass() {
-      var retour = <MenuParametre msg1="Courbes Weirstrass" a="2" v-show="false" />;
-      return {retour};
-    },
     showWeierstrassMenu() {
       this.show = !this.show;
     }
