@@ -1,5 +1,5 @@
 <template>
-  <div id="parametre">
+  <div>
     <h1>{{ msg1 }}</h1>
 
     <form
