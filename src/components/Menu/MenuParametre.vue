@@ -10,11 +10,10 @@
       novalidate="true"
     >
       <p>
-        <input type="number" name="a" v-model.number="a" /> a <br />
-        <input type="number" name="b" v-model.number="b" /> b <br />
-        <input type="number" name="c" v-model.number="c" /> c <br />
-        <input type="number" name="d" v-model.number="d" /> d <br />
-        <input type="number" name="modulo" v-model.number="modulo" />modulo<br />
+        <input v-model="a_param" placeholder="a"/> a <br />
+        <input v-model="b_param" placeholder="b"/> b <br />
+        <input v-model="c_param" placeholder="c"/> c <br />
+        <input v-model="module_param" placeholder="modulo"/> module <br />
       </p>
 
       <p>

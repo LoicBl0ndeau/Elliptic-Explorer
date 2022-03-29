@@ -1,27 +1,24 @@
 <template>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
+
   <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()"> 
     <!-- <a href="#"><span class="material-icons">info</span><span class="icon-text">About EE</span></a><br>   -->
-    <a href="#" v-on:click="weirstrass()"><span class="material-icons">chevron_right</span><span class="icon-text">Weierstrass</span></a><br />
-    <!-- <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Montgomery</span></a><br>
-    <a href="#"><span class="material-icons">chevron_right</span><span class="icon-text">Edwards</span></a>
-    <a href="#" onclick="changePinStatus();"><span id="pin" class="material-icons">push_pin</span></a> -->
-    <MenuParametre msg1=" " v-show="false" />
+    <a href="#" @click="showWeierstrassMenu" >
+      <span class="material-icons">chevron_right</span>
+      <span class="icon-text">Weierstrass</span>
+    </a><br />
+    <MenuParametre msg1="DD" v-show="show" />
   </div>
 
   <component :is="'script'">
     var pinned = true; var mini = false;
 
     <!-- import CSS calculated variable for width and margin change -->
-    var miniWidth =
-    getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width-minimized');
-    var width =
-    getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width');
-    var mainMarginLeft =
-    getComputedStyle(document.documentElement).getPropertyValue('--main-margin-left');
-    var mainMarginLeftMinimized =
-    getComputedStyle(document.documentElement).getPropertyValue('--main-margin-left-minimized');
+    var miniWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width-minimized');
+    var width = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width');
+    var mainMarginLeft = getComputedStyle(document.documentElement).getPropertyValue('--main-margin-left');
+    var mainMarginLeftMinimized = getComputedStyle(document.documentElement).getPropertyValue('--main-margin-left-minimized');
 
     <!-- Displays menu if mouse hoover. Only works if pinned=false -->
     function toggleSidebar() { if (!pinned) { if (mini) {
@@ -51,11 +48,19 @@ export default {
   components: {
     MenuParametre,
   },
+  data() {
+    return {
+      show: false
+    }
+  },
   methods: {
-    weirstrass() {
-      var retour = <MenuParametre msg1="Courbes Weirstrass" v-show="true" />;
+    weierstrass() {
+      var retour = <MenuParametre msg1="Courbes Weirstrass" a="2" v-show="false" />;
       return {retour};
     },
+    showWeierstrassMenu() {
+      this.show = !this.show;
+    }
   },
 };
 </script>
