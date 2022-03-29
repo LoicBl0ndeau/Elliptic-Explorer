@@ -3,14 +3,35 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
 
   <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()"> 
-    <a href="#"><span class="material-icons">info</span><span class="icon-text">About EE</span></a><br>  
+    
+    <a href="#" @click="showAboutEE">
+      <span class="material-icons">info</span>
+      <span class="icon-text">About EE</span>
+    </a><br>  
+    <AboutEE v-show="showinfoEE"/>
+
     <a href="#" @click="showWeierstrassMenu" >
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Weierstrass</span>
     </a><br />
-    <MenuParametre msg1="DD" v-show="show" />
+    <MenuParametre v-show="show" />
+
+    <a href="#" @click="showMontgomeryMenu" >
+      <span class="material-icons">chevron_right</span>
+      <span class="icon-text">Montgomery</span>
+    </a><br />
+    <MenuParametreMont v-show="showMont" />
+
+    <a href="#" @click="showEdwardsMenu" >
+      <span class="material-icons">chevron_right</span>
+      <span class="icon-text">Edwards</span>
+    </a><br />
+    <MenuParametreEdwards v-show="showEdwards" />
     
-    <a href="#" onclick="changePinStatus();"><span id="pin" class="material-icons">push_pin</span></a>
+    <a href="#" onclick="changePinStatus();">
+      <span id="pin" class="material-icons">push_pin</span>
+    </a>
+
   </div>
 
   <component :is="'script'">
@@ -44,20 +65,38 @@
 
 <script>
 import MenuParametre from "@/components/Menu/MenuParametre.vue";
+import MenuParametreMont from "@/components/Menu/MenuParametreMont.vue"
+import MenuParametreEdwards from "@/components/Menu/MenuParametreEdwards.vue"
+import AboutEE from "@/components/Menu/AboutEE.vue"
 
 export default {
   name: "MyMenu",
   components: {
     MenuParametre,
+    MenuParametreMont,
+    MenuParametreEdwards,
+    AboutEE
   },
   data() {
     return {
-      show: false
+      show: false,
+      showMont: false,
+      showEdwards: false,
+      showinfoEE: false
     }
   },
   methods: {
     showWeierstrassMenu() {
       this.show = !this.show;
+    },
+    showMontgomeryMenu() {
+      this.showMont = !this.showMont;
+    },
+    showEdwardsMenu() {
+      this.showEdwards = !this.showEdwards;
+    },
+    showAboutEE() {
+      this.showinfoEE = !this.showinfoEE;
     }
   },
 };

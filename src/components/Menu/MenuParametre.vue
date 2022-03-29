@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ msg1 }}</h1>
+    <h3>Courbes Weierstrass</h3>
 
     <form
       id="form"
@@ -12,7 +12,6 @@
       <p>
         <input v-model="a_param" placeholder="a"/><br />
         <input v-model="b_param" placeholder="b"/><br />
-        <input v-model="c_param" placeholder="c"/><br />
         <input v-model="module_param" placeholder="modulo"/><br />
       </p>
 
@@ -40,6 +39,6 @@ export default {
 <style scoped>
 #parametre {
   width: 100%;
-  height: 60%;
+  height: 100%;
 }
 </style>

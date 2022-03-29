@@ -1,17 +1,19 @@
 <template>
   <div>
-    <h3>Courbes Montgomery</h3>
+    <h3>Courbes Edwards</h3>
 
     <form
       id="form"
       @submit="checkForm"
-      action="/something2"
+      action="/something3"
       method="post"
       novalidate="true"
     >
       <p>
         <input v-model="a_param" placeholder="a"/><br />
         <input v-model="b_param" placeholder="b"/><br />
+        <input v-model="c_param" placeholder="c"/><br />
+        <input v-model="d_param" placeholder="d"/><br />
         <input v-model="module_param" placeholder="modulo"/><br />
       </p>
 
@@ -24,11 +26,13 @@
 
 <script>
 export default {
-  name: "MenuParametreMont",
+  name: "MenuParametreEdwards",
   props: {
-    msg2: String,
+    msg1: String,
     a: Number,
     b: Number,
+    c: Number,
+    d: Number,
     modulo: Number
   },
 };
