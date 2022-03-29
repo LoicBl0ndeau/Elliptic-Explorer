@@ -10,7 +10,7 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "desmos": "^1.5.4",
-    "ecgraph": "file:../../../Downloads/ecgraph",
+    "ecgraph": "file:../../../../Downloads/ecgraph_v2/ecgraph",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
   },
