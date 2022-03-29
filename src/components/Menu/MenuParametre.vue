@@ -1,8 +1,6 @@
 <template>
   <div id="parametre">
-    <!-- <div v-if="onclick='weirstrass=true'"> -->
     <h1>{{ msg1 }}</h1>
-    <!-- </div> -->
 
     <form
       id="form"
@@ -16,8 +14,7 @@
         <input type="number" name="b" v-model.number="b" /> b <br />
         <input type="number" name="c" v-model.number="c" /> c <br />
         <input type="number" name="d" v-model.number="d" /> d <br />
-        <input type="number" name="modulo" v-model.number="modulo" /> modulo
-        <br />
+        <input type="number" name="modulo" v-model.number="modulo" />modulo<br />
       </p>
 
       <p>
@@ -32,6 +29,11 @@ export default {
   name: "MenuParametre",
   props: {
     msg1: String,
+    a: Number,
+    b: Number,
+    c: Number,
+    d: Number,
+    modulo: Number
   },
 };
 </script>
@@ -39,6 +41,6 @@ export default {
 <style scoped>
 #parametre {
   width: 100%;
-  height: 100%;
+  height: 60%;
 }
 </style>
