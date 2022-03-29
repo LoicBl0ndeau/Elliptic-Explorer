@@ -3,16 +3,18 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
 
   <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()"> 
-    <!-- <a href="#"><span class="material-icons">info</span><span class="icon-text">About EE</span></a><br>   -->
+    <a href="#"><span class="material-icons">info</span><span class="icon-text">About EE</span></a><br>  
     <a href="#" @click="showWeierstrassMenu" >
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Weierstrass</span>
     </a><br />
     <MenuParametre msg1="DD" v-show="show" />
+    
+    <a href="#" onclick="changePinStatus();"><span id="pin" class="material-icons">push_pin</span></a>
   </div>
 
   <component :is="'script'">
-    var pinned = true; var mini = false;
+    var pinned = true; var mini = false;  
 
     <!-- import CSS calculated variable for width and margin change -->
     var miniWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width-minimized');
