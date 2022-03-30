@@ -4,7 +4,7 @@
         <input v-model="a_param" placeholder="a"/><br/>
         <input v-model="b_param" placeholder="b"/><br/>
         <input v-model="module_param" placeholder="modulo"/><br/>
-        <a v-show="parametres"><span>Paramètres : {{ a_param }} {{ b_param }} {{ module_param }}</span></a>
+        <a v-show="parametres"><span>Paramètres : [{{ a_param }} {{ b_param }} {{ module_param }}]</span></a>
       </p>
 
       <p>
