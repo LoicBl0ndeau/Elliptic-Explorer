@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h3>Courbes Montgomery</h3>
-
+  <div class="Montgomery">
     <form
       id="form"
       @submit="checkForm"
@@ -35,8 +33,5 @@ export default {
 </script>
 
 <style scoped>
-#parametre {
-  width: 100%;
-  height: 100%;
-}
+
 </style>

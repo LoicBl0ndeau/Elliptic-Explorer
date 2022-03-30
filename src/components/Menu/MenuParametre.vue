@@ -1,24 +1,15 @@
 <template>
-  <div>
-    <h3>Courbes Weierstrass</h3>
-
-    <form
-      id="form"
-      @submit="checkForm"
-      action="/something"
-      method="post"
-      novalidate="true"
-    >
+  <div class="weirstrass">
       <p>
-        <input v-model="a_param" placeholder="a"/><br />
-        <input v-model="b_param" placeholder="b"/><br />
-        <input v-model="module_param" placeholder="modulo"/><br />
+        <input v-model="a_param" placeholder="a"/><br/>
+        <input v-model="b_param" placeholder="b"/><br/>
+        <input v-model="module_param" placeholder="modulo"/><br/>
+        <a v-show="parametres"><span>Paramètres : {{ a_param }} {{ b_param }} {{ module_param }}</span></a>
       </p>
 
       <p>
-        <input type="submit" value="Générer la courbe" />
+        <input type="submit" value="Générer la courbe" @click="param" />
       </p>
-    </form>
   </div>
 </template>
 
@@ -29,16 +20,22 @@ export default {
     msg1: String,
     a: Number,
     b: Number,
-    c: Number,
-    d: Number,
     modulo: Number
   },
+  methods: {
+    param() {
+      this.parametres = !this.parametres;
+    }
+  },
+  data: function() {
+    return {
+      a_param: [],
+      parametres: false
+    }
+  }
 };
 </script>
 
 <style scoped>
-#parametre {
-  width: 100%;
-  height: 100%;
-}
+
 </style>
