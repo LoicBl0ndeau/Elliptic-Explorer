@@ -1,10 +1,9 @@
 <template>
   <div class="weirstrass">
       <p>
-        <input v-model="a_param" placeholder="a"/><br/>
-        <input v-model="b_param" placeholder="b"/><br/>
-        <input v-model="module_param" placeholder="modulo"/><br/>
-        <a v-show="parametres"><span>Paramètres : [{{ a_param }} {{ b_param }} {{ module_param }}]</span></a>
+        <input id="a" v-model="a_param" placeholder="a" onclick="RecupA" /><br/>
+        <input id="b" v-model="b_param" placeholder="b"  onclick="RecupB" /><br/>
+        <input id="modulo" v-model="module_param" placeholder="modulo"  onclick="RecupModulo" /><br/>
       </p>
 
       <p>
@@ -25,12 +24,27 @@ export default {
   methods: {
     param() {
       this.parametres = !this.parametres;
-    }
+    },
+    RecupA() {
+      var valeurA = document.getElementById("a").value;
+      return{valeurA}
+    },
+    RecupB() {
+      var valeurB = document.getElementById("b").value;
+      return{valeurB}
+    },
+    RecupModulo() {
+      var valeurP = document.getElementById("modulo").value;
+      return{valeurP}
+    },
   },
   data: function() {
     return {
       a_param: [],
-      parametres: false
+      parametres: false,
+      valeurA:'',
+      valeurB:'',
+      valeurP:''
     }
   }
 };
