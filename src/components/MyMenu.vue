@@ -14,12 +14,6 @@
     @mouseover="toggleSidebar"
     @mouseout="toggleSidebar"
   >
-    <a>
-      <span class="material-icons">info</span
-      ><span class="icon-text">About EE</span>
-    </a><br />
-
-  <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()"> 
     
     <a @click="showAboutEE">
       <span class="material-icons">info</span>
