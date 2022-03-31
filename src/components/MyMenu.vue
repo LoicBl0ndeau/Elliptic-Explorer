@@ -19,13 +19,33 @@
       ><span class="icon-text">About EE</span>
     </a><br />
 
+  <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()"> 
+    
+    <a @click="showAboutEE">
+      <span class="material-icons">info</span>
+      <span class="icon-text">About EE</span>
+    </a><br>  
+    <AboutEE v-show="showinfoEE"/>
+
     <a @click="showWeierstrassMenu">
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Weierstrass</span> 
     </a><br />
 
-    <MenuParametre msg1="DD" v-show="show" />
+    <MenuParametre v-show="show" />
 
+    <a @click="showMontgomeryMenu" >
+      <span class="material-icons">chevron_right</span>
+      <span class="icon-text">Montgomery</span>
+    </a><br />
+    <MenuParametreMont v-show="showMont" />
+
+    <a @click="showEdwardsMenu" >
+      <span class="material-icons">chevron_right</span>
+      <span class="icon-text">Edwards</span>
+    </a><br />
+    <MenuParametreEdwards v-show="showEdwards" />
+    
     <a @click="changePinStatus">
       <span id="pin" class="material-icons">push_pin</span>
     </a>
@@ -37,14 +57,25 @@
 
 <script>
 import MenuParametre from "@/components/Menu/MenuParametre.vue";
+import MenuParametreMont from "@/components/Menu/MenuParametreMont.vue"
+import MenuParametreEdwards from "@/components/Menu/MenuParametreEdwards.vue"
+import AboutEE from "@/components/Menu/AboutEE.vue"
 
 export default {
   name: "MyMenu",
   components: {
     MenuParametre,
+    MenuParametreMont,
+    MenuParametreEdwards,
+    AboutEE
   },
   data() {
     return {
+      // param affichage sous menus
+      show: false,
+      showMont: false,
+      showEdwards: false,
+      showinfoEE: false,
       // the menu is fixed by default
       pinned: true,
       // get computed size of sidebar when mouse is on or over
@@ -60,15 +91,22 @@ export default {
       ).getPropertyValue("--main-margin-left"),
       mainIDMarginLeftMinimized: getComputedStyle(
         document.documentElement
-      ).getPropertyValue("--main-margin-left-minimized"),
-      // display submenu or not
-      show: false,
+      ).getPropertyValue("--main-margin-left-minimized")
     };
   },
   methods: {
     // display the weierstrass submenu
     showWeierstrassMenu() {
       this.show = !this.show;
+    },
+    showMontgomeryMenu() {
+      this.showMont = !this.showMont;
+    },
+    showEdwardsMenu() {
+      this.showEdwards = !this.showEdwards;
+    },
+    showAboutEE() {
+      this.showinfoEE = !this.showinfoEE;
     },
     // hide sidebar on mouse over if pinned=false
     toggleSidebar() {

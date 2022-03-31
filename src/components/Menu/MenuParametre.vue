@@ -1,25 +1,14 @@
 <template>
-  <div>
-    <h1>{{ msg1 }}</h1>
-
-    <form
-      id="form"
-      @submit="checkForm"
-      action="/something"
-      method="post"
-      novalidate="true"
-    >
+  <div class="weirstrass">
       <p>
-        <input v-model="a_param" placeholder="a"/><br />
-        <input v-model="b_param" placeholder="b"/><br />
-        <input v-model="c_param" placeholder="c"/><br />
-        <input v-model="module_param" placeholder="modulo"/><br />
+        <input id="a" v-model="a_param" placeholder="a" onclick="RecupA" /><br/>
+        <input id="b" v-model="b_param" placeholder="b"  onclick="RecupB" /><br/>
+        <input id="modulo" v-model="module_param" placeholder="modulo"  onclick="RecupModulo" /><br/>
       </p>
 
       <p>
-        <input type="submit" value="Générer la courbe" />
+        <input type="submit" value="Générer la courbe" @click="param" />
       </p>
-    </form>
   </div>
 </template>
 
@@ -30,16 +19,37 @@ export default {
     msg1: String,
     a: Number,
     b: Number,
-    c: Number,
-    d: Number,
     modulo: Number
   },
+  methods: {
+    param() {
+      this.parametres = !this.parametres;
+    },
+    RecupA() {
+      var valeurA = document.getElementById("a").value;
+      return{valeurA}
+    },
+    RecupB() {
+      var valeurB = document.getElementById("b").value;
+      return{valeurB}
+    },
+    RecupModulo() {
+      var valeurP = document.getElementById("modulo").value;
+      return{valeurP}
+    },
+  },
+  data: function() {
+    return {
+      a_param: [],
+      parametres: false,
+      valeurA:'',
+      valeurB:'',
+      valeurP:''
+    }
+  }
 };
 </script>
 
 <style scoped>
-#parametre {
-  width: 100%;
-  height: 60%;
-}
+
 </style>
