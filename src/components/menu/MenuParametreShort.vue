@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "MenuParametre",
+  name: "MenuParametreShort",
   props: {
     msg1: String,
     a: Number,

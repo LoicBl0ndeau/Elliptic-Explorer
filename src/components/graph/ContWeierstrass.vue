@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { WeierstrassGraph } from 'ecgraph'
+import { WeierstrassGraph } from '@/app/graph/supported_curves_on_R/weierstrass/WeierstrassGraph.js';
 
 export default {
   name: "ContinuousWeierstrass",
@@ -32,12 +32,10 @@ export default {
   mounted() {
     let graph = new WeierstrassGraph("calculator", this.a1, this.a3, this.a2, this.a4, this.a6);
     graph.showCurve();
-    graph.addCurvePoint(1);
+    graph.addCurvePoint(0);
     graph.addCurvePoint(2);
-    graph.addDraggablePoint([3,2],'XY');
-    graph.addLine(1,1);
-    graph.lines['1'].linkLineToPoints(graph.points['1'],graph.points['2']);
-  }
+    graph.showAdditionOfPoints(1,2);
+    }
 };
 </script>
 
