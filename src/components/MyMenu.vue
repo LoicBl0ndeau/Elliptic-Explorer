@@ -1,65 +1,57 @@
 <template>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+  />
+
+  <div
+    id="mySidebar"
+    class="sidebar"
+    @mouseover="toggleSidebar"
+    @mouseout="toggleSidebar"
+  >
+    <a>
+      <span class="material-icons">info</span
+      ><span class="icon-text">About EE</span>
+    </a><br />
 
   <div id="mySidebar" class="sidebar" onmouseover="toggleSidebar()" onmouseout="toggleSidebar()"> 
     
-    <a href="#" @click="showAboutEE">
+    <a @click="showAboutEE">
       <span class="material-icons">info</span>
       <span class="icon-text">About EE</span>
     </a><br>  
     <AboutEE v-show="showinfoEE"/>
 
-    <a href="#" @click="showWeierstrassMenu" >
+    <a @click="showWeierstrassMenu">
       <span class="material-icons">chevron_right</span>
-      <span class="icon-text">Weierstrass</span>
+      <span class="icon-text">Weierstrass</span> 
     </a><br />
+
     <MenuParametre v-show="show" />
 
-    <a href="#" @click="showMontgomeryMenu" >
+    <a @click="showMontgomeryMenu" >
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Montgomery</span>
     </a><br />
     <MenuParametreMont v-show="showMont" />
 
-    <a href="#" @click="showEdwardsMenu" >
+    <a @click="showEdwardsMenu" >
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Edwards</span>
     </a><br />
     <MenuParametreEdwards v-show="showEdwards" />
     
-    <a href="#" onclick="changePinStatus();">
+    <a @click="changePinStatus">
       <span id="pin" class="material-icons">push_pin</span>
     </a>
 
   </div>
 
-  <component :is="'script'">
-    var pinned = true; var mini = false;  
-
-    <!-- import CSS calculated variable for width and margin change -->
-    var miniWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width-minimized');
-    var width = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width');
-    var mainMarginLeft = getComputedStyle(document.documentElement).getPropertyValue('--main-margin-left');
-    var mainMarginLeftMinimized = getComputedStyle(document.documentElement).getPropertyValue('--main-margin-left-minimized');
-
-    <!-- Displays menu if mouse hoover. Only works if pinned=false -->
-    function toggleSidebar() { if (!pinned) { if (mini) {
-    <!-- console.log("opening sidebar"); -->
-    document.getElementById("mySidebar").style.width = width;
-    document.getElementById("main").style.marginLeft = mainMarginLeft; this.mini
-    = false; } else {
-    <!-- console.log("closing sidebar"); -->
-    document.getElementById("mySidebar").style.width = miniWidth;
-    document.getElementById("main").style.marginLeft = mainMarginLeftMinimized;
-    this.mini = true; } } }
-
-    <!-- Switch pinned variable to true or false and change pin icon -->
-    function changePinStatus() { if (pinned) { pinned = false;
-    document.getElementById("pin").className = "material-icons-outlined"; } else
-    { pinned = true; document.getElementById("pin").className =
-    "material-icons"; } }
-  </component>
 </template>
 
 
@@ -79,13 +71,31 @@ export default {
   },
   data() {
     return {
+      // param affichage sous menus
       show: false,
       showMont: false,
       showEdwards: false,
-      showinfoEE: false
-    }
+      showinfoEE: false,
+      // the menu is fixed by default
+      pinned: true,
+      // get computed size of sidebar when mouse is on or over
+      width: getComputedStyle(document.documentElement).getPropertyValue(
+        "--sidebar-width"
+      ),
+      miniWidth: getComputedStyle(document.documentElement).getPropertyValue(
+        "--sidebar-width-minimized"
+      ),
+      // get computed margin of #main when mouse is on or over
+      mainIDMarginLeft: getComputedStyle(
+        document.documentElement
+      ).getPropertyValue("--main-margin-left"),
+      mainIDMarginLeftMinimized: getComputedStyle(
+        document.documentElement
+      ).getPropertyValue("--main-margin-left-minimized")
+    };
   },
   methods: {
+    // display the weierstrass submenu
     showWeierstrassMenu() {
       this.show = !this.show;
     },
@@ -97,7 +107,32 @@ export default {
     },
     showAboutEE() {
       this.showinfoEE = !this.showinfoEE;
+    },
+    // hide sidebar on mouse over if pinned=false
+    toggleSidebar() {
+      if (!this.pinned) {
+        if (this.mini) {
+          // console.log("opening sidebar");
+          document.getElementById("mySidebar").style.width = this.width;
+          document.getElementById("main").style.marginLeft = this.mainIDMarginLeft;
+          this.mini = false;
+        } else {
+          // console.log("closing sidebar");
+          document.getElementById("mySidebar").style.width = this.miniWidth;
+          document.getElementById("main").style.marginLeft = this.mainIDMarginLeftMinimized;
+          this.mini = true;
+        }
+      }
+    },
+    // change pin boolean value and change pin icon
+    changePinStatus() {
+    if (this.pinned) {
+      document.getElementById("pin").className = "material-icons-outlined";
+    } else {
+      document.getElementById("pin").className = "material-icons";
     }
+    this.pinned = !this.pinned;
+    },
   },
 };
 </script>
