@@ -25,17 +25,14 @@ export default {
     param() {
       this.parametres = !this.parametres;
     },
-    RecupA() {
-      var valeurA = document.getElementById("a").value;
-      return{valeurA}
+    getA() {
+      return document.getElementById("a").value;
     },
-    RecupB() {
-      var valeurB = document.getElementById("b").value;
-      return{valeurB}
+    getB() {
+      return document.getElementById("b").value;
     },
-    RecupModulo() {
-      var valeurP = document.getElementById("modulo").value;
-      return{valeurP}
+    getP() {
+      return document.getElementById("modulo").value;
     },
   },
   data: function() {
