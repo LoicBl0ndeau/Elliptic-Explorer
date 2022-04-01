@@ -33,8 +33,10 @@ export default {
     let graph = new WeierstrassGraph("calculator", this.a1, this.a3, this.a2, this.a4, this.a6);
     graph.showCurve();
     graph.addCurvePoint(0);
-    graph.addCurvePoint(2);
-    graph.showAdditionOfPoints(1,2);
+    graph.showDoublingPoint(1);
+    for(let i=2;i<6;i++){
+        graph.showAdditionOfPoints(1,i)
+    }
     }
 };
 </script>
