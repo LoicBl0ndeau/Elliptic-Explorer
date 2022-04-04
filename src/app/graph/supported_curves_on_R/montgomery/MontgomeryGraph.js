@@ -73,4 +73,53 @@ export class MontgomeryGraph extends RealCurveGraph {
     this.addSegment([`x_{${this.pointId}}`, `x_{${this.pointId}}`], [`y_{${this.pointId}}`, `y_{n${this.pointId}}`]);
     return this.pointId, this.lineId, this.segmentID;
   }
+  
+  /**
+   * shows the double of a point given his id
+   *
+   * @param {number} idP - The id of the first point 
+   * @return {number} return the id of the point created
+   * @return {number} return the id of line created 
+   * @return {number} return the id of the segment created
+   **/
+  showDoublingPoint(idP) {
+    this.pointId++;
+
+    let idL = this.addTangent(idP);
+
+    this.calculator.setExpressions([
+      { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=Bg_{${idL}}^{2}-A-2x_{${idP}}` },
+      { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=(3x_{${idP}}+A)g_{${idL}}-Bg_{${idL}}^{3}-y_{${idP}}` },
+      { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=-y_{p${this.pointId}}` },
+      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
+      { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: this.pointColor }
+    ]);
+
+    this.addSegment([`x_{${this.pointId}}`, `x_{${this.pointId}}`], [`y_{${this.pointId}}`, `y_{n${this.pointId}}`]);
+    return this.pointId, this.lineId, this.segmentID;
+  }
+
+  /**
+   * shows the tangent at the point P
+   *
+   * @param {number} idP - The id of the point 
+   * @return {number} return the id of the line created
+   **/
+  addTangent(idP) {
+    if (typeof idP != "number") {
+      throw new Error("'idP' must be a number");
+    }
+
+    try {
+      this.lineId++;
+      this.calculator.setExpressions([
+        { id: `g_{${this.lineId}}`, latex: `g_{${this.lineId}}=\\frac{3x_{${idP}}^{2}+2Ax_{${idP}}+1}{2By_{${idP}}}` },
+        { id: `b_{${this.lineId}}`, latex: `b_{${this.lineId}}=y_{${idP}}-g_{${this.lineId}}x_{${idP}}` },
+        { id: `l_{${this.lineId}}`, latex: `y_{l${this.lineId}} = g_{${this.lineId}}*x + b_{${this.lineId}}`, lineOpacity: 1 }
+      ]);
+      return this.lineId;
+    } catch (error) {
+      throw new Error(`An error has occured creating the line : ${error}`);
+    }
+  }
 }
