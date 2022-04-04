@@ -1,39 +1,57 @@
 <template>
   <div class="weirstrass">
       <p>
-        <input id="a" v-model="a_param" placeholder="a" onclick="RecupA" /><br/>
-        <input id="b" v-model="b_param" placeholder="b"  onclick="RecupB" /><br/>
-        <input id="modulo" v-model="module_param" placeholder="modulo"  onclick="RecupModulo" /><br/>
+        <input id="a1" placeholder="a1"/><br/>
+        <input id="a3" placeholder="a3" /><br/>
+        <input id="a2" placeholder="a2" /><br/>
+        <input id="a4" placeholder="a4" /><br/>
+        <input id="a6" placeholder="a6" /><br/>
       </p>
-
       <p>
-        <input type="submit" value="Générer la courbe" @click="param" />
+        <button value="Générer la courbe" @click="generer"> GENERER </button>
       </p>
   </div>
 </template>
 
 <script>
+import { graphStore } from "@/stores/graph.js";
+
 export default {
   name: "MenuParametreShort",
-  props: {
-    msg1: String,
-    a: Number,
-    b: Number,
-    modulo: Number
+  setup() {
+    const graphS = graphStore();
+
+    return { graphS };
   },
   methods: {
-    param() {
-      this.parametres = !this.parametres;
+    getA1() {
+      return document.getElementById("a1").value;
     },
-    getA() {
-      return document.getElementById("a").value;
+    getA3() {
+      return document.getElementById("a3").value;
     },
-    getB() {
-      return document.getElementById("b").value;
+    getA2() {
+      return document.getElementById("a2").value;
     },
-    getP() {
-      return document.getElementById("modulo").value;
+    getA4() {
+      return document.getElementById("a4").value;
     },
+    getA6() {
+      return document.getElementById("a6").value;
+    },
+    generer() {
+      let a1 = Number.parseInt(this.getA1());
+      let a3 = Number.parseInt(this.getA3());
+      let a2 = Number.parseInt(this.getA2());
+      let a4 = Number.parseInt(this.getA4());
+      let a6 = Number.parseInt(this.getA6());
+      this.graphS.graph.setValueOfParameter("a_{1}", a1);
+      this.graphS.graph.setValueOfParameter("a_{3}", a3);
+      this.graphS.graph.setValueOfParameter("a_{2}", a2);
+      this.graphS.graph.setValueOfParameter("a_{4}", a4);
+      this.graphS.graph.setValueOfParameter("a_{6}", a6);
+    }
+    
   },
   data: function() {
     return {

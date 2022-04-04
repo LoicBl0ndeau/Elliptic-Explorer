@@ -1,30 +1,29 @@
 <template>
   <div id="calculator"></div>
-  <button type="button" id="button1">Reset</button>
+  <button id="set" type="button" @click="test"> CHANGER CETTE PUTAIN DE VALEUR </button>
 </template>
 
 <script>
+// import { WeierstrassGraph } from "@/app/graph/supported_curves_on_R/weierstrass/WeierstrassGraph.js";
+import { graphStore } from "@/stores/graph.js";
+
 export default {
-  name: "MyGraph",
-  props: {
-    graphId: {
-      type: String,
-      default: "graph1"
-    },
-    latexEquation: {
-      type: String,
-      default: "y^2 = x^3 + 2*x + 1"
-    }
+  name: "ContinuousWeierstrass",
+  setup() {
+    const graphS = graphStore();
+
+    return { graphS };
   },
   mounted() {
-    var Desmos = require('desmos');
-    var elt = document.getElementById('calculator');
-    var options = {expressionsCollapsed: true}
-    var calculator = Desmos.GraphingCalculator(elt, options);
-    calculator.setExpression({
-      id: this.graphId,
-      latex: this.latexEquation
-    });
+    this.graphS.initWeierstrass(0, 0, 0, 2, 1);
+    this.graphS.graph.showCurve();
+    this.graphS.graph.addCurvePoint(0);
+    this.graphS.graph.showDoublingPoint(1);
+  },
+  methods: {
+    test () {
+      this.graphS.graph.setValueOfParameter("a_{1}", 4);
+    }
   }
 };
 </script>
@@ -32,6 +31,6 @@ export default {
 <style scoped>
 #calculator {
   width: 100%;
-  height:90%;
+  height: 90%;
 }
 </style>
