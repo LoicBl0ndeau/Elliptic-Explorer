@@ -1,18 +1,19 @@
 <template>
   <div class="weirstrass">
       <p>
-        <input id="a" v-model="a_param" placeholder="a" onclick="RecupA" /><br/>
-        <input id="b" v-model="b_param" placeholder="b"  onclick="RecupB" /><br/>
-        <input id="modulo" v-model="module_param" placeholder="modulo"  onclick="RecupModulo" /><br/>
+        <input id="a" v-model="a_param" placeholder="a" onclick="getA" /><br/>
+        <input id="b" v-model="b_param" placeholder="b"  onclick="getB" /><br/>
+        <input id="modulo" v-model="module_param" placeholder="modulo"  onclick="getP" /><br/>
       </p>
 
       <p>
-        <input type="submit" value="Générer la courbe" @click="param" />
+        <input type="submit" value="Générer la courbe" />
       </p>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "MenuParametreShort",
   props: {
@@ -22,28 +23,16 @@ export default {
     modulo: Number
   },
   methods: {
-    param() {
-      this.parametres = !this.parametres;
-    },
     getA() {
-      return document.getElementById("a").value;
+      return parseFloat(document.getElementById("a").value)
     },
     getB() {
-      return document.getElementById("b").value;
+      return parseFloat(document.getElementById("b").value)
     },
     getP() {
-      return document.getElementById("modulo").value;
+      return parseFloat(document.getElementById("modulo").value)
     },
   },
-  data: function() {
-    return {
-      a_param: [],
-      parametres: false,
-      valeurA:'',
-      valeurB:'',
-      valeurP:''
-    }
-  }
 };
 </script>
 
