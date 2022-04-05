@@ -16,6 +16,9 @@ export const graphStore = defineStore('graph', {
         this.graph = new WeierstrassGraph("calculator", a1, a3, a2, a4, a6);
         this.graph.showCurve();
       },
+      setParam (param, value) {
+        this.graph.setValueOfParameter(param, value)
+      }
     }
   }),
 });
