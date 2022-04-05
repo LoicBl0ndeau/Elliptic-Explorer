@@ -55,6 +55,8 @@ import MenuParametreMont from "./menu/MenuParametreMont";
 import MenuParametreEdwards from "./menu/MenuParametreEdwards";
 import AboutEE from "./menu/AboutEE";
 
+import { graphStore } from "@/stores/graph.js";
+
 export default {
   name: "MyMenu",
   components: {
@@ -62,6 +64,14 @@ export default {
     MenuParametreMont,
     MenuParametreEdwards,
     AboutEE
+  },
+  setup() {
+    const graphS = graphStore();
+
+    return { graphS };
+  },
+  mounted () {
+    this.graphS.weierstrass.create(0, 0, 0, 2, 1);
   },
   data() {
     return {

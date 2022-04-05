@@ -51,8 +51,7 @@ export default {
       // this.graphS.graph.setValueOfParameter("a_{4}", a4);
       // this.graphS.graph.setValueOfParameter("a_{6}", a6);
       // this.graphS.graph.calculator.destroy();
-      this.graphS.initWeierstrass(0, 0, 0, 2, 1);
-      this.graphS.graph.showCurve();
+      this.graphS.weierstrass.create(-1, 0, 0, 2, 1);
     }
   },
   data: function() {

@@ -8,10 +8,14 @@ export const graphStore = defineStore('graph', {
   state: () => ({
     // valeur par defaut
     graph: null,
-  }),
-  actions: {
-      initWeierstrass (a1, a3, a2, a4, a6) {
+    weierstrass: {
+      create (a1, a3, a2, a4, a6) {
+        if (this.graph != null) {
+          this.graph.calculator.destroy();
+        }
         this.graph = new WeierstrassGraph("calculator", a1, a3, a2, a4, a6);
+        this.graph.showCurve();
       },
-  }
+    }
+  }),
 });
