@@ -1,11 +1,16 @@
 <template>
   <div class="weirstrass">
       <p>
-        <input id="a1" placeholder="a1"/><br/>
-        <input id="a3" placeholder="a3" /><br/>
-        <input id="a2" placeholder="a2" /><br/>
-        <input id="a4" placeholder="a4" /><br/>
-        <input id="a6" placeholder="a6" /><br/>
+        <label>a1 : </label>
+        <input id="a1" value="0"/><br/>
+        <label>a3 : </label>
+        <input id="a3" value="0" /><br/>
+        <label>a2 : </label>
+        <input id="a2" value="0" /><br/>
+        <label>a4 : </label>
+        <input id="a4" value="2" /><br/>
+        <label>a6 : </label>
+        <input id="a6" value="1" /><br/>
       </p>
       <p>
         <button value="Générer la courbe" @click="generer"> GENERER </button>
@@ -40,6 +45,7 @@ export default {
       return document.getElementById("a6").value;
     },
     generer() {
+<<<<<<< Updated upstream
       // let a1 = Number.parseInt(this.getA1());
       // let a3 = Number.parseInt(this.getA3());
       // let a2 = Number.parseInt(this.getA2());
@@ -52,6 +58,25 @@ export default {
       // this.graphS.graph.setValueOfParameter("a_{6}", a6);
       // this.graphS.graph.calculator.destroy();
       this.graphS.weierstrass.create(-1, 0, 0, 2, 1);
+=======
+      if (this.graphS.graph != null) {
+        this.graphS.graph.calculator.destroy();
+      }
+      // On récupère la valeur des paramètres
+      let a1 = Number.parseInt(this.getA1());
+      let a3 = Number.parseInt(this.getA3());
+      let a2 = Number.parseInt(this.getA2());
+      let a4 = Number.parseInt(this.getA4());
+      let a6 = Number.parseInt(this.getA6());
+      // on créé le graphique
+      this.graphS.initWeierstrass(a1, a3, a2, a4, a6);
+      this.graphS.graph.setValueOfParameter("a_{1}", a1);
+      this.graphS.graph.setValueOfParameter("a_{3}", a3);
+      this.graphS.graph.setValueOfParameter("a_{2}", a2);
+      this.graphS.graph.setValueOfParameter("a_{4}", a4);
+      this.graphS.graph.setValueOfParameter("a_{6}", a6);      
+      this.graphS.graph.showCurve();
+>>>>>>> Stashed changes
     }
   },
   data: function() {

@@ -32,13 +32,13 @@
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Montgomery</span>
     </a><br />
-    <MenuParametreMont v-show="showMont" />
+    <MenuMont v-show="showMont" />
 
     <a @click="showEdwardsMenu" >
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Edwards</span>
     </a><br />
-    <MenuParametreEdwards v-show="showEdwards" />
+    <MenuEdwards v-show="showEdwards" />
     
     <a @click="changePinStatus">
       <span id="pin" class="material-icons">push_pin</span>
@@ -51,8 +51,8 @@
 
 <script>
 import MenuWeierstrass from "./menu/MenuWeierstrass";
-import MenuParametreMont from "./menu/MenuParametreMont";
-import MenuParametreEdwards from "./menu/MenuParametreEdwards";
+import MenuMont from "./menu/MenuMont";
+import MenuEdwards from "./menu/MenuEdwards";
 import AboutEE from "./menu/AboutEE";
 
 import { graphStore } from "@/stores/graph.js";
@@ -61,8 +61,8 @@ export default {
   name: "MyMenu",
   components: {
     MenuWeierstrass,
-    MenuParametreMont,
-    MenuParametreEdwards,
+    MenuMont,
+    MenuEdwards,
     AboutEE
   },
   setup() {
