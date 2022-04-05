@@ -30,7 +30,7 @@ export class MontgomeryGraph extends RealCurveGraph {
       { id: 'A', latex: `A=${this.A}` },
       { id: 'B', latex: `B=${this.B}` },
       { id: 'curve', latex: 'B*y^2 = x^3 + A * x^2 + x' }
-    ]),
+    ])
       this.saveGraphicState();
   }
 
