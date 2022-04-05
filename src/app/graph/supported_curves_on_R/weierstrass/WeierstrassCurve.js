@@ -2,7 +2,7 @@ export const weierestrassGraph = `[
     {
       "id": "a_{1}",
       "type": "expression",
-      "latex": "a_1=0",
+      "latex": "a_{1}=0",
       "color": "#c74440",
       "lineStyle": "SOLID",
       "lineWidth": "",

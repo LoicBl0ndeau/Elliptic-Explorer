@@ -11,11 +11,7 @@ export const graphStore = defineStore('graph', {
   }),
   actions: {
       initWeierstrass (a1, a3, a2, a4, a6) {
-          this.graph = new WeierstrassGraph("calculator", a1, a3, a2, a4, a6);
+        this.graph = new WeierstrassGraph("calculator", a1, a3, a2, a4, a6);
       },
-      setA1 (a1) {
-        console.log(graphStore.graph);
-        this.graphS.graph.setValueOfParameter("a_{1}", a1);
-      }
   }
 });

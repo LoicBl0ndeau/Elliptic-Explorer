@@ -40,18 +40,20 @@ export default {
       return document.getElementById("a6").value;
     },
     generer() {
-      let a1 = Number.parseInt(this.getA1());
-      let a3 = Number.parseInt(this.getA3());
-      let a2 = Number.parseInt(this.getA2());
-      let a4 = Number.parseInt(this.getA4());
-      let a6 = Number.parseInt(this.getA6());
-      this.graphS.graph.setValueOfParameter("a_{1}", a1);
-      this.graphS.graph.setValueOfParameter("a_{3}", a3);
-      this.graphS.graph.setValueOfParameter("a_{2}", a2);
-      this.graphS.graph.setValueOfParameter("a_{4}", a4);
-      this.graphS.graph.setValueOfParameter("a_{6}", a6);
+      // let a1 = Number.parseInt(this.getA1());
+      // let a3 = Number.parseInt(this.getA3());
+      // let a2 = Number.parseInt(this.getA2());
+      // let a4 = Number.parseInt(this.getA4());
+      // let a6 = Number.parseInt(this.getA6());
+      // this.graphS.graph.setValueOfParameter("a_{1}", a1);
+      // this.graphS.graph.setValueOfParameter("a_{3}", a3);
+      // this.graphS.graph.setValueOfParameter("a_{2}", a2);
+      // this.graphS.graph.setValueOfParameter("a_{4}", a4);
+      // this.graphS.graph.setValueOfParameter("a_{6}", a6);
+      // this.graphS.graph.calculator.destroy();
+      this.graphS.initWeierstrass(0, 0, 0, 2, 1);
+      this.graphS.graph.showCurve();
     }
-    
   },
   data: function() {
     return {
