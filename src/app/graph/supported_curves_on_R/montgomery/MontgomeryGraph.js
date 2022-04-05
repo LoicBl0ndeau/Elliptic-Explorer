@@ -20,6 +20,9 @@ export class MontgomeryGraph extends RealCurveGraph {
       throw new Error("This B value can not be chosen")
     }
     super(element)
+    this.calculator.updateSettings({
+      polarMode: true,
+    });
     this.A = A;
     this.B = B;
   }
@@ -31,7 +34,7 @@ export class MontgomeryGraph extends RealCurveGraph {
       { id: 'B', latex: `B=${this.B}` },
       { id: 'curve', latex: 'B*y^2 = x^3 + A * x^2 + x' }
     ])
-      this.saveGraphicState();
+    this.saveGraphicState();
   }
 
   /**
