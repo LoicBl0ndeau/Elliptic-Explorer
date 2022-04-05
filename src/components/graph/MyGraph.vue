@@ -1,37 +1,18 @@
 <template>
   <div id="calculator"></div>
-  <button type="button" id="button1">Reset</button>
 </template>
 
 <script>
+// import { WeierstrassGraph } from "@/app/graph/supported_curves_on_R/weierstrass/WeierstrassGraph.js";
+
 export default {
-  name: "MyGraph",
-  props: {
-    graphId: {
-      type: String,
-      default: "graph1"
-    },
-    latexEquation: {
-      type: String,
-      default: "y^2 = x^3 + 2*x + 1"
-    }
-  },
-  mounted() {
-    var Desmos = require('desmos');
-    var elt = document.getElementById('calculator');
-    var options = {expressionsCollapsed: true}
-    var calculator = Desmos.GraphingCalculator(elt, options);
-    calculator.setExpression({
-      id: this.graphId,
-      latex: this.latexEquation
-    });
-  }
+  name: "ContinuousWeierstrass",
 };
 </script>
 
 <style scoped>
 #calculator {
   width: 100%;
-  height:90%;
+  height: 90%;
 }
 </style>

@@ -1,20 +1,20 @@
 <template>
   <MyMenu />
   <div id="main">
-    <ContinuousWeierstrass :a1=1 />
+    <MyGraph />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import MyMenu from '@/components/MyMenu.vue'
-import ContinuousWeierstrass from '@/components/graph/ContWeierstrass.vue'
+import MyGraph from '@/components/graph/MyGraph.vue'
 
 export default {
   name: 'GraphView',
   components: {
     MyMenu,
-    ContinuousWeierstrass
+    MyGraph
   }
 }
 </script>

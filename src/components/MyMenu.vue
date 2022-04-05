@@ -26,7 +26,7 @@
       <span class="icon-text">Weierstrass</span> 
     </a><br />
 
-    <MenuParametreShort v-show="show" />
+    <MenuWeierstrass v-show="show" />
 
     <a @click="showMontgomeryMenu" >
       <span class="material-icons">chevron_right</span>
@@ -50,7 +50,7 @@
 
 
 <script>
-import MenuParametreShort from "./menu/MenuParametreShort";
+import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuParametreMont from "./menu/MenuParametreMont";
 import MenuParametreEdwards from "./menu/MenuParametreEdwards";
 import AboutEE from "./menu/AboutEE";
@@ -58,7 +58,7 @@ import AboutEE from "./menu/AboutEE";
 export default {
   name: "MyMenu",
   components: {
-    MenuParametreShort,
+    MenuWeierstrass,
     MenuParametreMont,
     MenuParametreEdwards,
     AboutEE

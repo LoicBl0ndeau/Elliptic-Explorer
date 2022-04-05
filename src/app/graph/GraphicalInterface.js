@@ -1,4 +1,4 @@
-import Desmos from 'desmos';
+import Desmos from 'desmosapi';
 
 /** Class representing a graphic calculator. */
 export class Graphic {
