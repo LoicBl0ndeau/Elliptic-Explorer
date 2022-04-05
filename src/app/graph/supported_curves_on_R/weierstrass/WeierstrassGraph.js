@@ -1,5 +1,4 @@
 import { RealCurveGraph } from "../../GraphicalInterface.js";
-import { weierestrassGraph } from './WeierstrassCurve.js';
 
 /** Class representing a real Weierstrass elliptic curve.*/
 export class WeierstrassGraph extends RealCurveGraph {
