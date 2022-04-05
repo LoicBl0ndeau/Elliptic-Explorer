@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import GraphViewTest from '../views/GraphViewTest.vue'
+import GraphView from '../views/GraphView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: GraphViewTest
+    component: GraphView
   },
   {
     path: '/about',
