@@ -45,14 +45,11 @@ export class EdwardsCurve extends RealCurveGraph {
      */
     addCurvePoint(xPos) {
         this.pointId++;
-        this.calculator.setExpressions([
-            { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=${xPos}`, sliderBounds:{min:"-c",max:"c"}},
-            { id: `y_{p${this.pointId}}`, latex: `y_{p${this.pointId}}=\\sqrt{\\frac{(x_{${this.pointId}}^{2}/c^{2})-1}{dx_{${this.pointId}}^{2}-(1/c^{2})}}` },
-            { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=-y_{p${this.pointId}}` },
-            { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=y_{p${this.pointId}}` },
-            { id: `p_{${this.pointId}}`, latex: `(x_{${this.pointId}},y_{${this.pointId}})` }
-        ]);
-
+        this.addCurvePointInExpressions(
+            xPos,
+            `\\sqrt{\\frac{(x_{${this.pointId}}^{2}/c^{2})-1}{dx_{${this.pointId}}^{2}-(1/c^{2})}}`,
+            `-y_{p${this.pointId}}`);
+        this.setExpressionParameters(`x_{${this.pointId}}`,{sliderBounds: { min: "-c", max: "c" }});
         this.addSegment([`x_{${this.pointId}}`, `0`], [`y_{${this.pointId}}`, `0`]);
         return this.pointId;
     }
