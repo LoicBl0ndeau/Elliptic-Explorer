@@ -62,6 +62,16 @@ export class Graphic {
   }
 
   /**
+   * Reset the calculator to a blank state (empty)
+   */
+  setBlankState() {
+    this.lineId = 0;
+    this.pointId = 0;
+    this.segmentID = 0;
+    this.calculator.setBlank();
+  }
+
+  /**
    * Return the Desmos Expression giving his id
    * @param id - The id of the Desmos Expression
    * @returns The expression
@@ -79,7 +89,7 @@ export class Graphic {
    * @param exp - The expression which you want to change the parameters of
    */
   setExpressionParameters(exp, params) {
-    console.log(this.getExpressionById(exp),params);
+    console.log(this.getExpressionById(exp), params);
     // if(this.getExpressionById(exp) == undefined) return;
     // console.log({...{id:`${exp}`}, ...params});
     // this.calculator.setExpression({...{id:`${exp}`}, ...{exp}});

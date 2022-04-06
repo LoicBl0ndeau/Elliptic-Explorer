@@ -36,8 +36,6 @@ export class WeierstrassGraph extends RealCurveGraph {
       {id: "a_{3}", latex: `a_{3}=${this.a3}`},
       {id: "a_{4}", latex: `a_{4}=${this.a4}`},
       {id: "a_{6}", latex: `a_{6}=${this.a6}`},
-
-
       {id: "curve_{1}", latex: 'y^2 + a_1 xy + a_3 * y = x^3 + a_2 * x^2 + a_4*x + a_6'}
     ])
     this.saveGraphicState();
