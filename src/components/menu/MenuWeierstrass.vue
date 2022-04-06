@@ -1,6 +1,6 @@
 <template>
   <div class="submenu">
-    <h3 class="section">Paramètres</h3>
+    <h3 class="section">Parameters</h3>
 
     <span class="parameter">
       <label>a1</label>
@@ -32,7 +32,7 @@
       <a href="#">AFFICHER!</a>
     </div>
 
-    <h3 class="section">Opérations</h3>
+    <h3 class="section">Operations</h3>
 
     <span class="parameter">
       <select name="choix-operation" id="choix-op-weierstrass">
@@ -43,7 +43,7 @@
 
     <div id="multiplication">
       <span class="parameter">
-        <label>Facteur </label><br />
+        <label>Factor</label><br />
         <input id="factor" value="2" />
         <button @click="newMul" >Compute</button>
     </span>
