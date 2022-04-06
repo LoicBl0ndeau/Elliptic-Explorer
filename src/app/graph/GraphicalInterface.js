@@ -87,12 +87,15 @@ export class Graphic {
   /**
    * Set the parameters of an expression giving her id.
    * @param exp - The expression which you want to change the parameters of
+   * @param params - Parameters to change as an object see https://www.desmos.com/api/v1.6/docs/index.html?lang=fr#document-manipulating-expressions
    */
-  setExpressionParameters(exp, params) {
-    console.log(this.getExpressionById(exp), params);
-    // if(this.getExpressionById(exp) == undefined) return;
-    // console.log({...{id:`${exp}`}, ...params});
-    // this.calculator.setExpression({...{id:`${exp}`}, ...{exp}});
+   setExpressionParameters(exp,params) {
+    let oldExp = this.getExpressionById(exp);
+    if(oldExp == undefined) return;
+    for (const [key, value] of Object.entries(params)) {
+      oldExp[key] = value;
+    }
+    this.calculator.setExpression(oldExp)
     return exp
   }
 
