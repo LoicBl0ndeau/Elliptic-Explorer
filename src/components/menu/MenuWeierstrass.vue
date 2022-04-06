@@ -1,5 +1,7 @@
 <template>
   <div class="submenu">
+    <h3 class="section">Paramètres</h3>
+
     <span class="parameter">
       <label>a1</label>
       <input id="a1" value="0" @input="changeA1" /><br />
@@ -25,10 +27,26 @@
       <input id="a6" value="1" @input="changeA6" /><br />
     </span>
 
-    <!-- <button value="Générer la courbe" @click="generate">GENERER</button> -->
     <div class="button" id="button-6" @click="generate">
       <div id="spin"></div>
       <a href="#">AFFICHER!</a>
+    </div>
+
+    <h3 class="section">Opérations</h3>
+
+    <span class="parameter">
+      <select name="choix-operation" id="choix-op-weierstrass">
+        <option selected="yes">Addition</option>
+        <option>Multiplication</option></select
+      ><br />
+    </span>
+
+    <div id="multiplication">
+      <span class="parameter">
+        <label>Facteur </label><br />
+        <input id="factor" value="2" />
+        <button @click="newMul" >Compute</button>
+    </span>
     </div>
   </div>
 </template>
@@ -43,7 +61,29 @@ export default {
 
     return { graph };
   },
+  mounted() {
+    this.listenOnOperationChangeOption();
+  },
   methods: {
+    listenOnOperationChangeOption() {
+      // cacher la multiplication par défaut
+      document.getElementById("multiplication").style.display = "none";
+
+      // à lécoute des changements d'operation
+      document.getElementById("choix-op-weierstrass").addEventListener("change", (event) => {
+        this.graph.weierstrass.destroy();
+        this.generate();
+        // actions
+        if (event.target.value == "Multiplication") {
+          document.getElementById("multiplication").style.display = "inline";
+          this.graph.weierstrass.showMul(3);
+        }
+        else {
+          document.getElementById("multiplication").style.display = "none";
+          this.graph.weierstrass.showAddition(2);
+        }
+      });
+    },
     getA1() {
       return document.getElementById("a1").value;
     },
@@ -59,29 +99,38 @@ export default {
     getA6() {
       return document.getElementById("a6").value;
     },
+    getFactor() {
+      return document.getElementById("factor").value;
+    },
     changeA1() {
-      this.graph.weierstrass.setParam("a_{1}", Number.parseInt(this.getA1()));
+      this.graph.weierstrass.setParam("a_{1}", Number.parseFloat(this.getA1()));
     },
     changeA3() {
-      this.graph.weierstrass.setParam("a_{3}", Number.parseInt(this.getA3()));
+      this.graph.weierstrass.setParam("a_{3}", Number.parseFloat(this.getA3()));
     },
     changeA2() {
-      this.graph.weierstrass.setParam("a_{2}", Number.parseInt(this.getA2()));
+      this.graph.weierstrass.setParam("a_{2}", Number.parseFloat(this.getA2()));
     },
     changeA4() {
-      this.graph.weierstrass.setParam("a_{4}", Number.parseInt(this.getA4()));
+      this.graph.weierstrass.setParam("a_{4}", Number.parseFloat(this.getA4()));
     },
     changeA6() {
-      this.graph.weierstrass.setParam("a_{6}", Number.parseInt(this.getA6()));
+      this.graph.weierstrass.setParam("a_{6}", Number.parseFloat(this.getA6()));
     },
     generate() {
-      let a1 = Number.parseInt(this.getA1());
-      let a3 = Number.parseInt(this.getA3());
-      let a2 = Number.parseInt(this.getA2());
-      let a4 = Number.parseInt(this.getA4());
-      let a6 = Number.parseInt(this.getA6());
+      let a1 = Number.parseFloat(this.getA1());
+      let a3 = Number.parseFloat(this.getA3());
+      let a2 = Number.parseFloat(this.getA2());
+      let a4 = Number.parseFloat(this.getA4());
+      let a6 = Number.parseFloat(this.getA6());
       this.graph.weierstrass.create(a1, a3, a2, a4, a6);
     },
+    newMul() {
+      this.graph.weierstrass.destroy();
+      this.generate();
+      let k = Number.parseFloat(this.getFactor())
+      this.graph.weierstrass.showMul(k);
+    }
   },
   data: function () {
     return {
@@ -96,5 +145,5 @@ export default {
 </script>
 
 <style lang="css" scoped >
-  @import "@/css/submenu.css";
+@import "@/css/submenu.css";
 </style>

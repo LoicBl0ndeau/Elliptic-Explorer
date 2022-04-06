@@ -7,15 +7,15 @@
     color: white;
 }
 
-.parameter input {
+.parameter input, select {
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
     margin: 5px 10px;
-    width: 70%;
+    width: auto;
 }
 
-input {
+input, select, option, button {
     color: black !important;
 }
 

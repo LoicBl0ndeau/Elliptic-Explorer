@@ -26,6 +26,7 @@ export default {
   mounted () {
     // Graphique par défaut sur page accueil
     this.graph.weierstrass.create(0, 0, 0, 2, 1);
+    this.graph.weierstrass.showAddition();
   },
 }
 </script>
