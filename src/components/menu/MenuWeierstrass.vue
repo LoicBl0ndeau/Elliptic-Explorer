@@ -29,7 +29,7 @@
 
     <div class="button" id="button-6" @click="generate">
       <div id="spin"></div>
-      <a href="#">AFFICHER!</a>
+      <a href="#">DISPLAY</a>
     </div>
 
     <h3 class="section">Operations</h3>
