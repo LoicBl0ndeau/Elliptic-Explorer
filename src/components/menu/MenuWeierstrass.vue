@@ -4,33 +4,28 @@
 
     <span class="parameter">
       <label>a1</label>
-      <input id="a1" value="0" @input="changeA1" /><br />
+      <input id="a1" value="0" @input="changeValueOnGraph('a', 1)" /><br />
     </span>
 
     <span class="parameter">
       <label>a3</label>
-      <input id="a3" value="0" @input="changeA3" /><br />
+      <input id="a3" value="0" @input="changeValueOnGraph('a', 3)" /><br />
     </span>
 
     <span class="parameter">
       <label>a2</label>
-      <input id="a2" value="4" @input="changeA2" /><br />
+      <input id="a2" value="4" @input="changeValueOnGraph('a', 2)" /><br />
     </span>
 
     <span class="parameter">
       <label>a4</label>
-      <input id="a4" value="2" @input="changeA4" /><br />
+      <input id="a4" value="2" @input="changeValueOnGraph('a', 4)" /><br />
     </span>
 
     <span class="parameter">
       <label>a6</label>
-      <input id="a6" value="1" @input="changeA6" /><br />
+      <input id="a6" value="1" @input="changeValueOnGraph('a', 6)" /><br />
     </span>
-
-    <div class="button" id="button-6" @click="displayOperation">
-      <div id="spin"></div>
-      <a href="#">DISPLAY</a>
-    </div>
 
     <h3 class="section">Operations</h3>
 
@@ -38,7 +33,7 @@
       <select
         name="choix-operation"
         id="choix-op-weierstrass"
-        @change="displayChoosenOption"
+        @change="displayOperationParameters"
       >
         <option selected="yes">Addition</option>
         <option>Multiplication</option></select
@@ -83,7 +78,7 @@ export default {
     return { graphS, weierstrass };
   },
   methods: {
-    displayChoosenOption() {
+    displayOperationParameters() {
       this.graphS.destroy();
       this.displayCurve();
       let op = document.getElementById("choix-op-weierstrass").value;
@@ -100,64 +95,30 @@ export default {
         this.weierstrass.showAddition();
       }
     },
-    getA1() {
-      return document.getElementById("a1").value;
+    /**
+     * Get the valie of the elem whose id is : param+i
+     * Ex: to get the value of id="x1" => getInputValue("x", 1)
+     */
+    getInputValue(param, i) {
+      return document.getElementById(param + i).value;
     },
-    getA3() {
-      return document.getElementById("a3").value;
-    },
-    getA2() {
-      return document.getElementById("a2").value;
-    },
-    getA4() {
-      return document.getElementById("a4").value;
-    },
-    getA6() {
-      return document.getElementById("a6").value;
-    },
-    getX0() {
-      return document.getElementById("x0").value;
-    },
-    getX1() {
-      return document.getElementById("x1").value;
-    },
-    getX2() {
-      return document.getElementById("x2").value;
+    /**
+     * Change la valeur de l'expression dans DesmosAPI par la valeur
+     * spécifiée dans l'input ayant pour id : param+i
+     */
+    changeValueOnGraph(param, i) {
+      this.graphS.setParam(`${param}_{${i}}`, Number.parseFloat(this.getInputValue(param, i)));
     },
     getFactor() {
       return document.getElementById("factor").value;
     },
-    changeA1() {
-      this.graphS.setParam("a_{1}", Number.parseFloat(this.getA1()));
-    },
-    changeA3() {
-      this.graphS.setParam("a_{3}", Number.parseFloat(this.getA3()));
-    },
-    changeA2() {
-      this.graphS.setParam("a_{2}", Number.parseFloat(this.getA2()));
-    },
-    changeA4() {
-      this.graphS.setParam("a_{4}", Number.parseFloat(this.getA4()));
-    },
-    changeA6() {
-      this.graphS.setParam("a_{6}", Number.parseFloat(this.getA6()));
-    },
-    changeX0() {
-      this.graphS.setParam("x_{1}", Number.parseFloat(this.getX0()));
-    },
-    changeX1() {
-      this.graphS.setParam("x_{1}", Number.parseFloat(this.getX1()));
-    },
-    changeX2() {
-      this.graphS.setParam("x_{2}", Number.parseFloat(this.getX2()));
-    },
     
     displayCurve() {
-      let a1 = Number.parseFloat(this.getA1());
-      let a3 = Number.parseFloat(this.getA3());
-      let a2 = Number.parseFloat(this.getA2());
-      let a4 = Number.parseFloat(this.getA4());
-      let a6 = Number.parseFloat(this.getA6());
+      let a1 = Number.parseFloat(this.getInputValue("a", 1));
+      let a3 = Number.parseFloat(this.getInputValue("a", 3));
+      let a2 = Number.parseFloat(this.getInputValue("a", 2));
+      let a4 = Number.parseFloat(this.getInputValue("a", 4));
+      let a6 = Number.parseFloat(this.getInputValue("a", 6));
       this.weierstrass.create(a1, a3, a2, a4, a6);
     },
     displayOperation() {

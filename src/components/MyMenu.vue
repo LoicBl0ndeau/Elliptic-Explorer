@@ -15,30 +15,29 @@
     @mouseout="toggleSidebar"
   >
     
-    <a @click="showAboutEE">
+    <a @click="open('about')">
       <span class="material-icons">info</span>
       <span class="icon-text">About EE</span>
-    </a><br>  
-    <AboutEE v-show="showinfoEE"/>
+    </a><br>
+    <AboutEE v-show="isOpen.about" />
 
-    <a @click="showWeierstrassMenu">
+    <a @click="open('weierstrass')">
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Weierstrass</span> 
     </a><br />
+    <MenuWeierstrass v-show="isOpen.weierstrass" ref="weierstrass" />
 
-    <MenuWeierstrass v-show="showWeierstrass" />
-
-    <a @click="showMontgomeryMenu" >
+    <a @click="open('montgomery')" >
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Montgomery</span>
     </a><br />
-    <MenuMont v-show="showMont" />
+    <MenuMont v-show="isOpen.montgomery" ref="montgomery"/>
 
-    <a @click="showEdwardsMenu" >
+    <a @click="open('edwards')" >
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Edwards</span>
     </a><br />
-    <MenuEdwards v-show="showEdwards" />
+    <MenuEdwards v-show="isOpen.edwards" ref="edwards"/>
     
     <a @click="changePinStatus">
       <span id="pin" class="material-icons">push_pin</span>
@@ -66,10 +65,12 @@ export default {
   data() {
     return {
       // param affichage sous menus
-      showWeierstrass: false,
-      showMont: false,
-      showEdwards: false,
-      showinfoEE: false,
+      isOpen: {
+        "about": false,
+        "weierstrass": false,
+        "montgomery": false,
+        "edwards": false
+      },
       // the menu is fixed by default
       pinned: true,
       // get computed size of sidebar when mouse is on or over
@@ -89,18 +90,15 @@ export default {
     };
   },
   methods: {
-    // display the weierstrass submenu
-    showWeierstrassMenu() {
-      this.showWeierstrass = !this.showWeierstrass;
-    },
-    showMontgomeryMenu() {
-      this.showMont = !this.showMont;
-    },
-    showEdwardsMenu() {
-      this.showEdwards = !this.showEdwards;
-    },
-    showAboutEE() {
-      this.showinfoEE = !this.showinfoEE;
+    /** Open the selected menu, close the others. */
+    open(menu) {
+      for (const [key, ] of Object.entries(this.isOpen)) {
+        if (key == menu) {
+          this.isOpen[key] = true;
+          console.log(this.$refs[key].displayOperation());
+        }
+        else this.isOpen[key] = false;
+      }
     },
     // hide sidebar on mouse over if pinned=false
     toggleSidebar() {

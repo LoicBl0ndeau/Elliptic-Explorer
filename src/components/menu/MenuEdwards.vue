@@ -12,11 +12,6 @@
       <input id="D" value="10" @input="changeD" /><br />
     </span>
 
-    <div class="button" id="button-6" @click="displayOperation">
-      <div id="spin"></div>
-      <a href="#">DISPLAY</a>
-    </div>
-
     <h3 class="section">Operations</h3>
 
     <span class="parameter">
