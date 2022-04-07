@@ -1,4 +1,4 @@
-import { RealCurveGraph } from "../../GraphicalInterface.js";
+import { Graphic, RealCurveGraph } from "../../GraphicalInterface.js";
 
 /* Class representing a real Edwards elliptic curve*/
 export class EdwardsCurve extends RealCurveGraph {
@@ -33,7 +33,7 @@ export class EdwardsCurve extends RealCurveGraph {
         this.calculator.setExpressions([
             { id: 'c', latex: `c=${this.c}`, sliderBounds:{min: 0, max: ""}},
             { id: 'd', latex: `d=${this.d}`, sliderBounds:{min: "", max: 0} },
-            { id: 'curve_{1}', latex: 'x^2 + y^2 = c^2(1+ d*x^2*y^2)' }
+            { id: 'curve_{1}', latex: 'x^2 + y^2 = c^2(1+ d*x^2*y^2)',color: Graphic.Colors.curve }
         ])
         this.saveGraphicState();
     }
@@ -69,7 +69,7 @@ export class EdwardsCurve extends RealCurveGraph {
         this.calculator.setExpressions([
             { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=\\frac{x_{${idP}}y_{${idQ}}+x_{${idQ}}y_{${idP}}}{c(1+dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
             { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=\\frac{y_{${idP}}y_{${idQ}}-x_{${idP}}x_{${idQ}}}{c(1-dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
-            { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
+            { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: Graphic.Colors.point, pointSize: 15 },
         ]);
 
         this.addSegment([`x_{${this.pointId}}`, `0`], [`y_{${this.pointId}}`, `0`]);

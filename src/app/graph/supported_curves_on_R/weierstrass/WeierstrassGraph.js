@@ -1,4 +1,4 @@
-import { RealCurveGraph } from "../../GraphicalInterface.js";
+import { Graphic, RealCurveGraph } from "../../GraphicalInterface.js";
 
 /** Class representing a real Weierstrass elliptic curve.*/
 export class WeierstrassGraph extends RealCurveGraph {
@@ -36,7 +36,7 @@ export class WeierstrassGraph extends RealCurveGraph {
       {id: "a_{3}", latex: `a_{3}=${this.a3}`},
       {id: "a_{4}", latex: `a_{4}=${this.a4}`},
       {id: "a_{6}", latex: `a_{6}=${this.a6}`},
-      {id: "curve_{1}", latex: 'y^2 + a_1 xy + a_3 * y = x^3 + a_2 * x^2 + a_4*x + a_6'}
+      {id: "curve_{1}", latex: 'y^2 + a_1 xy + a_3 * y = x^3 + a_2 * x^2 + a_4*x + a_6', color:Graphic.Colors.curve}
     ])
     this.saveGraphicState();
   }
@@ -74,8 +74,8 @@ export class WeierstrassGraph extends RealCurveGraph {
       { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=g_{${idL}}^{2}+a_{1}g_{${idL}}-a_{2}-x_{${idP}}-x_{${idQ}}` },
       { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=-a_{1}x_{${this.pointId}}-a_{3}-g_{${idL}}x_{${this.pointId}}+g_{${idL}}x_{${idP}}-y_{${idP}}` },
       { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=g_{${idL}}x_{${this.pointId}}-g_{${idL}}x_{${idP}}+y_{${idP}}` },
-      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
-      { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: this.pointColor }
+      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: Graphic.Colors.point, pointSize: 15 },
+      { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: Graphic.Colors.point }
     ]);
     this.addSegment([`x_{${this.pointId}}`, `x_{${this.pointId}}`], [`y_{${this.pointId}}`, `y_{n${this.pointId}}`]);
     return this.pointId, this.lineId, this.segmentID;
@@ -98,8 +98,8 @@ export class WeierstrassGraph extends RealCurveGraph {
       { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=g_{${idL}}^{2}+g_{${idL}}a_{1}-a_{2}-2x_{${idP}}` },
       { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=-a_{1}x_{${this.pointId}}-a_{3}-g_{${idL}}x_{${this.pointId}}+g_{${idL}}x_{${idP}}-y_{${idP}}` },
       { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=g_{${idL}}x_{${this.pointId}}-g_{${idL}}x_{${idP}}+y_{${idP}}` },
-      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
-      { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: this.pointColor }
+      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: Graphic.Colors.point, pointSize: 15 },
+      { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: Graphic.Colors.point }
     ]);
 
     this.addSegment([`x_{${this.pointId}}`, `x_{${this.pointId}}`], [`y_{${this.pointId}}`, `y_{n${this.pointId}}`]);

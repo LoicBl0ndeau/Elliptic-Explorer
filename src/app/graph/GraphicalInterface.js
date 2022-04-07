@@ -12,16 +12,30 @@ export class Graphic {
     if (this.element == undefined) {
       throw new Error(`Element : ${element} does not exist.`)
     }
-    this.calculator = Desmos.GraphingCalculator(this.element);
-    this.setup();
-
-    this.pointColor = "#2d70b3";
-    this.lineColor = "#000000";
-    this.segemntColor = "#2d70b3";
+    this.calculator = Desmos.GraphingCalculator(this.element, {
+      keypad: false,
+      language: "fr",
+      showResetButtonOnGraphpaper: true,
+      //settingsMenu: false,
+      border: false,
+      expressionsCollapsed: true,
+      autosize: true,
+      //invertedColors:true,
+      expressions: false
+    });
+    this.showExpressions();
 
     this.pointId = 0;
     this.lineId = 0;
     this.segmentID = 0;
+  }
+
+  static Colors = {
+    curve: "#eb9671",
+    point: "#2c3e50",
+    line: "#000000",
+    segment: "#2d70b3",
+    finalPoint: "#ff0000"
   }
 
   get getElement() {
@@ -32,18 +46,11 @@ export class Graphic {
     return this.calculator;
   }
   /**
-   * Setup the calculator with specified settings.
+   * show the expressions tab on the left of the graph
    */
-  setup() {
+  showExpressions() {
     this.calculator.updateSettings({
-      keypad: false,
-      language: "fr",
-      showResetButtonOnGraphpaper: true,
-      //settingsMenu: false,
-      border: false,
-      expressionsCollapsed: true,
-      autosize: true,
-      //expressions: false
+      expressions: true
     });
   }
 
@@ -84,14 +91,16 @@ export class Graphic {
     return exp
   }
 
+
+
   /**
    * Set the parameters of an expression giving her id.
    * @param exp - The expression which you want to change the parameters of
    * @param params - Parameters to change as an object see https://www.desmos.com/api/v1.6/docs/index.html?lang=fr#document-manipulating-expressions
    */
-   setExpressionParameters(exp,params) {
+  setExpressionParameters(exp, params) {
     let oldExp = this.getExpressionById(exp);
-    if(oldExp == undefined) return;
+    if (oldExp == undefined) return;
     for (const [key, value] of Object.entries(params)) {
       oldExp[key] = value;
     }
@@ -278,7 +287,7 @@ export class Graphic {
         {
           latex: `s_{y${this.segmentID}}`,
           values: coordinatesY,
-          color: this.segemntColor,
+          color: Graphic.Colors.segment,
           hidden: false,
           pointStyle: "OPEN",
           lineStyle: "DASHED",
@@ -292,20 +301,22 @@ export class Graphic {
   }
 
   /**
-   * Hide all the lines
+   * Show all the lines
+   * @param areLinesVisible - true if you want to show the lines, false if not
    */
-  hideLines() {
+  showLines(areLinesVisible) {
     for (let id = 1; id <= this.lineId; id++) {
-      this.calculator.setExpression({ id: `l_{${id}}`, hidden: true })
+      this.calculator.setExpression({ id: `l_{${id}}`, hidden: areLinesVisible })
     }
   }
 
   /**
    * Show all the lines
+   * @param areLabelsVisible - true if you want to show the lines, false if not
    */
-  showLines() {
-    for (let id = 1; id <= this.lineId; id++) {
-      this.calculator.setExpression({ id: `l_{${id}}`, hidden: false })
+  showLabels(areLabelsVisible) {
+    for (let id = 1; id <= this.pointId; id++) {
+      this.calculator.setExpression({ id: `p_{${id}}`, showLabel: areLabelsVisible })
     }
   }
 }
@@ -349,7 +360,7 @@ export class RealCurveGraph extends Graphic {
       { id: `y_{p${this.pointId}}`, latex: `y_{p${this.pointId}}=${yPositiveExpression}` },
       { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=${yNegativeExpression}` },
       { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}} = y_{p${this.pointId}}` },
-      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}}=(x_{${this.pointId}},y_{${this.pointId}})` }
+      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}}=(x_{${this.pointId}},y_{${this.pointId}})`, color: Graphic.Colors.point }
     ]);
   }
 }

@@ -1,4 +1,4 @@
-import { RealCurveGraph } from "../../GraphicalInterface.js";
+import { Graphic, RealCurveGraph } from "../../GraphicalInterface.js";
 
 /* Class representing a real Montgomery elliptic curve*/
 export class MontgomeryGraph extends RealCurveGraph {
@@ -29,7 +29,7 @@ export class MontgomeryGraph extends RealCurveGraph {
     this.calculator.setExpressions([
       { id: 'A', latex: `A=${this.A}` },
       { id: 'B', latex: `B=${this.B}` },
-      { id: 'curve', latex: 'B*y^2 = x^3 + A * x^2 + x' }
+      { id: 'curve', latex: 'B*y^2 = x^3 + A * x^2 + x', color: Graphic.Colors.curve }
     ])
     this.saveGraphicState();
   }
@@ -66,8 +66,8 @@ export class MontgomeryGraph extends RealCurveGraph {
       { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=Bg_{${idL}}^{2}-A-x_{${idP}}-x_{${idQ}}` },
       { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=(2x_{${idP}}+x_{${idQ}}+A)g_{${idL}}-Bg_{${idL}}^{3}-y_{${idP}}` },
       { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=-y_{${this.pointId}}` },
-      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
-      { id: `p_{n${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: this.pointColor }
+      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: Graphic.Colors.point, pointSize: 15 },
+      { id: `p_{n${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: Graphic.Colors.point }
     ]);
 
     this.addSegment([`x_{${this.pointId}}`, `x_{${this.pointId}}`], [`y_{${this.pointId}}`, `y_{n${this.pointId}}`]);
@@ -91,8 +91,8 @@ export class MontgomeryGraph extends RealCurveGraph {
       { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=Bg_{${idL}}^{2}-A-2x_{${idP}}` },
       { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=(3x_{${idP}}+A)g_{${idL}}-Bg_{${idL}}^{3}-y_{${idP}}` },
       { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=-y_{${this.pointId}}` },
-      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
-      { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: this.pointColor }
+      { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: Graphic.Colors.point, pointSize: 15 },
+      { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: Graphic.Colors.point }
     ]);
 
     this.addSegment([`x_{${this.pointId}}`, `x_{${this.pointId}}`], [`y_{${this.pointId}}`, `y_{n${this.pointId}}`]);
@@ -115,7 +115,7 @@ export class MontgomeryGraph extends RealCurveGraph {
       this.calculator.setExpressions([
         { id: `g_{${this.lineId}}`, latex: `g_{${this.lineId}}=\\frac{3x_{${idP}}^{2}+2Ax_{${idP}}+1}{2By_{${idP}}}` },
         { id: `b_{${this.lineId}}`, latex: `b_{${this.lineId}}=y_{${idP}}-g_{${this.lineId}}x_{${idP}}` },
-        { id: `l_{${this.lineId}}`, latex: `y_{l${this.lineId}} = g_{${this.lineId}}*x + b_{${this.lineId}}`, lineOpacity: 1 }
+        { id: `l_{${this.lineId}}`, latex: `y_{l${this.lineId}} = g_{${this.lineId}}*x + b_{${this.lineId}}`, lineOpacity: 0.3 }
       ]);
       return this.lineId;
     } catch (error) {
