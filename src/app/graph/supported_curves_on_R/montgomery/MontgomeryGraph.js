@@ -93,7 +93,7 @@ export class MontgomeryGraph extends RealCurveGraph {
     this.calculator.setExpressions([
       { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=Bg_{${idL}}^{2}-A-2x_{${idP}}` },
       { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=(3x_{${idP}}+A)g_{${idL}}-Bg_{${idL}}^{3}-y_{${idP}}` },
-      { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=-y_{p${this.pointId}}` },
+      { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=-y_{${this.pointId}}` },
       { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
       { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: this.pointColor }
     ]);
