@@ -20,9 +20,6 @@ export class MontgomeryGraph extends RealCurveGraph {
       throw new Error("This B value can not be chosen")
     }
     super(element)
-    this.calculator.updateSettings({
-      polarMode: true,
-    });
     this.A = A;
     this.B = B;
   }
