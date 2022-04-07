@@ -14,7 +14,7 @@
 
     <span class="parameter">
       <label>a2</label>
-      <input id="a2" value="0" @input="changeA2" /><br />
+      <input id="a2" value="4" @input="changeA2" /><br />
     </span>
 
     <span class="parameter">
@@ -27,7 +27,7 @@
       <input id="a6" value="1" @input="changeA6" /><br />
     </span>
 
-    <div class="button" id="button-6" @click="generate">
+    <div class="button" id="button-6" @click="displayOperation">
       <div id="spin"></div>
       <a href="#">DISPLAY</a>
     </div>
@@ -53,13 +53,15 @@
 
 <script>
 import { graphStore } from "@/stores/graph.js";
+import { weierstrassStore } from "@/stores/weierstrass";
 
 export default {
   name: "MenuParametreShort",
   setup() {
-    const graph = graphStore();
+    const graphS = graphStore();
+    const weierstrass = weierstrassStore();
 
-    return { graph };
+    return { graphS, weierstrass };
   },
   mounted() {
     this.listenOnOperationChangeOption();
@@ -71,16 +73,16 @@ export default {
 
       // à lécoute des changements d'operation
       document.getElementById("choix-op-weierstrass").addEventListener("change", (event) => {
-        this.graph.weierstrass.destroy();
-        this.generate();
+        this.graphS.destroy();
+        this.displayCurve();
         // actions
         if (event.target.value == "Multiplication") {
           document.getElementById("multiplication").style.display = "inline";
-          this.graph.weierstrass.showMul(3);
+          this.weierstrass.showMul(3);
         }
         else {
           document.getElementById("multiplication").style.display = "none";
-          this.graph.weierstrass.showAddition(2);
+          this.weierstrass.showAddition();
         }
       });
     },
@@ -103,43 +105,45 @@ export default {
       return document.getElementById("factor").value;
     },
     changeA1() {
-      this.graph.weierstrass.setParam("a_{1}", Number.parseFloat(this.getA1()));
+      this.graphS.setParam("a_{1}", Number.parseFloat(this.getA1()));
     },
     changeA3() {
-      this.graph.weierstrass.setParam("a_{3}", Number.parseFloat(this.getA3()));
+      this.graphS.setParam("a_{3}", Number.parseFloat(this.getA3()));
     },
     changeA2() {
-      this.graph.weierstrass.setParam("a_{2}", Number.parseFloat(this.getA2()));
+      this.graphS.setParam("a_{2}", Number.parseFloat(this.getA2()));
     },
     changeA4() {
-      this.graph.weierstrass.setParam("a_{4}", Number.parseFloat(this.getA4()));
+      this.graphS.setParam("a_{4}", Number.parseFloat(this.getA4()));
     },
     changeA6() {
-      this.graph.weierstrass.setParam("a_{6}", Number.parseFloat(this.getA6()));
+      this.graphS.setParam("a_{6}", Number.parseFloat(this.getA6()));
     },
-    generate() {
+    displayCurve() {
       let a1 = Number.parseFloat(this.getA1());
       let a3 = Number.parseFloat(this.getA3());
       let a2 = Number.parseFloat(this.getA2());
       let a4 = Number.parseFloat(this.getA4());
       let a6 = Number.parseFloat(this.getA6());
-      this.graph.weierstrass.create(a1, a3, a2, a4, a6);
+      this.weierstrass.create(a1, a3, a2, a4, a6);
+    },
+    displayOperation() {
+      this.displayCurve();
+      let op = document.getElementById("choix-op-weierstrass").value;
+      if (op == "Addition") {
+        this.weierstrass.showAddition();
+      }
+      if (op == "Multiplication") {
+        let k = Number.parseFloat(this.getFactor())
+        this.weierstrass.showMul(k);
+      }
     },
     newMul() {
-      this.graph.weierstrass.destroy();
-      this.generate();
+      this.graphS.destroy();
+      this.displayCurve();
       let k = Number.parseFloat(this.getFactor())
-      this.graph.weierstrass.showMul(k);
+      this.weierstrass.showMul(k);
     }
-  },
-  data: function () {
-    return {
-      a_param: [],
-      parametres: false,
-      valeurA: "",
-      valeurB: "",
-      valeurP: "",
-    };
   },
 };
 </script>
