@@ -1,6 +1,5 @@
 .submenu {
-    margin-left: 40px;
-    /* padding: 10px; */
+    margin: 10px 10px 20px 40px;
 }
 
 .submenu * {
@@ -19,7 +18,11 @@ input, select, option, button {
     color: black !important;
 }
 
-/* Button Layout Styling */
+h3.section {
+    margin: 10px;
+}
+
+/* Button Layout Styling for Display */
 
 .button {
     display: inline-flex;

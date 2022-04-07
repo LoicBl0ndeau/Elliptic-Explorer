@@ -24,11 +24,11 @@ export const weierstrassStore = defineStore('weierstrassGraph', {
             let id2 = graphS.graph.addCurvePoint(2);
             graphS.graph.showAdditionOfPoints(id1, id2);
         },
-        showMul(k) {
+        showMul(xPos, k) {
             const graphS = graphStore();
 
             if (k < 2) return;
-            let id1 = graphS.graph.addCurvePoint(0);
+            let id1 = graphS.graph.addCurvePoint(xPos);
             graphS.graph.showDoublingPoint(id1);
             for (let i = 2; i < k; i++) {
                 graphS.graph.showAdditionOfPoints(id1, i);

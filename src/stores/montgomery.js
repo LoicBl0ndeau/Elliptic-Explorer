@@ -17,7 +17,7 @@ export const montgomeryStore = defineStore('montgomery', {
         showAddition() {
             const graphS = graphStore();
 
-            let id1 = graphS.graph.addCurvePoint(-1);
+            let id1 = graphS.graph.addCurvePoint(0);
             let id2 = graphS.graph.addCurvePoint(2);
             graphS.graph.showAdditionOfPoints(id1, id2);
         },
