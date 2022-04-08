@@ -40,22 +40,19 @@
       ><br />
     </span>
 
+    <span class="parameter">
+        <label>x1</label>
+        <input id="x1" @input="changeValueOnGraph('x', 1)"/><br />
+      </span>
+
     <div id="addition">
       <span class="parameter">
-        <label>x1</label>
-        <input id="x1" value="0" @input="changeValueOnGraph('x', 1)"/><br />
-      </span>
-      <span class="parameter">
         <label>x2</label>
-        <input id="x2" value="2" @input="changeValueOnGraph('x', 2)"/><br />
+        <input id="x2"  @input="changeValueOnGraph('x', 2)"/><br />
       </span>
     </div>
 
     <div id="multiplication" style="display: none;">
-      <span class="parameter">
-        <label>x0</label>
-        <input id="x0" value="0" @input="changeValueOnGraph('x', 1)" /><br />
-      </span>
       <span class="parameter">
         <label >Factor</label>
         <input id="factor" value="2" style="width: 40px;"/>
@@ -86,8 +83,8 @@ export default {
     return { graphS, weierstrass };
   },
   mounted () {
-    // update des valeurs dans le menu toutes les 700ms
-    setInterval(this.listenToGraphValueChanges, 700);
+    // update des valeurs dans le menu toutes les 500ms
+    setInterval(this.listenToGraphValueChanges, 500);
   },
   methods: {
     listenToGraphValueChanges () {
@@ -103,7 +100,6 @@ export default {
       document.getElementById('a3').value = a3;
       document.getElementById('a4').value = a4;
       document.getElementById('a6').value = a6;
-      document.getElementById('x0').value = x1;
       document.getElementById('x1').value = x1;
       document.getElementById('x2').value = x2;
 
@@ -155,7 +151,6 @@ export default {
     getFactor() {
       return document.getElementById("factor").value;
     },
-    
     displayCurve() {
       let a1 = Number.parseFloat(this.getInputValue("a", 1));
       let a3 = Number.parseFloat(this.getInputValue("a", 3));
