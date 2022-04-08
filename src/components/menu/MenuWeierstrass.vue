@@ -84,10 +84,10 @@ export default {
   },
   mounted () {
     // update des valeurs dans le menu toutes les 500ms
-    setInterval(this.listenToGraphValueChanges, 500);
+    setInterval(this.updateMenuInputWithGraphValue, 500);
   },
   methods: {
-    listenToGraphValueChanges () {
+    updateMenuInputWithGraphValue () {
       let a1 = this.graphS.getParam('a_{1}');
       let a2 = this.graphS.getParam('a_{2}');
       let a3 = this.graphS.getParam('a_{3}');
@@ -111,8 +111,9 @@ export default {
         resultY = this.graphS.getParam('y_{3}').toFixed(2);
       }
       else {
-        resultX = this.graphS.getParam('x_{2}').toFixed(2);
-        resultY = this.graphS.getParam('y_{2}').toFixed(2);
+        let idResult = Number.parseInt(this.getFactor());
+        resultX = this.graphS.getParam(`x_{${idResult}}`).toFixed(2);
+        resultY = this.graphS.getParam(`y_{${idResult}}`).toFixed(2);
       }
       document.getElementById('result-x').value = resultX;
       document.getElementById('result-y').value = resultY;
