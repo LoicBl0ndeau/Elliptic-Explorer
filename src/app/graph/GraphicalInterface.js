@@ -228,9 +228,10 @@ export class Graphic {
     try {
       this.lineId++;
       this.calculator.setExpressions([
-        { id: `g_{${this.lineId}}`, latex: `g_{${this.lineId}}=\\frac{(y_{${idP}}-y_{${idQ}})}{(x_{${idP}}-x_{${idQ}})}` },
-        { id: `b_{${this.lineId}}`, latex: `b_{${this.lineId}}=y_{${idP}}-g_{${this.lineId}}x_{${idP}}` },
-        { id: `l_{${this.lineId}}`, latex: `y_{l${this.lineId}} = g_{${this.lineId}}*x + b_{${this.lineId}}`, lineOpacity: 0.3 }
+        { id: `n_{${this.lineId}}`, latex: `n_{${this.lineId}}=y_{${idP}}-y_{${idQ}}` },
+        { id: `d_{${this.lineId}}`, latex: `d_{${this.lineId}}=x_{${idP}}-x_{${idQ}}` },
+        { id: `g_{${this.lineId}}`, latex: `g_{${this.lineId}}=\\frac{n_{${this.lineId}}}{d_{${this.lineId}}}` },
+        { id: `l_{${this.lineId}}`, latex: `-n_{${this.lineId}}*x + d_{${this.lineId}}*y= x_{${idP}}y_{${idQ}}-y_{${idP}}x_{${idQ}}`, lineOpacity: 0.3 }
       ]);
       return this.lineId;
     } catch (error) {
