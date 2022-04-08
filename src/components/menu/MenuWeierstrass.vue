@@ -49,13 +49,6 @@
         <label>x2</label>
         <input id="x2" value="2" @input="changeValueOnGraph('x', 2)"/><br />
       </span>
-      <span class="parameter">
-        <label>Result</label> <br />
-        <label>x</label>
-        <input id="result-add-x" @keydown="() => false"/><br />
-        <label>y</label>
-        <input id="result-add-y" @keydown="() => false"/><br />
-      </span>
     </div>
 
     <div id="multiplication" style="display: none;">
@@ -69,6 +62,13 @@
         <button @click="newMul">Compute</button>
       </span>
     </div>
+    <span class="parameter">
+        <label>Result</label> <br />
+        <label>x</label>
+        <input id="result-x" @keydown="() => false"/><br />
+        <label>y</label>
+        <input id="result-y" @keydown="() => false"/><br />
+      </span>
   </div>
 </template>
 
@@ -106,10 +106,19 @@ export default {
       document.getElementById('x1').value = x1;
       document.getElementById('x2').value = x2;
 
-      let resultX = this.graphS.getParam('x_{3}').toFixed(2);
-      let resultY = this.graphS.getParam('y_{3}').toFixed(2);
-      document.getElementById('result-add-x').value = resultX;
-      document.getElementById('result-add-y').value = resultY;
+      let op = document.getElementById("choix-op-weierstrass").value;
+      let resultX = NaN;
+      let resultY = NaN;
+      if (op == "Addition") {
+        resultX = this.graphS.getParam('x_{3}').toFixed(2);
+        resultY = this.graphS.getParam('y_{3}').toFixed(2);
+      }
+      else {
+        resultX = this.graphS.getParam('x_{2}').toFixed(2);
+        resultY = this.graphS.getParam('y_{2}').toFixed(2);
+      }
+      document.getElementById('result-x').value = resultX;
+      document.getElementById('result-y').value = resultY;
     },
     displayOperationParameters() {
       this.graphS.destroy();
