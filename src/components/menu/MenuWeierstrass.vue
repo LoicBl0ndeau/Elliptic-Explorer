@@ -59,7 +59,7 @@
       <span class="parameter">
         <label >Factor</label>
         <input id="factor" value="2" style="width: 40px;"/>
-        <button @click="newMul">Compute</button>
+        <button @click="newMul">Compute</button><br />
       </span>
     </div>
     <span class="parameter">
