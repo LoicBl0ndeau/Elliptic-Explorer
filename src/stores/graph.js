@@ -7,6 +7,9 @@ export const graphStore = defineStore('graph', {
     graph: null,
   }),
   actions: {
+    getParam(exp) {
+      return this.graph.getValueOfParameter(exp);
+    },
     setParam(exp, value) {
       this.graph.setValueOfParameter(exp, value);
     },

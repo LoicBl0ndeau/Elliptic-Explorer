@@ -1,6 +1,6 @@
 <template>
   <div class="submenu">
-    <h3 class="section">Parameters</h3>
+    <h3 class="section" >Parameters</h3>
 
     <span class="parameter">
       <label>a1</label>
@@ -43,21 +43,28 @@
     <div id="addition">
       <span class="parameter">
         <label>x1</label>
-        <input id="x1" value="0" @input="changeX1"/><br />
+        <input id="x1" value="0" @input="changeValueOnGraph('x', 1)"/><br />
       </span>
       <span class="parameter">
         <label>x2</label>
-        <input id="x2" value="2" @input="changeX2"/><br />
+        <input id="x2" value="2" @input="changeValueOnGraph('x', 2)"/><br />
+      </span>
+      <span class="parameter">
+        <label>Result</label> <br />
+        <label>x</label>
+        <input id="result-add-x" @keydown="() => false"/><br />
+        <label>y</label>
+        <input id="result-add-y" @keydown="() => false"/><br />
       </span>
     </div>
 
     <div id="multiplication" style="display: none;">
       <span class="parameter">
         <label>x0</label>
-        <input id="x0" value="0" @input="changeX0"/><br />
+        <input id="x0" value="0" @input="changeValueOnGraph('x', 1)" /><br />
       </span>
       <span class="parameter">
-        <label>Factor</label>
+        <label >Factor</label>
         <input id="factor" value="2" style="width: 40px;"/>
         <button @click="newMul">Compute</button>
       </span>
@@ -77,7 +84,33 @@ export default {
 
     return { graphS, weierstrass };
   },
+  mounted () {
+    // update des valeurs dans le menu toutes les 700ms
+    setInterval(this.listenToGraphValueChanges, 700);
+  },
   methods: {
+    listenToGraphValueChanges () {
+      let a1 = this.graphS.getParam('a_{1}');
+      let a2 = this.graphS.getParam('a_{2}');
+      let a3 = this.graphS.getParam('a_{3}');
+      let a4 = this.graphS.getParam('a_{4}');
+      let a6 = this.graphS.getParam('a_{6}');
+      let x1 = this.graphS.getParam('x_{1}');
+      let x2 = this.graphS.getParam('x_{2}');
+      document.getElementById('a1').value = a1;
+      document.getElementById('a2').value = a2;
+      document.getElementById('a3').value = a3;
+      document.getElementById('a4').value = a4;
+      document.getElementById('a6').value = a6;
+      document.getElementById('x0').value = x1;
+      document.getElementById('x1').value = x1;
+      document.getElementById('x2').value = x2;
+
+      let resultX = this.graphS.getParam('x_{3}').toFixed(2);
+      let resultY = this.graphS.getParam('y_{3}').toFixed(2);
+      document.getElementById('result-add-x').value = resultX;
+      document.getElementById('result-add-y').value = resultY;
+    },
     displayOperationParameters() {
       this.graphS.destroy();
       this.displayCurve();
