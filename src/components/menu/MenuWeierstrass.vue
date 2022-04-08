@@ -62,8 +62,9 @@
         <button @click="newMul">Compute</button><br />
       </span>
     </div>
+
+    <h3 class="section">Result</h3>
     <span class="parameter">
-        <label>Result</label> <br />
         <label>x</label>
         <input id="result-x" @keydown="() => false"/><br />
         <label>y</label>
