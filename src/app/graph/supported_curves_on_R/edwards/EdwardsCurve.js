@@ -32,8 +32,8 @@ export class EdwardsCurve extends RealCurveGraph {
     showCurve() {
         this.calculator.setExpressions([
             { id: 'C', latex: `C=${this.c}`, sliderBounds:{min: 0, max: ""}},
-            { id: 'C', latex: `D=${this.d}`, sliderBounds:{min: "", max: 0} },
-            { id: 'curve_{1}', latex: 'x^2 + y^2 = c^2(1+ d*x^2*y^2)',color: Graphic.Colors.curve }
+            { id: 'D', latex: `D=${this.d}`, sliderBounds:{min: "", max: 0} },
+            { id: 'curve_{1}', latex: 'x^2 + y^2 = C^2(1+ D*x^2*y^2)',color: Graphic.Colors.curve }
         ])
         this.saveGraphicState();
     }
@@ -47,9 +47,9 @@ export class EdwardsCurve extends RealCurveGraph {
         this.pointId++;
         this.addCurvePointInExpressions(
             xPos,
-            `\\sqrt{\\frac{(x_{${this.pointId}}^{2}/c^{2})-1}{dx_{${this.pointId}}^{2}-(1/c^{2})}}`,
+            `\\sqrt{\\frac{(x_{${this.pointId}}^{2}/C^{2})-1}{Dx_{${this.pointId}}^{2}-(1/C^{2})}}`,
             `-y_{p${this.pointId}}`);
-        this.setExpressionParameters(`x_{${this.pointId}}`,{sliderBounds: { min: "-c", max: "c" }});
+        this.setExpressionParameters(`x_{${this.pointId}}`,{sliderBounds: { min: "-C", max: "C" }});
         this.addSegment([`x_{${this.pointId}}`, `0`], [`y_{${this.pointId}}`, `0`]);
         return this.pointId;
     }
@@ -67,8 +67,8 @@ export class EdwardsCurve extends RealCurveGraph {
         this.pointId++;
 
         this.calculator.setExpressions([
-            { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=\\frac{x_{${idP}}y_{${idQ}}+x_{${idQ}}y_{${idP}}}{c(1+dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
-            { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=\\frac{y_{${idP}}y_{${idQ}}-x_{${idP}}x_{${idQ}}}{c(1-dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
+            { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=\\frac{x_{${idP}}y_{${idQ}}+x_{${idQ}}y_{${idP}}}{C(1+Dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
+            { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=\\frac{y_{${idP}}y_{${idQ}}-x_{${idP}}x_{${idQ}}}{C(1-Dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
             { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: Graphic.Colors.point, pointSize: 15 },
         ]);
 
