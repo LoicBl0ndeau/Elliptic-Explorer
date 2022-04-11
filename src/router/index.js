@@ -10,7 +10,7 @@ const routes = [
   },
   {
     path: '/laura',
-    name: 'home',
+    name: 'laura',
     component: GraphViewTest
   },
   {
