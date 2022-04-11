@@ -14,7 +14,7 @@
     @mouseover="toggleSidebar"
     @mouseout="toggleSidebar"
   >
-    
+
     <a @click="open('about')">
       <span class="material-icons">info</span>
       <span class="icon-text">About EE</span>
@@ -23,21 +23,21 @@
 
     <a @click="open('weierstrass')">
       <span class="material-icons">chevron_right</span>
-      <span class="icon-text">Weierstrass</span> 
+      <span class="icon-text">Weierstrass</span>
     </a><br />
     <MenuWeierstrass v-show="isOpen.weierstrass" ref="weierstrass" />
 
-    <a @click="open('montgomery')" >
+    <a @click="open('montgomery')">
       <span class="material-icons">chevron_right</span>
-      <span class="icon-text">Montgomery</span>
+      <span class="icon-text">Montgomery</span> 
     </a><br />
-    <MenuMont v-show="isOpen.montgomery" ref="montgomery"/>
+    <MenuMontgomery v-show="isOpen.montgomery" ref="montgomery" />
 
-    <a @click="open('edwards')" >
+    <a @click="open('edwards')">
       <span class="material-icons">chevron_right</span>
-      <span class="icon-text">Edwards</span>
+      <span class="icon-text">Edwards</span> 
     </a><br />
-    <MenuEdwards v-show="isOpen.edwards" ref="edwards"/>
+    <MenuEdwards v-show="isOpen.edwards" ref="edwards" />
     
     <a @click="changePinStatus">
       <span id="pin" class="material-icons">push_pin</span>
@@ -50,7 +50,7 @@
 
 <script>
 import MenuWeierstrass from "./menu/MenuWeierstrass";
-import MenuMont from "./menu/MenuMont";
+import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
 import AboutEE from "./menu/AboutEE";
 
@@ -58,7 +58,7 @@ export default {
   name: "MyMenu",
   components: {
     MenuWeierstrass,
-    MenuMont,
+    MenuMontgomery,
     MenuEdwards,
     AboutEE
   },
@@ -95,7 +95,7 @@ export default {
       for (const [key, ] of Object.entries(this.isOpen)) {
         if (key == menu) {
           this.isOpen[key] = true;
-          console.log(this.$refs[key].displayOperation());
+          this.$refs[key].displayDefaultCurve();
         }
         else this.isOpen[key] = false;
       }
