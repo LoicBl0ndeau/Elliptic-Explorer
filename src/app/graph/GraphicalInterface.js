@@ -376,22 +376,32 @@ export class ModCurveGraph extends Graphic {
   */
   constructor(element) {
     super(element);
+    this.listCoordPoints = [];
+    this.selectedPoints = [[undefined, undefined],[undefined,undefined]];
   }
-
-  displayPoints(list_points) {
+  /**
+   * Display all static points of the modular curve from the list of points
+   */
+  displayPoints() {
     var that = this;
-    list_points.forEach(function (item) {
+    let listPoints = this.listCoordPoints;
+    listPoints.forEach(function (item) {
       that.addStaticPoint(item);
     });
   }
-
-  displayClickPoints(list_point) {
+  /**
+   * Recover the coordinates of two points
+   */
+  addClickPoints(){
+    let listPoints = this.listCoordPoints;
+    var isSecondPoint = false;
     var that = this;
     // Find the pixel coordinates of the graphpaper origin:
     that.calculator.mathToPixels({ x: 0, y: 0 });
     // Find the math coordinates of the mouse
-    var calculatorRect = this.element.getBoundingClientRect();
-    document.addEventListener('click', function (evt) {
+    var calculatorRect = that.element.getBoundingClientRect();
+    document.addEventListener('click', function click(evt) {
+      // when user click on the screen, we go into this function
       var coordonnees_souris = that.calculator.pixelsToMath({
         x: evt.clientX - calculatorRect.left,
         y: evt.clientY - calculatorRect.top
@@ -400,16 +410,16 @@ export class ModCurveGraph extends Graphic {
       var y = coordonnees_souris.y;
       var x_arrondi = Math.round(x);
       var y_arrondi = Math.round(y);
-      list_point.forEach(function (item) {
-        if ((x_arrondi == item[0]) && (y_arrondi == item[1])) {
-          console.log([x_arrondi, y_arrondi])
+      //on arrondit les coordonées
+      listPoints.forEach(function(item) {
+        //on compare avec les points de la courbe modualire
+        if ((x_arrondi==item[0]) && (y_arrondi==item[1])){
+          // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
+          isSecondPoint ? that.selectedPoints[1]=[x_arrondi,y_arrondi]:that.selectedPoints[0]=[x_arrondi,y_arrondi];
+          isSecondPoint = !isSecondPoint;
+          // document.removeEventListener('click', click);
         }
       });
-
     });
   }
-
-  stopClickPoints() {
-    document.removeEventListener('click');
-  }
-}  
+}

@@ -6,7 +6,7 @@
 // import { WeierstrassGraph } from "@/app/graph/supported_curves_on_R/weierstrass/WeierstrassGraph.js";
 
 export default {
-  name: "ContinuousWeierstrass",
+  name: "MyGraph",
 };
 </script>
 
