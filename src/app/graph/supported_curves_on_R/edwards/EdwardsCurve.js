@@ -31,8 +31,8 @@ export class EdwardsCurve extends RealCurveGraph {
 
     showCurve() {
         this.calculator.setExpressions([
-            { id: 'c', latex: `c=${this.c}`, sliderBounds:{min: 0, max: ""}},
-            { id: 'd', latex: `d=${this.d}`, sliderBounds:{min: "", max: 0} },
+            { id: 'C', latex: `C=${this.c}`, sliderBounds:{min: 0, max: ""}},
+            { id: 'C', latex: `D=${this.d}`, sliderBounds:{min: "", max: 0} },
             { id: 'curve_{1}', latex: 'x^2 + y^2 = c^2(1+ d*x^2*y^2)',color: Graphic.Colors.curve }
         ])
         this.saveGraphicState();
