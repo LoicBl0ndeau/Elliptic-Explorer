@@ -35,7 +35,8 @@
       <input
         id="x1-montgomery"
         @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')"
-      /><br />
+      />
+      <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition-montgomery">
@@ -44,7 +45,8 @@
         <input
           id="x2-montgomery"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')"
-        /><br />
+        />
+        <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
 
@@ -137,8 +139,14 @@ export default {
         let op = this.menuS.getValueById("choix-op-montgomery");
         if (op == "Addition") {
           this.menuS.setInputValueFromGraphExpValue("x2-montgomery", "x_{2}");
-          this.menuS.setInputValueFromGraphExpValue("result-x-montgomery", "x_{3}");
-          this.menuS.setInputValueFromGraphExpValue("result-y-montgomery", "y_{3}");
+          this.menuS.setInputValueFromGraphExpValue(
+            "result-x-montgomery",
+            "x_{3}"
+          );
+          this.menuS.setInputValueFromGraphExpValue(
+            "result-y-montgomery",
+            "y_{3}"
+          );
         }
         if (op == "Multiplication") {
           let idResult = this.menuS.getIntFromInputId("factor-montgomery");

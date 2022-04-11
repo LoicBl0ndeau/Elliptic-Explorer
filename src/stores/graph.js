@@ -66,5 +66,17 @@ export const graphStore = defineStore('graph', {
       this.graph.setExpressionParameters(`p_{${k}}`, { color: Graphic.Colors.finalPoint })
       this.graph.showLabels(true);
     },
+    switchPointOrdinate(pointId) {
+      let actualY = this.graph.getValueOfParameter(`y_{${pointId}}`);
+      let negY = this.graph.getValueOfParameter(`y_{n${pointId}}`);
+      let newY = null;
+      if (actualY == negY) {
+        newY = `y_{p${pointId}}`;
+      }
+      else {
+        newY = `y_{n${pointId}}`;
+      }
+      this.graph.setValueOfParameter(`y_{${pointId}}`, newY)
+    }
   }
 });

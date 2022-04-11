@@ -35,7 +35,8 @@
       <input
         id="x1-edwards"
         @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')"
-      /><br />
+      />
+      <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition-edwards">
@@ -44,7 +45,8 @@
         <input
           id="x2-edwards"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')"
-        /><br />
+        />
+        <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
       </span>
     </div>
 
