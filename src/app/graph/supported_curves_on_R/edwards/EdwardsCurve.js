@@ -83,8 +83,40 @@ export class EdwardsCurve extends RealCurveGraph {
      * @return {number} return the id of the point created
      * @return {number} return the id of line created 
      * @return {number} return the id of the segment created
-     **/
+    **/
     showDoublingPoint(idP) {
         return this.showAdditionOfPoints(idP,idP)
     }
+
+    /**
+     * shows the multiplication of two point given their id
+     *
+     * @param {number} idP - The id of the first point 
+     * @param {number} mul - The factor of multiplication 
+     * @return {number} return the id of the point created
+     * @return {number} return the id of line created 
+     * @return {number} return the id of the segment created
+     **/
+     showMultiplicationOfPoint(idP, mult){
+        this.pointID++;
+
+        let idQ = idP;
+
+        for (let i=0; i<mult-1; i++){
+
+        this.calculator.setExpressions([
+            { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=\\frac{x_{${idP}}y_{${idQ}}+x_{${idQ}}y_{${idP}}}{c(1+dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
+            { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=\\frac{y_{${idP}}y_{${idQ}}-x_{${idP}}x_{${idQ}}}{c(1-dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
+            { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
+        ]);
+
+        this.addSegment([`x_{${this.pointId}}`, `0`], [`y_{${this.pointId}}`, `0`]);
+
+        idQ= this.pointID;
+
+        
+        }
+        return this.pointId, this.lineId, this.segmentID;
+    }
+
 }

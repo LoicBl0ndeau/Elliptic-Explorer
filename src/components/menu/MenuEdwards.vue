@@ -6,7 +6,7 @@
       <label>c</label>
       <input
         id="c"
-        @input="menuS.setValueOnGraphFromUserInput('A', 'a')"
+        @input="menuS.setValueOnGraphFromUserInput('C', 'c')"
       /><br />
     </span>
 
@@ -14,7 +14,7 @@
       <label>d</label>
       <input
         id="d"
-        @input="menuS.setValueOnGraphFromUserInput('B', 'b')"
+        @input="menuS.setValueOnGraphFromUserInput('D', 'd')"
       /><br />
     </span>
 
@@ -61,9 +61,9 @@
     <h3 class="section">Result</h3>
     <span class="parameter">
       <label>x</label>
-      <input id="result-x-edwards" @keydown="() => false" /><br />
+      <input id="result-x-edwards" readonly /><br />
       <label>y</label>
-      <input id="result-y-edwards" @keydown="() => false" /><br />
+      <input id="result-y-edwards" readonly /><br />
     </span>
   </div>
 </template>

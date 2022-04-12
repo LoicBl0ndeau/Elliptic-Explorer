@@ -1,38 +1,43 @@
-import elliptic  from 'elliptic';
+import elliptic from 'elliptic';
 import BN from 'bn.js';
+import { ModCurveGraph } from '../graph/GraphicalInterface.js';
 
 /**
  * Obtenir les coordonnées d'un point sous la forme [x, y]
  * @param {Point} point point
  * @returns {Array} les coordonnées x y du point sous la forme [x, y] avec x et y des integers
  */
- export function getCoord(point) {
+export function getCoord(point) {
     if (point.inf)
-      return [null, null];
+        return [null, null];
     return [point.getX().toNumber(), point.getY().toNumber()];
 }
 
-export class ShortWeierstrass {
+export class ShortWeierstrass extends ModCurveGraph {
 
     /**
      * Construit la courbe d'équation y^2 = x^3 + ax + b mod p
+     * @param {string} element The ID of the HTML element where the calculator will be.
+     * @param {array} listCoordPoints liste de coordonées (vide pour l'initialisation)
      * @param {integer ou string} a premier paramètre
      * @param {integer ou string} b deuxieme paramètre
      * @param {integer ou string} p modulo
      */
-    constructor(a, b, p){
-        while (a<0){
-            a=a+p;
+    constructor(element, a, b, p) {
+        super(element);
+        while (a < 0) {
+            a = a + p;
         }
-        while (b<0){
-            b=b+p;
+        while (b < 0) {
+            b = b + p;
         }
         this.param = {
-          p: p,
-          a: a,
-          b: b,
+            p: p,
+            a: a,
+            b: b,
         }
         this.shortWcurve = new elliptic.curve.short(this.param);
+        this.listPoints = [];
     }
 
 
@@ -44,11 +49,11 @@ export class ShortWeierstrass {
      */
     newPoint(x, y) {
         let p = this.param.p;
-        while (x<0){
-            x=x+p;
+        while (x < 0) {
+            x = x + p;
         }
-        while (y<0){
-            y=y+p;
+        while (y < 0) {
+            y = y + p;
         }
         return this.shortWcurve.point(x, y, false);
     }
@@ -70,8 +75,8 @@ export class ShortWeierstrass {
      * @param {Point} Q point sur la courbe
      * @returns {Point} Point résultant de l'addition P+Q
      */
-    addPoints(P ,Q) {
-        return(P.add(Q));
+    addPoints(P, Q) {
+        return (P.add(Q));
     }
 
 
@@ -82,10 +87,10 @@ export class ShortWeierstrass {
      * @returns {Point} Point résultant de k*P
      */
     mulPoints(P, k) {
-        if(k==2) {
-            return(P.dbl());
+        if (k == 2) {
+            return (P.dbl());
         }
-        return(P.mul(k))
+        return (P.mul(k))
     }
 
     /**
@@ -95,7 +100,7 @@ export class ShortWeierstrass {
      * @returns {Point} Point résultant de P-Q 
      */
     subPoints(P, Q) {
-        return(P.add(Q.neg()));
+        return (P.add(Q.neg()));
     }
 
     /**
@@ -106,11 +111,11 @@ export class ShortWeierstrass {
      * @param {integer} k2 facteur
      * @returns {Point} Point résultant de k1P + k2Q 
      */
-    linearCombination(P,Q,k1,k2) {
+    linearCombination(P, Q, k1, k2) {
         k1 = new BN(k1, 16)
         k2 = new BN(k2, 16)
-        return(P.mulAdd(k1,Q,k2));
-      }
+        return (P.mulAdd(k1, Q, k2));
+    }
 
 
     /**
@@ -120,41 +125,50 @@ export class ShortWeierstrass {
      * @returns {integer} le multiple n tel que nP = Q
      */
     findMultiple(P, Q) {
-        if (P.eq(Q)){
+        if (P.eq(Q)) {
             return 1;
         }
-        var n=2;
-        while (!P.mul(n).eq(Q) && !P.mul(n).eq(P)){
-            n=n+1;
+        var n = 2;
+        while (!P.mul(n).eq(Q) && !P.mul(n).eq(P)) {
+            n = n + 1;
         }
-        if (P.mul(n).eq(P)){
+        if (P.mul(n).eq(P)) {
             return "Pas de multiple";
-          }
+        }
         return n;
     }
 
     /**
-     * Trouver tous les points de la courbe
-     * @returns {Array} liste de tous les points de la courbe
+     * Trouver tous les points de la courbe et les mettre dans une liste
      */
     findAllPoints() {
         let a = this.param.a;
         let b = this.param.b;
         let p = this.param.p;
-        let foundPoints = [];
+        let listPoints = this.listPoints;
         var calculx;
         var calculy;
-        for (var y = 0; y < p; y++){
-          calculy = (Math.pow(y,2))%p;
-          for (var x = 0; x < p; x++){
-            calculx = (Math.pow(x,3) + (a*x) + b)%p;
-            if (calculy == calculx){
-                foundPoints.push( this.newPoint(x, y) );
+        for (var y = 0; y < p; y++) {
+            calculy = (Math.pow(y, 2)) % p;
+            for (var x = 0; x < p; x++) {
+                calculx = (Math.pow(x, 3) + (a * x) + b) % p;
+                if (calculy == calculx) {
+                    listPoints.push(this.newPoint(x, y));
+                }
             }
-          }
         }
-        foundPoints.push( this.newPoint(null, null) )
-        return foundPoints;
+        listPoints.push(this.newPoint(null, null))
+    }
+
+    /**
+     * Transformer la liste des points en liste de coordonées de points
+     */
+    findCoordPoints() {
+        let listPoints = this.listPoints;
+        let listCoordPoints = this.listCoordPoints;
+        listPoints.forEach(item => {
+            listCoordPoints.push(getCoord(item));
+        });
     }
 
     /**
@@ -163,13 +177,13 @@ export class ShortWeierstrass {
      * @returns {integer} ordre additif du point P
      */
     findAdditiveOrder(P) {
-        var n=2;
-        while (!P.mul(n).eq(P.neg()) && !P.mul(n).eq(P) ) {
-            n=n+1;
+        var n = 2;
+        while (!P.mul(n).eq(P.neg()) && !P.mul(n).eq(P)) {
+            n = n + 1;
         }
-        if (P.mul(n).eq(P)){
-          return 2;
+        if (P.mul(n).eq(P)) {
+            return 2;
         }
-        return n+1;
-      }   
+        return n + 1;
+    }
 }
