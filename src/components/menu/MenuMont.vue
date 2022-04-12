@@ -61,9 +61,9 @@
     <h3 class="section">Result</h3>
     <span class="parameter">
       <label>x</label>
-      <input id="result-x-montgomery" @keydown="() => false" /><br />
+      <input id="result-x-montgomery" readonly/><br />
       <label>y</label>
-      <input id="result-y-montgomery" @keydown="() => false" /><br />
+      <input id="result-y-montgomery" readonly/><br />
     </span>
   </div>
 </template>

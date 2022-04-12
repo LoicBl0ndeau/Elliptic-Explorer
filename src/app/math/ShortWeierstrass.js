@@ -23,8 +23,8 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @param {integer ou string} b deuxieme paramètre
      * @param {integer ou string} p modulo
      */
-    constructor(element, listCoordPoints, a, b, p) {
-        super(element, listCoordPoints);
+    constructor(element, a, b, p) {
+        super(element);
         while (a < 0) {
             a = a + p;
         }
