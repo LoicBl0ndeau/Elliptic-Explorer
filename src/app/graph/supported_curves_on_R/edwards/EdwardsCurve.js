@@ -33,7 +33,7 @@ export class EdwardsCurve extends RealCurveGraph {
         this.calculator.setExpressions([
             { id: 'C', latex: `C=${this.c}`, sliderBounds:{min: 0, max: ""}},
             { id: 'D', latex: `D=${this.d}`, sliderBounds:{min: "", max: 0} },
-            { id: 'curve_{1}', latex: 'x^2 + y^2 = C^2(1+ D*x^2*y^2)',color: Graphic.Colors.curve }
+            { id: 'curve_{1}', latex: `x^2 + y^2 = C^2(1+ D*x^2*y^2)`,color: Graphic.Colors.curve }
         ])
         this.saveGraphicState();
     }
@@ -73,6 +73,38 @@ export class EdwardsCurve extends RealCurveGraph {
         ]);
 
         this.addSegment([`x_{${this.pointId}}`, `0`], [`y_{${this.pointId}}`, `0`]);
+        return this.pointId, this.lineId, this.segmentID;
+    }
+
+    
+    /**
+     * shows the multiplication of two point given their id
+     *
+     * @param {number} idP - The id of the first point 
+     * @param {number} mul - The factor of multiplication 
+     * @return {number} return the id of the point created
+     * @return {number} return the id of line created 
+     * @return {number} return the id of the segment created
+     **/
+     showMultiplicationOfPoint(idP, mult){
+        this.pointID++;
+
+        let idQ = idP;
+
+        for (let i=0; i<mult-1; i++){
+
+        this.calculator.setExpressions([
+            { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=\\frac{x_{${idP}}y_{${idQ}}+x_{${idQ}}y_{${idP}}}{c(1+dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
+            { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=\\frac{y_{${idP}}y_{${idQ}}-x_{${idP}}x_{${idQ}}}{c(1-dx_{${idP}}x_{${idQ}}y_{${idP}}y_{${idQ}})}` },
+            { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: this.pointColor, pointSize: 15 },
+        ]);
+
+        this.addSegment([`x_{${this.pointId}}`, `0`], [`y_{${this.pointId}}`, `0`]);
+
+        idQ= this.pointID;
+
+        
+        }
         return this.pointId, this.lineId, this.segmentID;
     }
 
