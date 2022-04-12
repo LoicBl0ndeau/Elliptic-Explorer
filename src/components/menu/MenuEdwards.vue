@@ -6,7 +6,7 @@
       <label>c</label>
       <input
         id="c"
-        @input="menuS.setValueOnGraphFromUserInput('A', 'a')"
+        @input="menuS.setValueOnGraphFromUserInput('C', 'c')"
       /><br />
     </span>
 
@@ -14,7 +14,7 @@
       <label>d</label>
       <input
         id="d"
-        @input="menuS.setValueOnGraphFromUserInput('B', 'b')"
+        @input="menuS.setValueOnGraphFromUserInput('D', 'd')"
       /><br />
     </span>
 
