@@ -218,15 +218,25 @@ export class ShortWeierstrass extends ModCurveGraph {
 
     displayAddPoint(addPoint){
         let listPoints = this.listPoints;
+        let negPoint = getCoord(this.newPoint(addPoint[0],addPoint[1]).neg());
         var i=1;
+        var j=1;
         for (i=1; i<listPoints.length ; i++ ){
             //on compare avec les points de la courbe modualire
             if ((addPoint[0]==this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1]==this.getValueOfParameter(`y_{${i}}`))){
                 this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint })
+                var idAdd=i;
             }
             else{
                 this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point })
             }
-          }
+        }
+        for (j=1; j<listPoints.length ; j++ ){
+            //on compare avec les points de la courbe modualire
+            if ((negPoint[0]==this.getValueOfParameter(`x_{${j}}`)) && (negPoint[1]==this.getValueOfParameter(`y_{${j}}`))){
+                this.calculator.removeExpression({ id: `s_{${this.segmentID}}` });
+                this.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
+            }
+        }    
     }
 }
