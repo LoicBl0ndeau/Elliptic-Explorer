@@ -380,6 +380,7 @@ export class ModCurveGraph extends Graphic {
     super(element);
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined],[undefined,undefined]];
+    this.idSelectedPoints = [0,0];
   }
   /**
    * Display all static points of the modular curve from the list of points
@@ -398,6 +399,7 @@ export class ModCurveGraph extends Graphic {
     let listPoints = this.listCoordPoints;
     var isSecondPoint = false;
     var that = this;
+    var i=1;
     // Find the pixel coordinates of the graphpaper origin:
     that.calculator.mathToPixels({ x: 0, y: 0 });
     // Find the math coordinates of the mouse
@@ -413,15 +415,16 @@ export class ModCurveGraph extends Graphic {
       var x_arrondi = Math.round(x);
       var y_arrondi = Math.round(y);
       //on arrondit les coordonées
-      listPoints.forEach(function(item) {
+      for (i=1; i<listPoints.length ; i++ ){
         //on compare avec les points de la courbe modualire
-        if ((x_arrondi==item[0]) && (y_arrondi==item[1])){
+        if ((x_arrondi==that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi==that.getValueOfParameter(`y_{${i}}`))){
           // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
           isSecondPoint ? that.selectedPoints[1]=[x_arrondi,y_arrondi]:that.selectedPoints[0]=[x_arrondi,y_arrondi];
+          isSecondPoint ? that.idSelectedPoints[1]=i:that.idSelectedPoints[0]=i;
           isSecondPoint = !isSecondPoint;
           // document.removeEventListener('click', click);
         }
-      });
+      }
     });
   }
 }
