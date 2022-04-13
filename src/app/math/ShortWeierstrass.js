@@ -1,6 +1,6 @@
 import elliptic from 'elliptic';
 import BN from 'bn.js';
-import { ModCurveGraph } from '../graph/GraphicalInterface.js';
+import { Graphic, ModCurveGraph } from '../graph/GraphicalInterface.js';
 
 /**
  * Obtenir les coordonnées d'un point sous la forme [x, y]
@@ -213,7 +213,7 @@ export class ShortWeierstrass extends ModCurveGraph {
                 { id: `a`, latex: `a=(y_${pointId+1}-y_${pointId})`},
                 { id: `b`, latex: `b=(x_${pointId}-x_${pointId + 1})`},
                 { id: `c`, latex: `c=((x_${pointId}+L)y_${pointId + 1}-(x_${pointId + 1}+L)y_${pointId})`},
-                { id: `e`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}` },
+                { id: `e`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.curve },
             ]);
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);

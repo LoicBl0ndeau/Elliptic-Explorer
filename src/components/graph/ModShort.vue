@@ -28,7 +28,13 @@ export default {
       let point1 = graphMod.newPoint(graphMod.selectedPoints[0][0], graphMod.selectedPoints[0][1]);
       let point2 = graphMod.newPoint(graphMod.selectedPoints[1][0], graphMod.selectedPoints[1][1]);
       console.log(getCoord(graphMod.addPoints(point1, point2)));
+      let addiPoint = getCoord(graphMod.addPoints(point1, point2));
       graphMod.displayModulo(pointId);
+      graphMod.calculator.setExpressions([
+        { id: `x_{${pointId+2}}`, latex: `x_{${pointId+2}}=${addiPoint[0]}` },
+        { id: `y_{${pointId+2}}`, latex: `y_{${pointId+2}}=${addiPoint[1]}` },
+        { id: `p_{${pointId+2}}`, latex: `(x_{${pointId+2}},y_{${pointId+2}})`, showLabel: false, color: "#ff0000" }
+      ]);
     }, 5000)
 
     } 
