@@ -18,7 +18,6 @@ export class ShortWeierstrass extends ModCurveGraph {
     /**
      * Construit la courbe d'équation y^2 = x^3 + ax + b mod p
      * @param {string} element The ID of the HTML element where the calculator will be.
-     * @param {array} listCoordPoints liste de coordonées (vide pour l'initialisation)
      * @param {integer ou string} a premier paramètre
      * @param {integer ou string} b deuxieme paramètre
      * @param {integer ou string} p modulo
@@ -39,6 +38,8 @@ export class ShortWeierstrass extends ModCurveGraph {
         this.shortWcurve = new elliptic.curve.short(this.param);
         this.listPoints = [];
     }
+
+
 
 
     /**
@@ -185,5 +186,37 @@ export class ShortWeierstrass extends ModCurveGraph {
             return 2;
         }
         return n + 1;
+    }
+
+
+    displayModulo(pointId){
+        //let point1 = this.selectedPoints[0];
+        //let point2 = this.selectedPoints[1];
+        //let point1 = [3,3];
+        //let point2 = [0,4];
+        var lignes =5;
+        var modulo=this.param.p;
+
+        try {
+            //this.pointId++;
+            this.calculator.setExpressions([
+                { id: `l`, latex: `l=${lignes}` },
+                { id: `m`, latex: `m=${modulo}` },
+                { id: `L`, latex: `L=[\\frac{m}{2}i\\operatorname{for}i=[\\operatorname{floor}(-\\frac{lm}{2})...\\operatorname{floor}(\\frac{lm}{2})]]` },
+                { id: `x_${pointId}`, latex: `x_${pointId}=${this.selectedPoints[0][0]}` },
+                { id: `y_${pointId}`, latex: `y_${pointId}=${this.selectedPoints[0][1]}` },
+            ]);
+            //this.pointId++;
+            this.calculator.setExpressions([
+                { id: `x_${pointId + 1}`, latex: `x_${pointId + 1}=${this.selectedPoints[1][0]}` },
+                { id: `y_${pointId + 1}`, latex: `y_${pointId + 1}=${this.selectedPoints[1][1]}` },
+                { id: `a`, latex: `a=(y_${pointId+1}-y_${pointId})`},
+                { id: `b`, latex: `b=(x_${pointId}-x_${pointId + 1})`},
+                { id: `c`, latex: `c=((x_${pointId}+L)y_${pointId + 1}-(x_${pointId + 1}+L)y_${pointId})`},
+                { id: `e`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}` },
+            ]);
+        } catch (error) {
+            throw new Error(`An error has occured adding modular lines : ${error}`);
+        }
     }
 }

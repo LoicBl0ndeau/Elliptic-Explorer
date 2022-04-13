@@ -129,7 +129,7 @@ export class Graphic {
       this.calculator.setExpressions([
         { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=${P[0]}` },
         { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=${P[1]}` },
-        { id: `p_{${this.pointId}}`, latex: `(x_{${this.pointId}},y_{${this.pointId}})`, showLabel: true, dragMode: Axis }
+        { id: `p_{${this.pointId}}`, latex: `(x_{${this.pointId}},y_{${this.pointId}})`, showLabel: true, dragMode: Axis, color: Graphic.Colors.point }
       ]);
       return this.pointId;
     } catch (error) {
