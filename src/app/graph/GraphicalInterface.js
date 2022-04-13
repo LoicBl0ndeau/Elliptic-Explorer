@@ -45,6 +45,7 @@ export class Graphic {
   get getcalculator() {
     return this.calculator;
   }
+
   /**
    * show the expressions tab on the left of the graph
    */
@@ -88,7 +89,7 @@ export class Graphic {
     if (exp == undefined) {
       console.warn(`id : ${id} does not exist.`);
     }
-    return exp
+    return exp;
   }
 
 
@@ -101,11 +102,12 @@ export class Graphic {
   setExpressionParameters(exp, params) {
     let oldExp = this.getExpressionById(exp);
     if (oldExp == undefined) return;
+    delete oldExp['domain'];
     for (const [key, value] of Object.entries(params)) {
       oldExp[key] = value;
     }
-    this.calculator.setExpression(oldExp)
-    return exp
+    this.calculator.setExpression(oldExp);
+    return exp;
   }
 
   /**
@@ -161,10 +163,8 @@ export class Graphic {
     }
 
     try {
-      this.calculator.setExpressions([
-        { id: `x_{${id}}`, latex: `x_{${this.pointId}}=${newP[0]}` },
-        { id: `y_{${id}}`, latex: `y_{${this.pointId}}=${newP[1]}` },
-      ]); // à revoir le try (set expression ne va pas renvoyer une erreur si point existe pas)
+      this.setValueOfParameter(`x_{${id}}`,newP[0]);
+      this.setValueOfParameter(`y_{${id}}`,newP[1]);
     } catch (error) {
       throw new Error(`Point ${id} not found : ${error}`);
     }
@@ -225,6 +225,10 @@ export class Graphic {
       throw new Error("'idP' and 'idQ' must be numbers");
     }
 
+    if (idP > this.pointId || idQ > this.pointId) {
+      throw new Error(`Selected points : ${idP},${idQ} do not exist. Number of points : ${this.pointId}`);
+    }
+    
     try {
       this.lineId++;
       this.calculator.setExpressions([
@@ -255,10 +259,8 @@ export class Graphic {
     }
 
     try {
-      this.calculator.setExpressions([
-        { id: `g_{${id}}`, latex: `g_{${id}}=${newGradient}` },
-        { id: `b_{${id}}`, latex: `b_{${id}}=${newB}` },
-      ]);
+      this.setValueOfParameter(`g_{${id}}`,newGradient);
+      this.setValueOfParameter(`b_{${id}}`,newB);
     } catch (error) {
       throw new Error(`Line ${id} not found : ${error}`);
     }

@@ -4,6 +4,7 @@ import { Graphic } from '@/app/graph/GraphicalInterface.js';
 import { WeierstrassGraph } from "@/app/graph/supported_curves_on_R/weierstrass/WeierstrassGraph.js";
 import { MontgomeryGraph } from "@/app/graph/supported_curves_on_R/montgomery/MontgomeryGraph.js";
 import { EdwardsCurve } from "@/app/graph/supported_curves_on_R/edwards/EdwardsCurve.js";
+import { ShortWeierstrass } from '@/app/math/ShortWeierstrass.js';
 
 export const graphStore = defineStore('graph', {
   state: () => ({
@@ -34,6 +35,14 @@ export const graphStore = defineStore('graph', {
         this.destroy();
       this.graph = new EdwardsCurve("calculator", c, d);
       this.graph.showCurve();
+    },
+    displayShort(a, b, p) {
+      if (this.graph != null)
+        this.destroy();
+      this.graph = new ShortWeierstrass("calculator", a, b, p);
+      this.graph.findAllPoints();
+      this.graph.findCoordPoints();
+      this.graph.displayPoints();
     },
     getExpValue(exp) {
       return this.graph.getValueOfParameter(exp);
