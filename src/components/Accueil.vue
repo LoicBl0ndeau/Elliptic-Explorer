@@ -45,10 +45,24 @@
       facilement être démystifiées à l’aide d’une représentation graphique.
     </p>
     <p>
+        Avant d'utiliser ces courbes pour chiffrer nos messages, on doit les comprendre. 
+        Les courbes elliptiques se définissent en trois types de courbes usuelles : 
+        Weierstrass, Montgomery, Edwards. En voici respectivement les équations :
+    </p>
+    <p align='center'>
+        y<sup>2</sup> = x<sup>3</sup> + Ax + B 
+    </p>
+    <p align='center'>
+        By<sup>2</sup> = x<sup>3</sup> + Ax<sup>2</sup> + x
+    </p>
+    <p align='center'>
+        x<sup>2</sup> + y<sup>2</sup> = c<sup>2</sup>(1 + dx<sup>2</sup>y<sup>2</sup>) 
+    </p>
+    <p>
       Nous vous invitons à parcourir cette application web intuitive et pédagogique
       pour vous initier aux calculs simples sur des courbes elliptiques. Nous mettons à 
-      votre disposition les trois types de courbes usuelles : Weierstrass, Montgomery 
-      et Edwards. Vous pouvez créé vos propres courbes en modulaire et en continue ! 
+      votre disposition les trois types de courbes usuelles. Vous pouvez créé vos propres 
+      courbes en modulaire et en continue !   
     </p>
     <p align='center'>
         Appréciez l'expérience !!!!
