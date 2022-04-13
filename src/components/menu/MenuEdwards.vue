@@ -94,6 +94,11 @@ export default {
 
       this.graphS.displayEdwards(c, d);
       this.graphS.showAddition(xP, xQ);
+
+      // display default operation (Addition)
+      this.menuS.setValueById("choix-op-edwards", "Addition");
+      this.menuS.hideElementById("multiplication-edwards");
+      this.menuS.displayElementById("addition-edwards");
     },
     displayNewCurve() {
       let c = this.menuS.getFloatFromInputId("c");
