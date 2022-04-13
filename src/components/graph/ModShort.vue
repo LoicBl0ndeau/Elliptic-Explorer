@@ -6,6 +6,7 @@
 import { ShortWeierstrass } from '@/app/math/ShortWeierstrass.js';
 import { getCoord } from '@/app/math/ShortWeierstrass.js';
 
+
 export default {
   name: "ModularWeierstrass",
   mounted() {
@@ -17,13 +18,16 @@ export default {
 
     graphMod.displayPoints();
     graphMod.addClickPoints();
-
+ 
     window.setInterval(function(){
       console.log(JSON.stringify(graphMod.selectedPoints));
       let point1 = graphMod.newPoint(graphMod.selectedPoints[0][0], graphMod.selectedPoints[0][1]);
       let point2 = graphMod.newPoint(graphMod.selectedPoints[1][0], graphMod.selectedPoints[1][1]);
       console.log(getCoord(graphMod.addPoints(point1, point2)));
-    }, 1000)
+      let addiPoint = getCoord(graphMod.addPoints(point1, point2));
+      graphMod.displayModulo();
+      graphMod.displayAddPoint(addiPoint);
+    }, 5000)
 
     } 
 };

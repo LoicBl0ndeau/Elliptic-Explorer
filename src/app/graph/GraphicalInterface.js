@@ -45,6 +45,7 @@ export class Graphic {
   get getcalculator() {
     return this.calculator;
   }
+
   /**
    * show the expressions tab on the left of the graph
    */
@@ -88,7 +89,7 @@ export class Graphic {
     if (exp == undefined) {
       console.warn(`id : ${id} does not exist.`);
     }
-    return exp
+    return exp;
   }
 
 
@@ -101,11 +102,12 @@ export class Graphic {
   setExpressionParameters(exp, params) {
     let oldExp = this.getExpressionById(exp);
     if (oldExp == undefined) return;
+    delete oldExp['domain'];
     for (const [key, value] of Object.entries(params)) {
       oldExp[key] = value;
     }
-    this.calculator.setExpression(oldExp)
-    return exp
+    this.calculator.setExpression(oldExp);
+    return exp;
   }
 
   /**
@@ -127,7 +129,7 @@ export class Graphic {
       this.calculator.setExpressions([
         { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=${P[0]}` },
         { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=${P[1]}` },
-        { id: `p_{${this.pointId}}`, latex: `(x_{${this.pointId}},y_{${this.pointId}})`, showLabel: true, dragMode: Axis }
+        { id: `p_{${this.pointId}}`, latex: `(x_{${this.pointId}},y_{${this.pointId}})`, showLabel: true, dragMode: Axis, color: Graphic.Colors.point }
       ]);
       return this.pointId;
     } catch (error) {
@@ -161,10 +163,8 @@ export class Graphic {
     }
 
     try {
-      this.calculator.setExpressions([
-        { id: `x_{${id}}`, latex: `x_{${this.pointId}}=${newP[0]}` },
-        { id: `y_{${id}}`, latex: `y_{${this.pointId}}=${newP[1]}` },
-      ]); // à revoir le try (set expression ne va pas renvoyer une erreur si point existe pas)
+      this.setValueOfParameter(`x_{${id}}`,newP[0]);
+      this.setValueOfParameter(`y_{${id}}`,newP[1]);
     } catch (error) {
       throw new Error(`Point ${id} not found : ${error}`);
     }
@@ -225,6 +225,10 @@ export class Graphic {
       throw new Error("'idP' and 'idQ' must be numbers");
     }
 
+    if (idP > this.pointId || idQ > this.pointId) {
+      throw new Error(`Selected points : ${idP},${idQ} do not exist. Number of points : ${this.pointId}`);
+    }
+    
     try {
       this.lineId++;
       this.calculator.setExpressions([
@@ -255,10 +259,8 @@ export class Graphic {
     }
 
     try {
-      this.calculator.setExpressions([
-        { id: `g_{${id}}`, latex: `g_{${id}}=${newGradient}` },
-        { id: `b_{${id}}`, latex: `b_{${id}}=${newB}` },
-      ]);
+      this.setValueOfParameter(`g_{${id}}`,newGradient);
+      this.setValueOfParameter(`b_{${id}}`,newB);
     } catch (error) {
       throw new Error(`Line ${id} not found : ${error}`);
     }
@@ -378,6 +380,7 @@ export class ModCurveGraph extends Graphic {
     super(element);
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined],[undefined,undefined]];
+    this.idSelectedPoints = [0,0];
   }
   /**
    * Display all static points of the modular curve from the list of points
@@ -396,6 +399,7 @@ export class ModCurveGraph extends Graphic {
     let listPoints = this.listCoordPoints;
     var isSecondPoint = false;
     var that = this;
+    var i=1;
     // Find the pixel coordinates of the graphpaper origin:
     that.calculator.mathToPixels({ x: 0, y: 0 });
     // Find the math coordinates of the mouse
@@ -411,15 +415,16 @@ export class ModCurveGraph extends Graphic {
       var x_arrondi = Math.round(x);
       var y_arrondi = Math.round(y);
       //on arrondit les coordonées
-      listPoints.forEach(function(item) {
-        //on compare avec les points de la courbe modualire
-        if ((x_arrondi==item[0]) && (y_arrondi==item[1])){
+      for (i=1; i<listPoints.length ; i++ ){
+        //on compare avec les id des points de la courbe modualire
+        if ((x_arrondi==that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi==that.getValueOfParameter(`y_{${i}}`))){
           // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
           isSecondPoint ? that.selectedPoints[1]=[x_arrondi,y_arrondi]:that.selectedPoints[0]=[x_arrondi,y_arrondi];
+          isSecondPoint ? that.idSelectedPoints[1]=i:that.idSelectedPoints[0]=i;
           isSecondPoint = !isSecondPoint;
           // document.removeEventListener('click', click);
         }
-      });
+      }
     });
   }
 }

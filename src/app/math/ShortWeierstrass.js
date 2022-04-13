@@ -1,6 +1,6 @@
 import elliptic from 'elliptic';
 import BN from 'bn.js';
-import { ModCurveGraph } from '../graph/GraphicalInterface.js';
+import { Graphic, ModCurveGraph } from '../graph/GraphicalInterface.js';
 
 /**
  * Obtenir les coordonnées d'un point sous la forme [x, y]
@@ -18,7 +18,6 @@ export class ShortWeierstrass extends ModCurveGraph {
     /**
      * Construit la courbe d'équation y^2 = x^3 + ax + b mod p
      * @param {string} element The ID of the HTML element where the calculator will be.
-     * @param {array} listCoordPoints liste de coordonées (vide pour l'initialisation)
      * @param {integer ou string} a premier paramètre
      * @param {integer ou string} b deuxieme paramètre
      * @param {integer ou string} p modulo
@@ -39,6 +38,8 @@ export class ShortWeierstrass extends ModCurveGraph {
         this.shortWcurve = new elliptic.curve.short(this.param);
         this.listPoints = [];
     }
+
+
 
 
     /**
@@ -185,5 +186,61 @@ export class ShortWeierstrass extends ModCurveGraph {
             return 2;
         }
         return n + 1;
+    }
+
+    /**
+     * Affiche des lignes du modulo sur un carré de modulo x modulo
+     */
+    displayModulo(){
+        var lignes =5;
+        var modulo=this.param.p;
+
+        try {
+            //this.pointId++;
+            this.calculator.setExpressions([
+                { id: `l`, latex: `l=${lignes}` },
+                { id: `m`, latex: `m=${modulo}` },
+                { id: `L`, latex: `L=[\\frac{m}{2}i\\operatorname{for}i=[\\operatorname{floor}(-\\frac{lm}{2})...\\operatorname{floor}(\\frac{lm}{2})]]` },
+                //{ id: `x_${pointId}`, latex: `x_${pointId}=${this.selectedPoints[0][0]}` },
+                //{ id: `y_${pointId}`, latex: `y_${pointId}=${this.selectedPoints[0][1]}` },
+            ]);
+            //this.pointId++;
+            this.calculator.setExpressions([
+                //{ id: `x_${pointId + 1}`, latex: `x_${pointId + 1}=${this.selectedPoints[1][0]}` },
+                //{ id: `y_${pointId + 1}`, latex: `y_${pointId + 1}=${this.selectedPoints[1][1]}` },
+                { id: `a`, latex: `a=(y_${this.idSelectedPoints[1]}-y_${this.idSelectedPoints[0]})`},
+                { id: `b`, latex: `b=(x_${this.idSelectedPoints[0]}-x_${this.idSelectedPoints[1]})`},
+                { id: `c`, latex: `c=((x_${this.idSelectedPoints[0]}+L)y_${this.idSelectedPoints[1]}-(x_${this.idSelectedPoints[1]}+L)y_${this.idSelectedPoints[0]})`},
+                { id: `e`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.curve },
+            ]);
+        } catch (error) {
+            throw new Error(`An error has occured adding modular lines : ${error}`);
+        }
+    }
+
+    /**
+     * Afficher en rouge le résultat de l'addition et tracer le segment
+     * @param {Array} addPoint 
+     */
+    displayAddPoint(addPoint){
+        let listPoints = this.listPoints;
+        let negPoint = getCoord(this.newPoint(addPoint[0],addPoint[1]).neg());
+        var i=1;
+        var j=1;
+        for (i=1; i<listPoints.length ; i++ ){
+            if ((addPoint[0]==this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1]==this.getValueOfParameter(`y_{${i}}`))){
+                this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint })
+                var idAdd=i;
+            }
+            else{
+                this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point })
+            }
+        }
+        for (j=1; j<listPoints.length ; j++ ){
+            if ((negPoint[0]==this.getValueOfParameter(`x_{${j}}`)) && (negPoint[1]==this.getValueOfParameter(`y_{${j}}`))){
+                this.calculator.removeExpression({ id: `s_{${this.segmentID}}` });
+                this.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
+            }
+        }    
     }
 }
