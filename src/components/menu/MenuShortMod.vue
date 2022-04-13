@@ -4,47 +4,38 @@
 
     <span class="parameter">
       <label>a</label>
-      <input
-        id="a"
-      /><br />
+      <input id="a" /><br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input
-        id="b"
-      /><br />
+      <input id="b" /><br />
     </span>
 
     <span class="parameter">
       <label>p</label>
-      <input
-        id="p"
-      /><br />
+      <input id="p" /><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
 
     <h3 class="section">Operations</h3>
 
     <span class="parameter">
-      <select
-        id="choix-op-short"
-        @change="displayCurveWithSelectedOperation"
-      >
+      <select id="choix-op-short" @change="displayCurveWithSelectedOperation">
         <option selected="yes">Addition</option>
         <option>Multiplication</option></select
       ><br />
     </span>
 
     <span class="parameter">
-      <label>x1</label>
-      <input id="x1-short" value="graphS.getGraph.selectedPoints[0][0]"/>
+      <label>(x1, y1)</label>
+      <input id="x1-y1-short" value="" readonly/>
     </span>
 
     <div id="addition-short">
       <span class="parameter">
-        <label>x2</label>
-        <input id="x2-short"/>
+        <label>(x2, y2)</label>
+        <input id="x2-y2-short" readonly/>
       </span>
     </div>
 
@@ -52,23 +43,17 @@
       <span class="parameter">
         <label>Factor</label>
         <input id="factor-short" value="2" style="width: 40px" />
-        <button >Compute</button><br />
+        <button>Compute</button><br />
       </span>
     </div>
 
-    <h3 class="section">Result</h3>
-    <span class="parameter">
-      <label>x</label>
-      <input id="result-x-short" readonly /><br />
-      <label>y</label>
-      <input id="result-y-short" readonly /><br />
-    </span>
   </div>
 </template>
 
 <script>
 import { graphStore } from "@/stores/graph.js";
 import { menuStore } from "@/stores/menu.js";
+import { getCoord } from "@/app/math/ShortWeierstrass.js";
 
 export default {
   name: "MenuShort",
@@ -84,16 +69,50 @@ export default {
   },
   methods: {
     displayDefaultCurve() {
-        this.graphS.displayShort(2, 1, 5);
-        this.menuS.setValueById("a", 2);
-        this.menuS.setValueById("b", 1);
-        this.menuS.setValueById("p", 5);
+      this.graphS.displayShort(2, 1, 5);
+      this.menuS.setValueById("a", 2);
+      this.menuS.setValueById("b", 1);
+      this.menuS.setValueById("p", 5);
+      // enables add on click
+      this.graphS.getGraph.addClickPoints();
+      window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
       let a = this.menuS.getIntFromInputId("a");
       let b = this.menuS.getIntFromInputId("b");
       let p = this.menuS.getIntFromInputId("p");
       this.graphS.displayShort(a, b, p);
+      this.graphS.getGraph.addClickPoints();
+    },
+    enableAdditionOnClick() {
+      try {
+        // console.log(JSON.stringify(this.graphS.getGraph.selectedPoints));
+        let point1 = this.graphS.getGraph.newPoint(
+          this.graphS.getGraph.selectedPoints[0][0],
+          this.graphS.getGraph.selectedPoints[0][1]
+        );
+        let point2 = this.graphS.getGraph.newPoint(
+          this.graphS.getGraph.selectedPoints[1][0],
+          this.graphS.getGraph.selectedPoints[1][1]
+        );
+        // console.log(getCoord(this.graphS.getGraph.addPoints(point1, point2)));
+        let addiPoint = getCoord(
+          this.graphS.getGraph.addPoints(point1, point2)
+        );
+        this.graphS.getGraph.displayModulo();
+        this.graphS.getGraph.displayAddPoint(addiPoint);
+
+        this.menuS.setValueById(
+          "x1-y1-short",
+          `(${this.graphS.getGraph.selectedPoints[0][0]}, ${this.graphS.getGraph.selectedPoints[0][1]})`
+        );
+        this.menuS.setValueById(
+          "x2-y2-short",
+          `(${this.graphS.getGraph.selectedPoints[1][0]}, ${this.graphS.getGraph.selectedPoints[1][1]})`
+        );
+      } catch (err) {
+        // console.log(err);
+      }
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();
