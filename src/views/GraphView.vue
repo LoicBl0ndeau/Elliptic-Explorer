@@ -1,7 +1,7 @@
 <template>
   <MyMenu />
   <div id="main">
-    <MyGraph />
+    <MyGraph/>
   </div>
 </template>
 
@@ -9,7 +9,6 @@
 // @ is an alias to /src
 import MyMenu from '@/components/MyMenu.vue'
 import MyGraph from '@/components/graph/MyGraph.vue'
-
 
 export default {
   name: 'GraphView',

@@ -21,12 +21,7 @@
     </a><br>
     <AboutEE v-show="isOpen.about" />
 
-    <a @click="open('shortmod')">
-      <span class="material-icons">chevron_right</span>
-      <span class="icon-text">Short Weierstrass</span>
-    </a><br />
-    <MenuShortMod v-show="isOpen.shortmod" ref="shortmod" />
-    
+
     <a @click="open('weierstrass')">
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Weierstrass</span>
@@ -55,27 +50,25 @@
 
 
 <script>
-import MenuShortMod from "./menu/MenuShortMod";
 import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
 import AboutEE from "./menu/AboutEE";
 
+
 export default {
   name: "MyMenu",
   components: {
-    MenuShortMod,
     MenuWeierstrass,
     MenuMontgomery,
     MenuEdwards,
-    AboutEE
+    AboutEE,
   },
   data() {
     return {
       // param affichage sous menus
       isOpen: {
         "about": false,
-        "shortmod": false,
         "weierstrass": false,
         "montgomery": false,
         "edwards": false
