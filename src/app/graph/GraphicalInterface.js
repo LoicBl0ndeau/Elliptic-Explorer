@@ -27,7 +27,7 @@ export class Graphic {
 
     this.pointId = 0;
     this.lineId = 0;
-    this.segmentID = 0;
+    this.segmentId = 0;
   }
 
   static Colors = {
@@ -75,7 +75,7 @@ export class Graphic {
   setBlankState() {
     this.lineId = 0;
     this.pointId = 0;
-    this.segmentID = 0;
+    this.segmentId = 0;
     this.calculator.setBlank();
   }
 
@@ -163,8 +163,8 @@ export class Graphic {
     }
 
     try {
-      this.setValueOfParameter(`x_{${id}}`,newP[0]);
-      this.setValueOfParameter(`y_{${id}}`,newP[1]);
+      this.setValueOfParameter(`x_{${id}}`, newP[0]);
+      this.setValueOfParameter(`y_{${id}}`, newP[1]);
     } catch (error) {
       throw new Error(`Point ${id} not found : ${error}`);
     }
@@ -228,7 +228,7 @@ export class Graphic {
     if (idP > this.pointId || idQ > this.pointId) {
       throw new Error(`Selected points : ${idP},${idQ} do not exist. Number of points : ${this.pointId}`);
     }
-    
+
     try {
       this.lineId++;
       this.calculator.setExpressions([
@@ -259,8 +259,8 @@ export class Graphic {
     }
 
     try {
-      this.setValueOfParameter(`g_{${id}}`,newGradient);
-      this.setValueOfParameter(`b_{${id}}`,newB);
+      this.setValueOfParameter(`g_{${id}}`, newGradient);
+      this.setValueOfParameter(`b_{${id}}`, newB);
     } catch (error) {
       throw new Error(`Line ${id} not found : ${error}`);
     }
@@ -278,17 +278,17 @@ export class Graphic {
       throw new Error(`'coordinatesX' and 'coordinatesY' must be arrays. Given : ${typeof coordinatesX} and ${typeof coordinatesY}`)
     }
 
-    this.segmentID++;
+    this.segmentId++;
     this.calculator.setExpression({
-      id: `s_{${this.segmentID}}`,
+      id: `s_{${this.segmentId}}`,
       type: 'table',
       columns: [
         {
-          latex: `s_{x${this.segmentID}}`,
+          latex: `s_{x${this.segmentId}}`,
           values: coordinatesX
         },
         {
-          latex: `s_{y${this.segmentID}}`,
+          latex: `s_{y${this.segmentId}}`,
           values: coordinatesY,
           color: Graphic.Colors.segment,
           hidden: false,
@@ -300,7 +300,7 @@ export class Graphic {
       ]
     });
 
-    return this.segmentID;
+    return this.segmentId;
   }
 
   /**
@@ -320,6 +320,16 @@ export class Graphic {
   showLabels(areLabelsVisible) {
     for (let id = 1; id <= this.pointId; id++) {
       this.calculator.setExpression({ id: `p_{${id}}`, showLabel: areLabelsVisible })
+    }
+  }
+
+  /**
+   * Show all the Segments
+   * @param areSegmentsVisible - true if you want to show the Segments, false if not
+   */
+  showSegments(areSegmentsVisible) {
+    for (let id = 1; id <= this.segmentId; id++) {
+      this.calculator.setExpression({ id: `s_{${id}}`, hidden: areSegmentsVisible })
     }
   }
 }
@@ -379,8 +389,8 @@ export class ModCurveGraph extends Graphic {
   constructor(element) {
     super(element);
     this.listCoordPoints = [];
-    this.selectedPoints = [[undefined, undefined],[undefined,undefined]];
-    this.idSelectedPoints = [0,0];
+    this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
+    this.idSelectedPoints = [0, 0];
   }
   /**
    * Display all static points of the modular curve from the list of points
@@ -395,11 +405,11 @@ export class ModCurveGraph extends Graphic {
   /**
    * Recover the coordinates of two points
    */
-  addClickPoints(){
+  addClickPoints() {
     let listPoints = this.listCoordPoints;
     var isSecondPoint = false;
     var that = this;
-    var i=1;
+    var i = 1;
     // Find the pixel coordinates of the graphpaper origin:
     that.calculator.mathToPixels({ x: 0, y: 0 });
     // Find the math coordinates of the mouse
@@ -415,12 +425,12 @@ export class ModCurveGraph extends Graphic {
       var x_arrondi = Math.round(x);
       var y_arrondi = Math.round(y);
       //on arrondit les coordonées
-      for (i=1; i<listPoints.length ; i++ ){
+      for (i = 1; i < listPoints.length; i++) {
         //on compare avec les id des points de la courbe modualire
-        if ((x_arrondi==that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi==that.getValueOfParameter(`y_{${i}}`))){
+        if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
           // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
-          isSecondPoint ? that.selectedPoints[1]=[x_arrondi,y_arrondi]:that.selectedPoints[0]=[x_arrondi,y_arrondi];
-          isSecondPoint ? that.idSelectedPoints[1]=i:that.idSelectedPoints[0]=i;
+          isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
+          isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
           isSecondPoint = !isSecondPoint;
           // document.removeEventListener('click', click);
         }
