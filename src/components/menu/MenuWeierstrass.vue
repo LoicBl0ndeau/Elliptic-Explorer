@@ -121,6 +121,11 @@ export default {
 
       this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
       this.graphS.showAddition(xP, xQ);
+
+      // display default operation (Addition)
+      this.menuS.setValueById("choix-op-weierstrass", "Addition");
+      this.menuS.hideElementById("multiplication");
+      this.menuS.displayElementById("addition");
     },
     displayNewCurve() {
       let a1 = this.menuS.getFloatFromInputId("a1");

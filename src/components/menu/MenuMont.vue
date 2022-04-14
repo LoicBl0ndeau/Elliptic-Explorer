@@ -5,16 +5,16 @@
     <span class="parameter">
       <label>a</label>
       <input
-        id="a"
-        @input="menuS.setValueOnGraphFromUserInput('A', 'a')"
+        id="a-montgomery"
+        @input="menuS.setValueOnGraphFromUserInput('A', 'a-montgomery')"
       /><br />
     </span>
 
     <span class="parameter">
       <label>b</label>
       <input
-        id="b"
-        @input="menuS.setValueOnGraphFromUserInput('B', 'b')"
+        id="b-montgomery"
+        @input="menuS.setValueOnGraphFromUserInput('B', 'b-montgomery')"
       /><br />
     </span>
 
@@ -94,10 +94,15 @@ export default {
 
       this.graphS.displayMontgomery(a, b);
       this.graphS.showAddition(xP, xQ);
+
+      // display default operation (Addition)
+      this.menuS.setValueById("choix-op-montgomery", "Addition");
+      this.menuS.hideElementById("multiplication-montgomery");
+      this.menuS.displayElementById("addition-montgomery");
     },
     displayNewCurve() {
-      let a = this.menuS.getFloatFromInputId("a");
-      let b = this.menuS.getFloatFromInputId("b");
+      let a = this.menuS.getFloatFromInputId("a-montgomery");
+      let b = this.menuS.getFloatFromInputId("b-montgomery");
 
       this.graphS.displayMontgomery(a, b);
     },
@@ -131,8 +136,8 @@ export default {
         // if graph not initialized yet
         if (this.graphS.getGraph == null) return;
 
-        this.menuS.setInputValueFromGraphExpValue("a", "A");
-        this.menuS.setInputValueFromGraphExpValue("b", "B");
+        this.menuS.setInputValueFromGraphExpValue("a-montgomery", "A");
+        this.menuS.setInputValueFromGraphExpValue("b-montgomery", "B");
 
         this.menuS.setInputValueFromGraphExpValue("x1-montgomery", "x_{1}");
 
