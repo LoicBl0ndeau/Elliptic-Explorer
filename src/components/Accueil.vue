@@ -92,4 +92,9 @@ export default {
   text-align: "justify";
   font-family: 'Raleway', sans-serif
 }
+
+a {
+    color: #eb9671;
+}
+
 </style>
