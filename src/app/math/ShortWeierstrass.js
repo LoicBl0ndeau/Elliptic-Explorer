@@ -3,9 +3,9 @@ import BN from 'bn.js';
 import { Graphic, ModCurveGraph } from '../graph/GraphicalInterface.js';
 
 /**
- * Obtenir les coordonnées d'un point sous la forme [x, y]
+ * Get the coordinates of a point in the form [x, y]
  * @param {Point} point point
- * @returns {Array} les coordonnées x y du point sous la forme [x, y] avec x et y des integers
+ * @returns {Array} the x y coordinates of the point in the form [x, y] with x and y integers
  */
 export function getCoord(point) {
     if (point.inf)
@@ -16,10 +16,10 @@ export function getCoord(point) {
 export class ShortWeierstrass extends ModCurveGraph {
 
     /**
-     * Construit la courbe d'équation y^2 = x^3 + ax + b mod p
+     * Construct the curve with equation y^2 = x^3 + ax + b mod p
      * @param {string} element The ID of the HTML element where the calculator will be.
-     * @param {integer ou string} a premier paramètre
-     * @param {integer ou string} b deuxieme paramètre
+     * @param {integer ou string} a first parameter
+     * @param {integer ou string} b second parameter
      * @param {integer ou string} p modulo
      */
     constructor(element, a, b, p) {
@@ -43,9 +43,9 @@ export class ShortWeierstrass extends ModCurveGraph {
 
 
     /**
-     * Creer le point de coordonnées (x, y) à partir de la courbe (le point est lié à la courbe)
-     * @param {integer || string} x coordonnée des abscisses
-     * @param {integer || string} y coordonnée des ordonnés
+     * Create the point with coordinates (x, y) from the curve (the point is linked to the curve)
+     * @param {integer || string} x x-coordinate
+     * @param {integer || string} y y-coordinate
      * @returns {Point} point
      */
     newPoint(x, y) {
@@ -59,22 +59,43 @@ export class ShortWeierstrass extends ModCurveGraph {
         return this.shortWcurve.point(x, y, false);
     }
 
+    /**
+     * Get the coordinates of a point in the form [x, y]
+     * @param {Point} point point
+     * @returns {Array} the x y coordinates of the point in the form [x, y] with x and y integers
+     */
+    getCoord(point) {
+        if (point.inf)
+            return [null, null];
+        return [point.getX().toNumber(), point.getY().toNumber()];
+    }
+
 
     /**
-     * Savoir si un point appartient à la courbe
+     * To know if a point belongs to the curve
      * @param {Point} P 
-     * @returns {boolean} true si le point appartient à la courbe, false sinon
+     * @returns {boolean} true if the point belongs to the curve, false otherwise
      */
     isPointOnCurve(P) {
         return this.shortWcurve.validate(P);
     }
 
+    /**
+     * Knowing if two points are equal
+     * @param {Point} P 
+     * @param {Point} Q 
+     * @returns {boolean} true if P = Q
+     */
+    equalPoints(P, Q){
+        return(P.eq(Q));
+    }
+
 
     /**
-     * Additionner deux points
-     * @param {Point} P point sur la courbe
-     * @param {Point} Q point sur la courbe
-     * @returns {Point} Point résultant de l'addition P+Q
+     * Add two points
+     * @param {Point} P point on curve
+     * @param {Point} Q point on curve
+     * @returns {Point} Point resulting from the addition P+Q
      */
     addPoints(P, Q) {
         return (P.add(Q));
@@ -82,10 +103,10 @@ export class ShortWeierstrass extends ModCurveGraph {
 
 
     /**
-     * Multiplier P par k
-     * @param {Point} P point sur la courbe
-     * @param {integer} k facteur
-     * @returns {Point} Point résultant de k*P
+     * Multiply P by k
+     * @param {Point} P point on curve
+     * @param {integer} k factor
+     * @returns {Point} Resulting point of k*P
      */
     mulPoints(P, k) {
         if (k == 2) {
@@ -95,10 +116,10 @@ export class ShortWeierstrass extends ModCurveGraph {
     }
 
     /**
-     * On soustrait le deuxième point au premier
-     * @param {Point} P point sur la courbe
-     * @param {Point} Q point sur la courbe
-     * @returns {Point} Point résultant de P-Q 
+     * The second point is subtracted from the first
+     * @param {Point} P point on curve
+     * @param {Point} Q point on curve
+     * @returns {Point} Resulting point of P-Q 
      */
     subPoints(P, Q) {
         return (P.add(Q.neg()));
@@ -106,11 +127,11 @@ export class ShortWeierstrass extends ModCurveGraph {
 
     /**
      * 
-     * @param {Point} P point sur la courbe
-     * @param {Point} Q point sur la courbe
-     * @param {integer} k1 facteur
-     * @param {integer} k2 facteur
-     * @returns {Point} Point résultant de k1P + k2Q 
+     * @param {Point} P point on curve
+     * @param {Point} Q point on curve
+     * @param {integer} k1 factor
+     * @param {integer} k2 factor
+     * @returns {Point} Resulting point of k1P + k2Q 
      */
     linearCombination(P, Q, k1, k2) {
         k1 = new BN(k1, 16)
@@ -120,10 +141,10 @@ export class ShortWeierstrass extends ModCurveGraph {
 
 
     /**
-     * Trouver le multiple n tel que nP = Q
-     * @param {Point} P point sur la courbe
-     * @param {Point} Q point sur la courbe
-     * @returns {integer} le multiple n tel que nP = Q
+     * Find the multiple n such that nP = Q
+     * @param {Point} P point on curve
+     * @param {Point} Q point on curve
+     * @returns {integer} the multiple n such that nP = Q
      */
     findMultiple(P, Q) {
         if (P.eq(Q)) {
@@ -140,7 +161,7 @@ export class ShortWeierstrass extends ModCurveGraph {
     }
 
     /**
-     * Trouver tous les points de la courbe et les mettre dans une liste
+     * Find all the points of the curve and put them in a list
      */
     findAllPoints() {
         let a = this.param.a;
@@ -162,7 +183,7 @@ export class ShortWeierstrass extends ModCurveGraph {
     }
 
     /**
-     * Transformer la liste des points en liste de coordonées de points
+     * Transform the list of points into a list of point coordinates
      */
     findCoordPoints() {
         let listPoints = this.listPoints;
@@ -173,9 +194,9 @@ export class ShortWeierstrass extends ModCurveGraph {
     }
 
     /**
-     * Trouver l'ordre additif du point P
-     * @param {Point} P point sur la courbe
-     * @returns {integer} ordre additif du point P
+     * Find the additive order of the point P
+     * @param {Point} P point on curve
+     * @returns {integer} additive order of point P
      */
     findAdditiveOrder(P) {
         var n = 2;
@@ -189,29 +210,19 @@ export class ShortWeierstrass extends ModCurveGraph {
     }
 
     /**
-     * Affiche des lignes du modulo sur un carré de modulo x modulo
+     * Display lines of the modulo on a square of modulo x modulo
      */
     displayModulo(){
-        var lignes =5;
         var modulo=this.param.p;
-
         try {
-            //this.pointId++;
             this.calculator.setExpressions([
-                { id: `l`, latex: `l=${lignes}` },
                 { id: `m`, latex: `m=${modulo}` },
-                { id: `L`, latex: `L=[\\frac{m}{2}i\\operatorname{for}i=[\\operatorname{floor}(-\\frac{lm}{2})...\\operatorname{floor}(\\frac{lm}{2})]]` },
-                //{ id: `x_${pointId}`, latex: `x_${pointId}=${this.selectedPoints[0][0]}` },
-                //{ id: `y_${pointId}`, latex: `y_${pointId}=${this.selectedPoints[0][1]}` },
             ]);
-            //this.pointId++;
             this.calculator.setExpressions([
-                //{ id: `x_${pointId + 1}`, latex: `x_${pointId + 1}=${this.selectedPoints[1][0]}` },
-                //{ id: `y_${pointId + 1}`, latex: `y_${pointId + 1}=${this.selectedPoints[1][1]}` },
-                { id: `a`, latex: `a=(y_${this.idSelectedPoints[1]}-y_${this.idSelectedPoints[0]})`},
-                { id: `b`, latex: `b=(x_${this.idSelectedPoints[0]}-x_${this.idSelectedPoints[1]})`},
-                { id: `c`, latex: `c=((x_${this.idSelectedPoints[0]}+L)y_${this.idSelectedPoints[1]}-(x_${this.idSelectedPoints[1]}+L)y_${this.idSelectedPoints[0]})`},
-                { id: `e`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.curve },
+                { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})`},
+                { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})`},
+                { id: `d`, latex: `d=(x_{${this.idSelectedPoints[0]}}y_{${this.idSelectedPoints[1]}}-x_{${this.idSelectedPoints[1]}}y_{${this.idSelectedPoints[0]}})`},
+                { id: `e`, latex: `\\operatorname{mod}\\left(ax+by,m\\right)\\ =\\operatorname{mod}\\left(d,m\\right)\\ \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.curve },
             ]);
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
@@ -219,10 +230,11 @@ export class ShortWeierstrass extends ModCurveGraph {
     }
 
     /**
-     * Afficher en rouge le résultat de l'addition et tracer le segment
-     * @param {Array} addPoint 
+     * Show the result of the addition in red and draw the segment
+     * @param {Array} addPoint coordinates of the additionnal point
+     * @param {boolean} isTheSamePoint true if we do P+P
      */
-    displayAddPoint(addPoint){
+    displayAddPoint(addPoint, isTheSamePoint){
         let listPoints = this.listPoints;
         let negPoint = getCoord(this.newPoint(addPoint[0],addPoint[1]).neg());
         var i=1;
@@ -236,11 +248,14 @@ export class ShortWeierstrass extends ModCurveGraph {
                 this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point })
             }
         }
-        for (j=1; j<listPoints.length ; j++ ){
-            if ((negPoint[0]==this.getValueOfParameter(`x_{${j}}`)) && (negPoint[1]==this.getValueOfParameter(`y_{${j}}`))){
-                this.calculator.removeExpression({ id: `s_{${this.segmentID}}` });
-                this.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
-            }
-        }    
+        this.calculator.removeExpression({ id: `s_{${this.segmentID}}` });
+        if (!isTheSamePoint){
+            for (j=1; j<listPoints.length ; j++ ){
+                if ((negPoint[0]==this.getValueOfParameter(`x_{${j}}`)) && (negPoint[1]==this.getValueOfParameter(`y_{${j}}`))){
+                    this.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
+                }
+            }  
+        }
+          
     }
 }

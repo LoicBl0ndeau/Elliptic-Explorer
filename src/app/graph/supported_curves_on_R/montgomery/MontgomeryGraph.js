@@ -66,12 +66,13 @@ export class MontgomeryGraph extends RealCurveGraph {
       { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=Bg_{${idL}}^{2}-A-x_{${idP}}-x_{${idQ}}` },
       { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=(2x_{${idP}}+x_{${idQ}}+A)g_{${idL}}-Bg_{${idL}}^{3}-y_{${idP}}` },
       { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=-y_{${this.pointId}}` },
+      { id: `i_{${this.pointId}}`, latex: `i_{${this.pointId}}=(x_{${idP}},0)\\left\\{d_{${idL}}=0\\right\\}`,label: "Infinity Point", showLabel: true,hidden:true, pointStyle: "CROSS", color:Graphic.Colors.finalPoint },
       { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: Graphic.Colors.point, pointSize: 15 },
       { id: `p_{n${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: Graphic.Colors.point }
     ]);
 
     this.addSegment([`x_{${this.pointId}}`, `x_{${this.pointId}}`], [`y_{${this.pointId}}`, `y_{n${this.pointId}}`]);
-    return this.pointId, this.lineId, this.segmentID;
+    return this.pointId, this.lineId, this.segmentId;
   }
   
   /**
@@ -96,7 +97,7 @@ export class MontgomeryGraph extends RealCurveGraph {
     ]);
 
     this.addSegment([`x_{${this.pointId}}`, `x_{${this.pointId}}`], [`y_{${this.pointId}}`, `y_{n${this.pointId}}`]);
-    return this.pointId, this.lineId, this.segmentID;
+    return this.pointId, this.lineId, this.segmentId;
   }
 
   /**
