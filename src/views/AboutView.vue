@@ -1,6 +1,8 @@
 <template>
   <div class='container'> 
-    <Accueil />
+    <center><button @click='changelangue'>Français</button></center>
+    <AccueilSite v-show='isOpen.francais'/>
+    <AccueilAnglais />
   </div>
   <div>
     <MyMenu />
@@ -10,13 +12,27 @@
 <script>
 
 import MyMenu from '@/components/MyMenu.vue'
-import Accueil from '@/components/Accueil.vue'
+import AccueilSite from '@/components/Accueil.vue'
+import AccueilAnglais from '@/components/AccueilAnglais.vue'
 
 export default {
   name: "AboutView",
+  data() {
+    return {
+      isOpen: {
+        "francais": false,
+      },
+    };
+  },
+  methods: {
+    changelangue() {
+      this.francais = !this.francais;
+    }, 
+  },
   components: {
     MyMenu,
-    Accueil
+    AccueilSite,
+    AccueilAnglais 
   },
 }
 </script>
