@@ -46,7 +46,7 @@
           id="x2-edwards"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')"
         />
-        <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
+        <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
 
