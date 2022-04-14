@@ -57,7 +57,6 @@
 <script>
 import { graphStore } from "@/stores/graph.js";
 import { menuStore } from "@/stores/menu.js";
-import { getCoord } from "@/app/math/ShortWeierstrass.js";
 
 export default {
   name: "MenuShort",
@@ -90,21 +89,6 @@ export default {
     },
     enableAdditionOnClick() {
       try {
-        // console.log(JSON.stringify(this.graphS.getGraph.selectedPoints));
-        let point1 = this.graphS.getGraph.newPoint(
-          this.graphS.getGraph.selectedPoints[0][0],
-          this.graphS.getGraph.selectedPoints[0][1]
-        );
-        let point2 = this.graphS.getGraph.newPoint(
-          this.graphS.getGraph.selectedPoints[1][0],
-          this.graphS.getGraph.selectedPoints[1][1]
-        );
-        // console.log(getCoord(this.graphS.getGraph.addPoints(point1, point2)));
-        let addiPoint = getCoord(
-          this.graphS.getGraph.addPoints(point1, point2)
-        );
-        this.graphS.getGraph.displayModulo();
-        this.graphS.getGraph.displayAddPoint(addiPoint);
 
         this.menuS.setValueById(
           "x1-y1-short",
