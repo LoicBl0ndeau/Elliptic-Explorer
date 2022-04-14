@@ -14,6 +14,9 @@
     width: auto;
 }
 
+.result {
+    font-size: 20px;
+}
 input, select, option, button {
     color: black !important;
 }
@@ -21,6 +24,7 @@ input, select, option, button {
 h3.section {
     margin: 10px;
 }
+
 
 /* Button Layout Styling for Display */
 

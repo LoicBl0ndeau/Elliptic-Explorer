@@ -79,7 +79,7 @@
         <label>Factor</label>
         <input
           type="number"
-          id="factor" 
+          id="factor"
           value="2"
           style="width: 40px" />
         <button @click="computeMul">Compute</button><br />
@@ -88,10 +88,7 @@
 
     <h3 class="section">Result</h3>
     <span class="parameter">
-      <label>x</label>
-      <input id="result-x" readonly /><br />
-      <label>y</label>
-      <input id="result-y" readonly /><br />
+      <span id="result-x-y" class="result"></span><br />
     </span>
   </div>
 </template>
@@ -178,22 +175,19 @@ export default {
         this.menuS.setInputValueFromGraphExpValue("x1", "x_{1}");
 
         let op = this.menuS.getValueById("choix-op-weierstrass");
+        let result_x = null;
+        let result_y = null;
         if (op == "Addition") {
           this.menuS.setInputValueFromGraphExpValue("x2", "x_{2}");
-          this.menuS.setInputValueFromGraphExpValue("result-x", "x_{3}");
-          this.menuS.setInputValueFromGraphExpValue("result-y", "y_{3}");
+          result_x = this.graphS.getExpValue(`x_{3}`);
+          result_y = this.graphS.getExpValue(`y_{3}`);
         }
         if (op == "Multiplication") {
           let idResult = this.menuS.getIntFromInputId("factor");
-          this.menuS.setInputValueFromGraphExpValue(
-            "result-x",
-            `x_{${idResult}}`
-          );
-          this.menuS.setInputValueFromGraphExpValue(
-            "result-y",
-            `y_{${idResult}}`
-          );
+          result_x = this.graphS.getExpValue(`x_{${idResult}}`);
+          result_y = this.graphS.getExpValue(`y_{${idResult}}`);
         }
+        document.getElementById("result-x-y").innerHTML = `(${result_x.toFixed(2)},   ${result_y.toFixed(2)})`;
       } catch (err) {
         // console.log(err);
         return;

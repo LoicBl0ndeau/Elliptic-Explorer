@@ -64,10 +64,7 @@
 
     <h3 class="section">Result</h3>
     <span class="parameter">
-      <label>x</label>
-      <input id="result-x-edwards" readonly /><br />
-      <label>y</label>
-      <input id="result-y-edwards" readonly /><br />
+      <span id="result-x-y-edwards" class="result"></span><br />
     </span>
   </div>
 </template>
@@ -146,22 +143,19 @@ export default {
         this.menuS.setInputValueFromGraphExpValue("x1-edwards", "x_{1}");
 
         let op = this.menuS.getValueById("choix-op-edwards");
+        let result_x = null;
+        let result_y = null;
         if (op == "Addition") {
           this.menuS.setInputValueFromGraphExpValue("x2-edwards", "x_{2}");
-          this.menuS.setInputValueFromGraphExpValue("result-x-edwards", "x_{3}");
-          this.menuS.setInputValueFromGraphExpValue("result-y-edwards", "y_{3}");
+          result_x = this.graphS.getExpValue(`x_{3}`);
+          result_y = this.graphS.getExpValue(`y_{3}`);
         }
         if (op == "Multiplication") {
           let idResult = this.menuS.getIntFromInputId("factor-edwards");
-          this.menuS.setInputValueFromGraphExpValue(
-            "result-x-edwards",
-            `x_{${idResult}}`
-          );
-          this.menuS.setInputValueFromGraphExpValue(
-            "result-y-edwards",
-            `y_{${idResult}}`
-          );
+          result_x = this.graphS.getExpValue(`x_{${idResult}}`);
+          result_y = this.graphS.getExpValue(`y_{${idResult}}`);
         }
+        document.getElementById("result-x-y-edwards").innerHTML = `(${result_x.toFixed(2)},   ${result_y.toFixed(2)})`;
       } catch (err) {
         // console.log(err);
         return;
