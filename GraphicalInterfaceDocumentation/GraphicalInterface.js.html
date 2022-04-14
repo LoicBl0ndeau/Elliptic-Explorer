@@ -1,4 +1,32 @@
-import Desmos from 'desmosapi';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: GraphicalInterface.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: GraphicalInterface.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Desmos from 'desmosapi';
 
 /** Class representing a graphic calculator. */
 export class Graphic {
@@ -27,7 +55,7 @@ export class Graphic {
 
     this.pointId = 0;
     this.lineId = 0;
-    this.segmentId = 0;
+    this.segmentID = 0;
   }
 
   static Colors = {
@@ -75,7 +103,7 @@ export class Graphic {
   setBlankState() {
     this.lineId = 0;
     this.pointId = 0;
-    this.segmentId = 0;
+    this.segmentID = 0;
     this.calculator.setBlank();
   }
 
@@ -120,7 +148,7 @@ export class Graphic {
     if (!Array.isArray(P)) {
       throw new Error("Wrong Inputs. 'P' must be an array");
     }
-    else if (Axis != 'X' && Axis != 'Y' && Axis != 'XY' && Axis != 'NONE') {
+    else if (Axis != 'X' &amp;&amp; Axis != 'Y' &amp;&amp; Axis != 'XY' &amp;&amp; Axis != 'NONE') {
       throw new Error("Wrong Inputs. 'Axis' must be either 'X','Y', 'XY' or 'NONE'");
     }
 
@@ -163,8 +191,8 @@ export class Graphic {
     }
 
     try {
-      this.setValueOfParameter(`x_{${id}}`, newP[0]);
-      this.setValueOfParameter(`y_{${id}}`, newP[1]);
+      this.setValueOfParameter(`x_{${id}}`,newP[0]);
+      this.setValueOfParameter(`y_{${id}}`,newP[1]);
     } catch (error) {
       throw new Error(`Point ${id} not found : ${error}`);
     }
@@ -228,7 +256,7 @@ export class Graphic {
     if (idP > this.pointId || idQ > this.pointId) {
       throw new Error(`Selected points : ${idP},${idQ} do not exist. Number of points : ${this.pointId}`);
     }
-
+    
     try {
       this.lineId++;
       this.calculator.setExpressions([
@@ -259,8 +287,8 @@ export class Graphic {
     }
 
     try {
-      this.setValueOfParameter(`g_{${id}}`, newGradient);
-      this.setValueOfParameter(`b_{${id}}`, newB);
+      this.setValueOfParameter(`g_{${id}}`,newGradient);
+      this.setValueOfParameter(`b_{${id}}`,newB);
     } catch (error) {
       throw new Error(`Line ${id} not found : ${error}`);
     }
@@ -278,17 +306,17 @@ export class Graphic {
       throw new Error(`'coordinatesX' and 'coordinatesY' must be arrays. Given : ${typeof coordinatesX} and ${typeof coordinatesY}`)
     }
 
-    this.segmentId++;
+    this.segmentID++;
     this.calculator.setExpression({
-      id: `s_{${this.segmentId}}`,
+      id: `s_{${this.segmentID}}`,
       type: 'table',
       columns: [
         {
-          latex: `s_{x${this.segmentId}}`,
+          latex: `s_{x${this.segmentID}}`,
           values: coordinatesX
         },
         {
-          latex: `s_{y${this.segmentId}}`,
+          latex: `s_{y${this.segmentID}}`,
           values: coordinatesY,
           color: Graphic.Colors.segment,
           hidden: false,
@@ -300,7 +328,7 @@ export class Graphic {
       ]
     });
 
-    return this.segmentId;
+    return this.segmentID;
   }
 
   /**
@@ -308,7 +336,7 @@ export class Graphic {
    * @param areLinesVisible - true if you want to show the lines, false if not
    */
   showLines(areLinesVisible) {
-    for (let id = 1; id <= this.lineId; id++) {
+    for (let id = 1; id &lt;= this.lineId; id++) {
       this.calculator.setExpression({ id: `l_{${id}}`, hidden: areLinesVisible })
     }
   }
@@ -318,18 +346,8 @@ export class Graphic {
    * @param areLabelsVisible - true if you want to show the lines, false if not
    */
   showLabels(areLabelsVisible) {
-    for (let id = 1; id <= this.pointId; id++) {
+    for (let id = 1; id &lt;= this.pointId; id++) {
       this.calculator.setExpression({ id: `p_{${id}}`, showLabel: areLabelsVisible })
-    }
-  }
-
-  /**
-   * Show all the Segments
-   * @param areSegmentsVisible - true if you want to show the Segments, false if not
-   */
-  showSegments(areSegmentsVisible) {
-    for (let id = 1; id <= this.segmentId; id++) {
-      this.calculator.setExpression({ id: `s_{${id}}`, hidden: areSegmentsVisible })
     }
   }
 }
@@ -389,8 +407,8 @@ export class ModCurveGraph extends Graphic {
   constructor(element) {
     super(element);
     this.listCoordPoints = [];
-    this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
-    this.idSelectedPoints = [0, 0];
+    this.selectedPoints = [[undefined, undefined],[undefined,undefined]];
+    this.idSelectedPoints = [0,0];
   }
   /**
    * Display all static points of the modular curve from the list of points
@@ -403,14 +421,13 @@ export class ModCurveGraph extends Graphic {
     });
   }
   /**
-   * Recover the coordinates of two points and display modulo and the result of addition
+   * Recover the coordinates of two points
    */
-  addClickPoints() {
+  addClickPoints(){
     let listPoints = this.listCoordPoints;
     var isSecondPoint = false;
-    var isTheSamePoint = false;
     var that = this;
-    var i = 1;
+    var i=1;
     // Find the pixel coordinates of the graphpaper origin:
     that.calculator.mathToPixels({ x: 0, y: 0 });
     // Find the math coordinates of the mouse
@@ -426,30 +443,38 @@ export class ModCurveGraph extends Graphic {
       var x_arrondi = Math.round(x);
       var y_arrondi = Math.round(y);
       //on arrondit les coordonées
-      for (i = 1; i < listPoints.length; i++) {
+      for (i=1; i&lt;listPoints.length ; i++ ){
         //on compare avec les id des points de la courbe modualire
-        if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
+        if ((x_arrondi==that.getValueOfParameter(`x_{${i}}`)) &amp;&amp; (y_arrondi==that.getValueOfParameter(`y_{${i}}`))){
           // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
-          isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
-          isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
+          isSecondPoint ? that.selectedPoints[1]=[x_arrondi,y_arrondi]:that.selectedPoints[0]=[x_arrondi,y_arrondi];
+          isSecondPoint ? that.idSelectedPoints[1]=i:that.idSelectedPoints[0]=i;
           isSecondPoint = !isSecondPoint;
           // document.removeEventListener('click', click);
         }
       }
-      that.displayModulo();
-      let point1 = that.newPoint(
-        that.selectedPoints[0][0],
-        that.selectedPoints[0][1]
-      );
-      let point2 = that.newPoint(
-        that.selectedPoints[1][0],
-        that.selectedPoints[1][1]
-      );
-      isTheSamePoint=that.equalPoints(point1,point2);
-      let addiPoint = that.getCoord(that.addPoints(point1, point2));
-      that.displayAddPoint(addiPoint, isTheSamePoint);
     });
   }
+}</code></pre>
+        </article>
+    </section>
 
-  
-}
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Graphic.html">Graphic</a></li><li><a href="ModCurveGraph.html">ModCurveGraph</a></li><li><a href="RealCurveGraph.html">RealCurveGraph</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Apr 14 2022 08:34:08 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

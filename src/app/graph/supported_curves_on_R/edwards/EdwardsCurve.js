@@ -73,7 +73,7 @@ export class EdwardsCurve extends RealCurveGraph {
         ]);
 
         this.addSegment([`x_{${this.pointId}}`, `0`], [`y_{${this.pointId}}`, `0`]);
-        return this.pointId, this.lineId, this.segmentID;
+        return this.pointId, this.lineId, this.segmentId;
     }
 
     /**
@@ -116,7 +116,7 @@ export class EdwardsCurve extends RealCurveGraph {
 
         
         }
-        return this.pointId, this.lineId, this.segmentID;
+        return this.pointId, this.lineId, this.segmentId;
     }
 
 }
