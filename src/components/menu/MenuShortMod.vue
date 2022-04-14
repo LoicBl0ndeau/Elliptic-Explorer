@@ -42,7 +42,11 @@
     <div id="multiplication-short" style="display: none">
       <span class="parameter">
         <label>Factor</label>
-        <input id="factor-short" value="2" style="width: 40px" />
+        <input
+          type="number"
+          id="factor-short" 
+          value="2"
+          style="width: 40px" />
         <button>Compute</button><br />
       </span>
     </div>

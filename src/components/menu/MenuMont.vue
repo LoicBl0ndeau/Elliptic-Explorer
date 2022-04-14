@@ -53,7 +53,11 @@
     <div id="multiplication-montgomery" style="display: none">
       <span class="parameter">
         <label>Factor</label>
-        <input id="factor-montgomery" value="2" style="width: 40px" />
+        <input
+          type="number"
+          id="factor-montgomery" 
+          value="2"
+          style="width: 40px" />
         <button @click="computeMul">Compute</button><br />
       </span>
     </div>
