@@ -16,18 +16,11 @@
     @mouseout="toggleSidebar"
   >
 
-    <a @click="open('about')">
-      <span class="material-icons">info</span>
-      <span class="icon-text">About EE</span>
-    </a><br>
-    <AboutEE v-show="isOpen.about" />
-
     <a @click="open('shortmod')">
       <span class="material-icons">chevron_right</span>
       <span class="icon-text">Short Weierstrass</span>
     </a><br />
     <MenuShortMod v-show="isOpen.shortmod" ref="shortmod" />
-
 
     <a @click="open('weierstrass')">
       <span class="material-icons">chevron_right</span>
@@ -46,6 +39,11 @@
       <span class="icon-text">Edwards</span> 
     </a><br />
     <MenuEdwards v-show="isOpen.edwards" ref="edwards" />
+
+    <a @click="openAbout()">
+      <span class="material-icons">info</span>
+      <span class="icon-text">About EE</span>
+    </a><br>
     
     <a @click="changePinStatus">
       <span id="pin" class="material-icons">push_pin</span>
@@ -61,8 +59,8 @@ import MenuShortMod from "./menu/MenuShortMod";
 import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
-import AboutEE from "./menu/AboutEE";
 
+import { menuStore } from "@/stores/menu.js";
 
 export default {
   name: "MyMenu",
@@ -70,18 +68,21 @@ export default {
     MenuShortMod,
     MenuWeierstrass,
     MenuMontgomery,
-    MenuEdwards,
-    AboutEE,
+    MenuEdwards
+  },
+  setup() {
+    const menuS = menuStore();
+
+    return { menuS };
   },
   data() {
     return {
       // param affichage sous menus
       isOpen: {
-        "about": false,
         "shortmod": false,
         "weierstrass": false,
         "montgomery": false,
-        "edwards": false
+        "edwards": false,
       },
       // the menu is fixed by default
       pinned: true,
@@ -108,6 +109,10 @@ export default {
         if (key == menu) {
           this.isOpen[key] = true;
           this.$refs[key].displayDefaultCurve();
+          // hide about text presentation in case it was open
+          this.menuS.hideElementById("my-home-component");
+          // display graph again if not already displayed
+          this.menuS.displayElementById("calculator");
         }
         else this.isOpen[key] = false;
       }
@@ -137,6 +142,15 @@ export default {
     }
     this.pinned = !this.pinned;
     },
+    openAbout() {
+      // close curve submenu of one was open and hide graph
+      this.menuS.hideElementById("calculator");
+      for (const [key, ] of Object.entries(this.isOpen)) {
+        this.isOpen[key] = false;
+      }
+      // display explanation text
+      this.menuS.displayElementById("my-home-component");
+    }
   },
 };
 </script>

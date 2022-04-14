@@ -29,34 +29,30 @@
 
     <span class="parameter">
       <label>(x1, y1)</label>
-      <input id="x1-y1-short" value="" readonly/>
+      <input id="x1-y1-short" value="" readonly />
     </span>
 
     <div id="addition-short">
       <span class="parameter">
         <label>(x2, y2)</label>
-        <input id="x2-y2-short" readonly/>
+        <input id="x2-y2-short" readonly />
       </span>
     </div>
 
     <div id="multiplication-short" style="display: none">
       <span class="parameter">
         <label>Factor</label>
-        <input
-          type="number"
-          id="factor-short" 
-          value="2"
-          style="width: 40px" />
+        <input type="number" id="factor-short" value="2" style="width: 40px" />
         <button>Compute</button><br />
       </span>
     </div>
-
   </div>
 </template>
 
 <script>
 import { graphStore } from "@/stores/graph.js";
 import { menuStore } from "@/stores/menu.js";
+// import { getCoord } from "@src/app/math/ShortWeierstrass.js";
 
 export default {
   name: "MenuShort",
@@ -71,15 +67,6 @@ export default {
     setInterval(this.updateMenuInputWithGraphValue, 500);
   },
   methods: {
-    displayDefaultCurve() {
-      this.graphS.displayShort(2, 1, 5);
-      this.menuS.setValueById("a", 2);
-      this.menuS.setValueById("b", 1);
-      this.menuS.setValueById("p", 5);
-      // enables add on click
-      this.graphS.getGraph.addClickPoints();
-      window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
-    },
     displayNewCurve() {
       let a = this.menuS.getIntFromInputId("a");
       let b = this.menuS.getIntFromInputId("b");
@@ -87,9 +74,16 @@ export default {
       this.graphS.displayShort(a, b, p);
       this.graphS.getGraph.addClickPoints();
     },
-    enableAdditionOnClick() {
+    displayDefaultCurve() {
+      this.menuS.setValueById("a", 2);
+      this.menuS.setValueById("b", 1);
+      this.menuS.setValueById("p", 5);
+      // enables add on click
+      window.setInterval(this.updateValueInMenu, 500);
+      this.displayNewCurve();
+    },
+    updateValueInMenu() {
       try {
-
         this.menuS.setValueById(
           "x1-y1-short",
           `(${this.graphS.getGraph.selectedPoints[0][0]}, ${this.graphS.getGraph.selectedPoints[0][1]})`

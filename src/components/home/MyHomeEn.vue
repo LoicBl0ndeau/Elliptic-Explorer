@@ -74,7 +74,7 @@
 
 <script>
 export default {
-  name: "AccueilSite",
+  name: "MyHomeEn",
 };
 </script>
 
