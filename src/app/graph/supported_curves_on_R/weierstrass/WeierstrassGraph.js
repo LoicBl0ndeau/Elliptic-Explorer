@@ -75,6 +75,7 @@ export class WeierstrassGraph extends RealCurveGraph {
       { id: `x_{${this.pointId}}`, latex: `x_{${this.pointId}}=g_{${idL}}^{2}+a_{1}g_{${idL}}-a_{2}-x_{${idP}}-x_{${idQ}}` },
       { id: `y_{${this.pointId}}`, latex: `y_{${this.pointId}}=-a_{1}x_{${this.pointId}}-a_{3}-g_{${idL}}x_{${this.pointId}}+g_{${idL}}x_{${idP}}-y_{${idP}}` },
       { id: `y_{n${this.pointId}}`, latex: `y_{n${this.pointId}}=g_{${idL}}x_{${this.pointId}}-g_{${idL}}x_{${idP}}+y_{${idP}}` },
+      { id: `i_{${this.pointId}}`, latex: `i_{${this.pointId}}=(x_{${idP}},0)\\left\\{d_{${idL}}=0\\right\\}`,label: "Infinity Point", showLabel: true, pointStyle: "CROSS", color:Graphic.Colors.finalPoint },
       { id: `p_{${this.pointId}}`, latex: `p_{${this.pointId}} = (x_{${this.pointId}},y_{${this.pointId}})`, pointStyle: "POINT", color: Graphic.Colors.point, pointSize: 15 },
       { id: `p_{n${this.pointId}}`, latex: `p_{n${this.pointId}} = (x_{${this.pointId}},y_{n${this.pointId}})`, pointStyle: "OPEN", color: Graphic.Colors.point }
     ]);
