@@ -1,8 +1,9 @@
 <template>
   <div class='container'> 
-    <center><button @click='changelangue'>Français</button></center>
+    <center><button @click='open("francais")'>Français</button></center>
     <AccueilSite v-show='isOpen.francais'/>
-    <AccueilAnglais />
+    <center><button @click='open("anglais")'>Anglais</button></center>
+    <AccueilAnglais v-show='isOpen.anglais'/>
   </div>
   <div>
     <MyMenu />
@@ -21,6 +22,7 @@ export default {
     return {
       isOpen: {
         "francais": false,
+        "anglais": false,
       },
     };
   },
@@ -28,6 +30,14 @@ export default {
     changelangue() {
       this.francais = !this.francais;
     }, 
+    open(langue) {
+      for (const [key, ] of Object.entries(this.isOpen)) {
+        if (key == langue) {
+          this.isOpen[key] = true;
+        }
+        else this.isOpen[key] = false;
+      }
+    },
   },
   components: {
     MyMenu,
