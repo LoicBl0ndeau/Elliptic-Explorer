@@ -393,11 +393,12 @@ export class ModCurveGraph extends Graphic {
     });
   }
   /**
-   * Recover the coordinates of two points
+   * Recover the coordinates of two points and display modulo and the result of addition
    */
   addClickPoints(){
     let listPoints = this.listCoordPoints;
     var isSecondPoint = false;
+    var isTheSamePoint = false;
     var that = this;
     var i=1;
     // Find the pixel coordinates of the graphpaper origin:
@@ -425,6 +426,20 @@ export class ModCurveGraph extends Graphic {
           // document.removeEventListener('click', click);
         }
       }
+      that.displayModulo();
+      let point1 = that.newPoint(
+        that.selectedPoints[0][0],
+        that.selectedPoints[0][1]
+      );
+      let point2 = that.newPoint(
+        that.selectedPoints[1][0],
+        that.selectedPoints[1][1]
+      );
+      isTheSamePoint=that.equalPoints(point1,point2);
+      let addiPoint = that.getCoord(that.addPoints(point1, point2));
+      that.displayAddPoint(addiPoint, isTheSamePoint);
     });
   }
+
+  
 }
