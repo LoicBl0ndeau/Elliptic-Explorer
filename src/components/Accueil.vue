@@ -47,7 +47,10 @@
     <p>
         Avant d'utiliser ces courbes pour chiffrer nos messages, on doit les comprendre. 
         Les courbes elliptiques se définissent en trois types de courbes usuelles : 
-        Weierstrass, Montgomery, Edwards. En voici respectivement les équations :
+        <a href='https://fr.wikipedia.org/wiki/Courbe_elliptique'>Weierstrass</a>, 
+        <a href='https://fr.wikipedia.org/wiki/Courbe_de_Montgomery'>Montgomery</a>, 
+        <a href='https://fr.wikipedia.org/wiki/Courbe_d%27Edwards'>Edwards</a>. 
+        En voici respectivement les équations :
     </p>
     <p align='center'>
         y<sup>2</sup> = x<sup>3</sup> + Ax + B 
@@ -79,13 +82,13 @@ export default {
 <style scoped>
 #titre {
   color: var(--sidebar-bg-color);
-  margin-left: 30%;
+  margin-left: 28%;
   font-family: 'Raleway', sans-serif
 }
 
 #corps {
   color: #eb9671;
-  margin-left: 30%;
+  margin-left: 28%;
   text-align: "justify";
   font-family: 'Raleway', sans-serif
 }
