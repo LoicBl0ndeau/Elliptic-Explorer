@@ -82,13 +82,11 @@ export default {
 <style scoped>
 #titre {
   color: var(--sidebar-bg-color);
-  margin-left: 28%;
   font-family: 'Raleway', sans-serif
 }
 
 #corps {
   color: #eb9671;
-  margin-left: 28%;
   text-align: "justify";
   font-family: 'Raleway', sans-serif
 }
