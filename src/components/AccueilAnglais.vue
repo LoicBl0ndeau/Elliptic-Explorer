@@ -79,19 +79,20 @@ export default {
 </script>
 
 <style scoped>
+
 #titre {
   color: var(--sidebar-bg-color);
-  font-family: 'Raleway', sans-serif
+  font-family: "Raleway", sans-serif;
+  margin-left: 28%;
 }
 
 #corps {
-  color: #eb9671;
-  text-align: "justify";
-  font-family: 'Raleway', sans-serif
+  color: #2D3142;
+  font-family: "Raleway", sans-serif;
+  margin-left: 28%;
 }
 
 a {
-    color: #eb9671;
+  color: #2D3142;
 }
-
 </style>

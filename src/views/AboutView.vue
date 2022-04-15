@@ -1,10 +1,13 @@
 <template>
   <div class='container'> 
-    <center><button @click='open("francais")'>Français</button></center>
-    <AccueilSite v-show='isOpen.francais'/>
-    <center><button @click='open("anglais")'>Anglais</button></center>
-    <AccueilAnglais v-show='isOpen.anglais'/>
+    <!-- <button @click='open("francais")'>Français</button> -->
+    <!-- <AccueilSite  v-show='isOpen.francqais'/> -->
+    <!-- <button @click='open("anglais")'>Anglais</button> -->
+    <AccueilAnglais />
   </div>
+  <center>
+    <img src="https://centre.hei.fr/wp-content/uploads/2020/10/junia.jpg" width="700" height="150"/>
+  </center>
   <div>
     <MyMenu />
   </div>
@@ -13,12 +16,12 @@
 <script>
 
 import MyMenu from '@/components/MyMenu.vue'
-import AccueilSite from '@/components/Accueil.vue'
+// import AccueilSite from '@/components/Accueil.vue'
 import AccueilAnglais from '@/components/AccueilAnglais.vue'
 
 export default {
   name: "AboutView",
-  data() {
+  /* data() {
     return {
       isOpen: {
         "francais": false,
@@ -27,9 +30,6 @@ export default {
     };
   },
   methods: {
-    changelangue() {
-      this.francais = !this.francais;
-    }, 
     open(langue) {
       for (const [key, ] of Object.entries(this.isOpen)) {
         if (key == langue) {
@@ -38,12 +38,18 @@ export default {
         else this.isOpen[key] = false;
       }
     },
-  },
+  }, */
   components: {
     MyMenu,
-    AccueilSite,
+    // AccueilSite,
     AccueilAnglais 
   },
 }
 </script>
+
+<style scoped>
+img {
+  margin-left: 28%;
+}
+</style>
 
