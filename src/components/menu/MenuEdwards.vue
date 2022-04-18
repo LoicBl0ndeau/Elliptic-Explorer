@@ -34,6 +34,7 @@
       <label>x1</label>
       <input
         id="x1-edwards"
+        class="coord"
         @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')"
       />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
@@ -44,6 +45,7 @@
         <label>x2</label>
         <input
           id="x2-edwards"
+          class="coord"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')"
         />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />

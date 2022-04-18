@@ -14,6 +14,10 @@
     width: auto;
 }
 
+.coord {
+    width: 40px !important;
+}
+
 .result {
     font-size: 20px;
 }
