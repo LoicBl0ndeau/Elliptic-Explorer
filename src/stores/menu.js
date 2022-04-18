@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 import { graphStore } from './graph.js'
+import katex from 'katex';
 
 export const menuStore = defineStore('menu', {
     actions: {
@@ -45,5 +46,13 @@ export const menuStore = defineStore('menu', {
             value = !Number.isNaN(value) && Number.isInteger(value) ? value : value.toFixed(2);
             this.setValueById(htmlID, value);
         },
+        /**
+         * Replace innerHTML value of an element with rendered latex expression
+         * @param {string} htmlID the id of element on which we want to use to display LaTex in its innerHTML
+         * @param {string} latexExp LaTeX expression
+         */
+        displayLaTeX(htmlID, latexExp) {
+            document.getElementById(htmlID).innerHTML = katex.renderToString(latexExp);
+        }
     }
 });

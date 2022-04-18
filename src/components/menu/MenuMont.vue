@@ -1,5 +1,10 @@
 <template>
   <div class="submenu">
+
+    <h3 class="section">Curve Equation</h3>
+    
+    <div id="montgomery-eq"></div>
+
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
@@ -86,6 +91,8 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
+    // display curve equation
+    this.menuS.displayLaTeX('montgomery-eq', "ay^2 = x^3 + bx +x");
   },
   methods: {
     displayDefaultCurve() {

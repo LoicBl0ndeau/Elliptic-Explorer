@@ -1,5 +1,10 @@
 <template>
   <div class="submenu">
+
+    <h3 class="section">Curve Equation</h3>
+    
+    <div id="edwards-eq"></div>
+
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
@@ -86,6 +91,8 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
+    // display curve equation
+    this.menuS.displayLaTeX('edwards-eq', "x^2 + y^2 = 1 +dx^2y^2");
   },
   methods: {
     displayDefaultCurve() {

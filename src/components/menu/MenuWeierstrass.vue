@@ -1,5 +1,10 @@
 <template>
   <div class="submenu">
+
+    <h3 class="section">Curve Equation</h3>
+    
+    <div id="weierstrass-eq"></div>
+
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
@@ -110,6 +115,8 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
+    // display curve equation
+    this.menuS.displayLaTeX('weierstrass-eq', "y^2 + a_1 xy + a_3y = \\newline x^3 + a_2 x^2 + a_4 x + a_6");
   },
   methods: {
     displayDefaultCurve() {
@@ -200,5 +207,6 @@ export default {
 </script>
 
 <style lang="css" scoped >
-@import "@/css/submenu.css";
+  @import "@/css/submenu.css";
+  @import "../../../node_modules/katex/dist/katex.min.css";
 </style>

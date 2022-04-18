@@ -1,5 +1,10 @@
 <template>
   <div class="submenu">
+
+    <h3 class="section">Curve Equation</h3>
+    
+    <div id="short-eq" ></div>
+
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
@@ -69,6 +74,8 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
+    // display latex
+    this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
   },
   methods: {
     displayDefaultCurve() {
