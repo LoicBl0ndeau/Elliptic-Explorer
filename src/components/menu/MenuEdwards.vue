@@ -92,7 +92,7 @@ export default {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
     // display curve equation
-    this.menuS.displayLaTeX('edwards-eq', "x^2 + y^2 = 1 +dx^2y^2");
+    this.menuS.displayLaTeX('edwards-eq', "x^2 + y^2 = c^2(1 +dx^2y^2)");
   },
   methods: {
     displayDefaultCurve() {
