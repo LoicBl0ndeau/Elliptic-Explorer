@@ -423,7 +423,7 @@ export class ModCurveGraph extends Graphic {
     for(i=0; i<modulo; i++){
       try{
         this.calculator.setExpressions([
-          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{1},${i})`, pointOpacity: 0.4, color: Graphic.Colors.point},
+          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{1},${i})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point},
       ]);
       }catch (error) {
         throw new Error(`An error has occured adding modular lines : ${error}`);
