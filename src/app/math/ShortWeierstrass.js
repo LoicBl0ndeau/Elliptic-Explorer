@@ -217,8 +217,6 @@ export class ShortWeierstrass extends ModCurveGraph {
         try {
             this.calculator.setExpressions([
                 { id: `m`, latex: `m=${modulo}` },
-            ]);
-            this.calculator.setExpressions([
                 { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})`},
                 { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})`},
                 { id: `d`, latex: `d=(x_{${this.idSelectedPoints[0]}}y_{${this.idSelectedPoints[1]}}-x_{${this.idSelectedPoints[1]}}y_{${this.idSelectedPoints[0]}})`},
@@ -235,25 +233,24 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @param {boolean} isTheSamePoint true if we do P+P
      */
     displayAddPoint(addPoint, isTheSamePoint){
-        var that = this;
-        let listPoints = that.listPoints;
-        let negPoint = getCoord(that.newPoint(addPoint[0],addPoint[1]).neg());
+        let listPoints = this.listPoints;
+        let negPoint = getCoord(this.newPoint(addPoint[0],addPoint[1]).neg());
         var i=1;
         var j=1;
         for (i=1; i<listPoints.length ; i++ ){
-            if ((addPoint[0]==that.getValueOfParameter(`x_{${i}}`)) && (addPoint[1]==that.getValueOfParameter(`y_{${i}}`))){
-                that.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint })
+            if ((addPoint[0]==this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1]==this.getValueOfParameter(`y_{${i}}`))){
+                this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint })
                 var idAdd=i;
             }
             else{
-                that.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point })
+                this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point })
             }
         }
-        that.calculator.removeExpression({ id: `s_{${that.segmentId}}` });
+        this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
         if (!isTheSamePoint){
             for (j=1; j<listPoints.length ; j++ ){
-                if ((negPoint[0]==that.getValueOfParameter(`x_{${j}}`)) && (negPoint[1]==that.getValueOfParameter(`y_{${j}}`))){
-                    that.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
+                if ((negPoint[0]==this.getValueOfParameter(`x_{${j}}`)) && (negPoint[1]==this.getValueOfParameter(`y_{${j}}`))){
+                    this.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
                 }
             }  
         }
