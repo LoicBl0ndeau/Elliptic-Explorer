@@ -411,6 +411,24 @@ export class ModCurveGraph extends Graphic {
       that.addStaticPoint(item);
     });
     that.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
+    var modulo=5;
+    var i=0;
+    try {
+      this.calculator.setExpressions([
+          { id: `L_{1}`, latex: `L_{1}=\\left[0...${modulo}-1\\right]` },
+      ]);
+    } catch (error) {
+      throw new Error(`An error has occured adding modular lines : ${error}`);
+    }
+    for(i=0; i<modulo; i++){
+      try{
+        this.calculator.setExpressions([
+          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{1},${i})`, pointOpacity: 0.4, color: Graphic.Colors.point},
+      ]);
+      }catch (error) {
+        throw new Error(`An error has occured adding modular lines : ${error}`);
+      }
+    }
   }
   /**
    * Recover the coordinates of two points and display modulo and the result of addition
