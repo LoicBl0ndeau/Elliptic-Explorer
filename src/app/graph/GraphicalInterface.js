@@ -401,6 +401,7 @@ export class ModCurveGraph extends Graphic {
     listPoints.forEach(function (item) {
       that.addStaticPoint(item);
     });
+    that.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
   }
   /**
    * Recover the coordinates of two points and display modulo and the result of addition
@@ -436,7 +437,10 @@ export class ModCurveGraph extends Graphic {
           // document.removeEventListener('click', click);
         }
       }
-      that.displayModulo();
+      if (that.selectedPoints[1][0]!= undefined){
+        that.displayModulo();
+      }
+      
       let point1 = that.newPoint(
         that.selectedPoints[0][0],
         that.selectedPoints[0][1]
