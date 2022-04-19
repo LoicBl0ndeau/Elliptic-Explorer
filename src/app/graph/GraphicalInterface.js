@@ -24,7 +24,6 @@ export class Graphic {
       expressions: false
     });
     this.showExpressions();
-
     this.pointId = 0;
     this.lineId = 0;
     this.segmentId = 0;
@@ -388,10 +387,20 @@ export class ModCurveGraph extends Graphic {
   */
   constructor(element) {
     super(element);
+    this.calculator.updateSettings({
+      showGrid: false,
+      showXAxis: false,
+      showYAxis: false,
+    });
+    let m=5
+    this.calculator.setMathBounds({bottom:-0.5,top:m+0.5,left:-0.5,right:m+0.5})
+    console.log(this.getExpressionById(`s_{${this.addSegment([0,0,m,m,0],[0,m,m,0,0])}}`))
+    //this.setExpressionParameters(`s_{${1}}`,{columns:[1]})
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
   }
+
   /**
    * Display all static points of the modular curve from the list of points
    */
@@ -416,7 +425,7 @@ export class ModCurveGraph extends Graphic {
     that.calculator.mathToPixels({ x: 0, y: 0 });
     // Find the math coordinates of the mouse
     var calculatorRect = that.element.getBoundingClientRect();
-    document.addEventListener('click', function click(evt) {
+    this.element.addEventListener('click', function click(evt) {
       // when user click on the screen, we go into this function
       var coordonnees_souris = that.calculator.pixelsToMath({
         x: evt.clientX - calculatorRect.left,
@@ -454,6 +463,8 @@ export class ModCurveGraph extends Graphic {
       that.displayAddPoint(addiPoint, isTheSamePoint);
     });
   }
+
+  
 
   
 }
