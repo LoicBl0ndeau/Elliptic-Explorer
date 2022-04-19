@@ -189,7 +189,7 @@ export class ShortWeierstrass extends ModCurveGraph {
         let listPoints = this.listPoints;
         let listCoordPoints = this.listCoordPoints;
         listPoints.forEach(item => {
-            listCoordPoints.push(getCoord(item));
+            listCoordPoints.push(this.getCoord(item));
         });
     }
 
@@ -214,13 +214,21 @@ export class ShortWeierstrass extends ModCurveGraph {
      */
     displayModulo(){
         var modulo=this.param.p;
+        var lignes =5;
         try {
             this.calculator.setExpressions([
                 { id: `m`, latex: `m=${modulo}` },
+                { id: `l`, latex: `l=${lignes}` },
+                { id: `L`, latex: `L=[\\frac{m}{2}i\\operatorname{for}i=[\\operatorname{floor}(-\\frac{lm}{2})...\\operatorname{floor}(\\frac{lm}{2})]]` },
                 { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})`},
                 { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})`},
                 { id: `d`, latex: `d=(x_{${this.idSelectedPoints[0]}}y_{${this.idSelectedPoints[1]}}-x_{${this.idSelectedPoints[1]}}y_{${this.idSelectedPoints[0]}})`},
-                { id: `e`, latex: `\\operatorname{mod}\\left(ax+by,m\\right)\\ =\\operatorname{mod}\\left(d,m\\right)\\ \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.curve },
+                { id: `c`, latex: `c=((x_${this.idSelectedPoints[0]}+L)y_${this.idSelectedPoints[1]}-(x_${this.idSelectedPoints[1]}+L)y_${this.idSelectedPoints[0]})`},
+            ]);
+            
+            this.calculator.setExpressions([
+                { id: `e`, latex: `\\operatorname{mod}\\left(ax+by,m\\right)\\ =\\operatorname{mod}\\left(d,m\\right)\\ \\left\\{-0.5<x<m-0.5\\right\\}\\ \\left\\{-0.5<y<m-0.5\\right\\}`, color: Graphic.Colors.curve },
+                { id: `f`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.line },
             ]);
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
