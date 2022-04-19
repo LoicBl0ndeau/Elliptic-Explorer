@@ -411,6 +411,7 @@ export class ModCurveGraph extends Graphic {
     listPoints.forEach(function (item) {
       that.addStaticPoint(item);
     });
+    that.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
   }
   /**
    * Recover the coordinates of two points and display modulo and the result of addition
@@ -446,7 +447,10 @@ export class ModCurveGraph extends Graphic {
             isSecondPoint = !isSecondPoint;
           }
         }
-        that.displayModulo();
+        if (that.selectedPoints[1][0]!= undefined){
+          that.displayModulo();
+        }
+        
         let point1 = that.newPoint(
           that.selectedPoints[0][0],
           that.selectedPoints[0][1]
@@ -455,12 +459,13 @@ export class ModCurveGraph extends Graphic {
           that.selectedPoints[1][0],
           that.selectedPoints[1][1]
         );
-        isTheSamePoint = that.equalPoints(point1, point2);
+        isTheSamePoint=that.equalPoints(point1,point2);
         let addiPoint = that.getCoord(that.addPoints(point1, point2));
         that.displayAddPoint(addiPoint, isTheSamePoint);
       } catch (error) {
         that.element.removeEventListener('click',click);
       }
+
     });
   }
 

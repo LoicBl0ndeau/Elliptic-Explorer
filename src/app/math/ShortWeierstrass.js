@@ -64,8 +64,9 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @returns {Array} the x y coordinates of the point in the form [x, y] with x and y integers
      */
     getCoord(point) {
+        let p = this.param.p;
         if (point.inf)
-            return [null, null];
+            return[(p-0.5)/2, 1.5*p];
         return [point.getX().toNumber(), point.getY().toNumber()];
     }
 
