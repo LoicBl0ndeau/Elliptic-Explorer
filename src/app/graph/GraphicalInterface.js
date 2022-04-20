@@ -478,7 +478,7 @@ export class ModCurveGraph extends Graphic {
           that.selectedPoints[1][1]
         );
 
-        if ((that.selectedPoints[1][0]== undefined) && ((!point1.isInfinity()) && (!point2.isInfinity()))){
+        if ((that.selectedPoints[1][0]== undefined) && (!point2.isInfinity())){
           return
         }
         
