@@ -23,7 +23,7 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @param {integer ou string} p modulo
      */
     constructor(element, a, b, p) {
-        super(element, p);
+        super(element);
         while (a < 0) {
             a = a + p;
         }
@@ -31,10 +31,11 @@ export class ShortWeierstrass extends ModCurveGraph {
             b = b + p;
         }
         this.param = {
+            p: p,
             a: a,
             b: b,
         }
-        this.shortWcurve = new elliptic.curve.short({ ...this.param, ...{ p } });
+        this.shortWcurve = new elliptic.curve.short(this.param);
         this.listPoints = [];
     }
 
@@ -48,7 +49,7 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @returns {Point} point
      */
     newPoint(x, y) {
-        let p = this.p;
+        let p = this.param.p;
         while (x < 0) {
             x = x + p;
         }
@@ -64,8 +65,9 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @returns {Array} the x y coordinates of the point in the form [x, y] with x and y integers
      */
     getCoord(point) {
+        let p = this.param.p;
         if (point.inf)
-            return [null, null];
+            return[(p-0.5)/2, 1.5*p];
         return [point.getX().toNumber(), point.getY().toNumber()];
     }
 
@@ -85,8 +87,8 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @param {Point} Q 
      * @returns {boolean} true if P = Q
      */
-    equalPoints(P, Q) {
-        return (P.eq(Q));
+    equalPoints(P, Q){
+        return(P.eq(Q));
     }
 
 
@@ -165,7 +167,7 @@ export class ShortWeierstrass extends ModCurveGraph {
     findAllPoints() {
         let a = this.param.a;
         let b = this.param.b;
-        let p = this.p;
+        let p = this.param.p;
         let listPoints = this.listPoints;
         var calculx;
         var calculy;
@@ -211,24 +213,23 @@ export class ShortWeierstrass extends ModCurveGraph {
     /**
      * Display lines of the modulo on a square of modulo x modulo
      */
-    displayModulo() {
-        var modulo = this.p;
+    displayModulo(){
+        var modulo=this.param.p;
         var lignes =5;
         try {
             this.calculator.setExpressions([
                 { id: `m`, latex: `m=${modulo}` },
                 { id: `l`, latex: `l=${lignes}` },
-                { id: `L_{1}`, latex: `L_{1}=[m\\frac{b}{a}i\\operatorname{for}i=[-lm...lm]]` },
-                { id: `L_{2}`, latex: `L_{2}=[\\frac{m}{2}i\\operatorname{for}i=[-lm...lm]]` },
-                { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})` },
-                { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})` },
-                { id: `d`, latex: `d=(x_{${this.idSelectedPoints[0]}}y_{${this.idSelectedPoints[1]}}-x_{${this.idSelectedPoints[1]}}y_{${this.idSelectedPoints[0]}})` },
-                { id: `c`, latex: `c=\\left\\{\\left|a\\right|>\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{1})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{1})y_{${this.idSelectedPoints[0]}},\\left|a\\right|\\le\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{2})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{2})y_{${this.idSelectedPoints[0]}}\\right\\}` },          
+                { id: `L`, latex: `L=[\\frac{m}{2}i\\operatorname{for}i=[\\operatorname{floor}(-\\frac{lm}{2})...\\operatorname{floor}(\\frac{lm}{2})]]` },
+                { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})`},
+                { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})`},
+                { id: `d`, latex: `d=(x_{${this.idSelectedPoints[0]}}y_{${this.idSelectedPoints[1]}}-x_{${this.idSelectedPoints[1]}}y_{${this.idSelectedPoints[0]}})`},
+                { id: `c`, latex: `c=((x_${this.idSelectedPoints[0]}+L)y_${this.idSelectedPoints[1]}-(x_${this.idSelectedPoints[1]}+L)y_${this.idSelectedPoints[0]})`},
             ]);
-
+            
             this.calculator.setExpressions([
-                //{ id: `e`, latex: `\\operatorname{mod}\\left(ax+by,m\\right)\\ =\\operatorname{mod}\\left(d,m\\right)\\ \\left\\{-0.5<x<m-0.5\\right\\}\\ \\left\\{-0.5<y<m-0.5\\right\\}`, color: Graphic.Colors.curve },
-                { id: `f`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\} \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.curve },
+                { id: `e`, latex: `\\operatorname{mod}\\left(ax+by,m\\right)\\ =\\operatorname{mod}\\left(d,m\\right)\\ \\left\\{-0.5<x<m-0.5\\right\\}\\ \\left\\{-0.5<y<m-0.5\\right\\}`, color: Graphic.Colors.curve },
+                { id: `f`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\}\\ \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.line },
             ]);
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
@@ -240,29 +241,29 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @param {Array} addPoint coordinates of the additionnal point
      * @param {boolean} isTheSamePoint true if we do P+P
      */
-    displayAddPoint(addPoint, isTheSamePoint) {
+    displayAddPoint(addPoint, isTheSamePoint){
         let listPoints = this.listPoints;
         let negPoint = getCoord(this.newPoint(addPoint[0],addPoint[1]).neg());
         var i=1;
         var j=1;
         for (i=1; i<(listPoints.length+1) ; i++ ){
-            if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))){
+            if ((addPoint[0]==this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1]==this.getValueOfParameter(`y_{${i}}`))){
                 this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint })
-                var idAdd = i;
+                var idAdd=i;
             }
-            else {
+            else{
                 this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point })
             }
         }
         this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
-        if (!isTheSamePoint) {
-            for (j = 1; j < listPoints.length; j++) {
-                if ((negPoint[0] == this.getValueOfParameter(`x_{${j}}`)) && (negPoint[1] == this.getValueOfParameter(`y_{${j}}`))) {
+        if (!isTheSamePoint){
+            for (j=1; j<listPoints.length ; j++ ){
+                if ((negPoint[0]==this.getValueOfParameter(`x_{${j}}`)) && (negPoint[1]==this.getValueOfParameter(`y_{${j}}`))){
                     this.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
                 }
-            }
+            }  
         }
-
+          
     }
 
     displayInfinity(){

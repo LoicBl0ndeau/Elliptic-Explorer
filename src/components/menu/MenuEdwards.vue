@@ -7,13 +7,11 @@
 
     <h3 class="section">Parameters</h3>
 
-    <span id="error-mess-edwards"></span>
-
     <span class="parameter">
       <label>c</label>
       <input
         id="c"
-        @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();"
+        @input="menuS.setValueOnGraphFromUserInput('C', 'c')"
       /><br />
     </span>
 
@@ -21,7 +19,7 @@
       <label>d</label>
       <input
         id="d"
-        @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();"
+        @input="menuS.setValueOnGraphFromUserInput('D', 'd')"
       /><br />
     </span>
 
@@ -142,23 +140,6 @@ export default {
       this.graphS.destroy();
       this.displayNewCurve();
       this.graphS.showMul(currentPoint, k);
-    },
-    verifyCandD() {
-      let c = this.menuS.getFloatFromInputId('c');
-      let d = this.menuS.getFloatFromInputId('d');
-      if (c == 0 || d == 0)
-        this.menuS.displayLaTeX(
-          "error-mess-edwards", 
-          "\\color{yellow} c \\text{ and } d \\text{ must be } \\newline \\text{defined such as : } \\newline c \\ne 0 \\text{ and } d \\ne 0 \\newline"
-        );
-      else if (c != 0 && d == 1 / c**4) {
-        this.menuS.displayLaTeX(
-          "error-mess-edwards", 
-          "\\color{yellow} d \\text{ must be defined such as : }\\newline d \\ne \\frac{1}{c^4} \\newline"
-        );
-      }
-      else
-        this.menuS.displayLaTeX("error-mess-edwards", "");
     },
     updateMenuInputWithGraphValue() {
       try {
