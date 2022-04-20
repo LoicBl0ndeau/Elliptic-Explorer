@@ -5,6 +5,9 @@
     <!-- <button @click='open("anglais")'>Anglais</button> -->
     <AccueilAnglais />
   </div>
+  <center>
+    <img src="https://centre.hei.fr/wp-content/uploads/2020/10/junia.jpg" width="700" height="150"/>
+  </center>
   <div>
     <MyMenu />
   </div>
@@ -43,4 +46,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+img {
+  margin-left: 28%;
+}
+</style>
 
