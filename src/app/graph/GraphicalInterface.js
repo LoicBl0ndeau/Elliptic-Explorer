@@ -393,10 +393,8 @@ export class ModCurveGraph extends Graphic {
       showXAxis: false,
       showYAxis: false,
     });
-    let m = 5
-    this.calculator.setMathBounds({ bottom: -0.5, top: m + 0.5, left: -0.5, right: m + 0.5 })
-    console.log(this.getExpressionById(`s_{${this.addSegment([0, 0, m, m, 0], [0, m, m, 0, 0])}}`))
-    //this.setExpressionParameters(`s_{${1}}`,{columns:[1]})
+    this.calculator.setMathBounds({ bottom: -0.5, top: this.p*1.5 + 0.5, left: -0.5, right: this.p + 0.5 })
+    this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(0,0),(${this.p},0),(${this.p},${this.p}),(0,${this.p})])`,fill:0,color:Graphic.Colors.line})
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
@@ -447,10 +445,11 @@ export class ModCurveGraph extends Graphic {
             isSecondPoint = !isSecondPoint;
           }
         }
-        if (that.selectedPoints[1][0]!= undefined){
-          that.displayModulo();
+        if (that.selectedPoints[1][0]== undefined){
+          return
         }
         
+        that.displayModulo();
         let point1 = that.newPoint(
           that.selectedPoints[0][0],
           that.selectedPoints[0][1]
