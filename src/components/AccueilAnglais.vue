@@ -12,7 +12,7 @@
     </p>
     <p>
       Indeed, the first use of
-      <a href="https://fr.wikipedia.org/wiki/Cryptographie_sur_les_courbes_elliptiques">elliptic curves in cryptography</a>
+      <a href="https://fr.wikipedia.org/wiki/Cryptographie_sur_les_courbes_elliptiques" target="_blank">elliptic curves in cryptography</a>
       goes back only to 1984, when Lenstra used it to factor
       integers. Then in 1985, Victor Miller and Neal Koblitz proposed
       cryptographic uses of elliptic curves. The main
@@ -28,13 +28,13 @@
     <p>
       Thus, many encryption systems have been developed, including
       for shared public key systems such as
-      <a href="https://fr.wikipedia.org/wiki/%C3%89change_de_cl%C3%A9s_Diffie-Hellman_bas%C3%A9_sur_les_courbes_elliptiques">ECDH</a>, 
+      <a href="https://fr.wikipedia.org/wiki/%C3%89change_de_cl%C3%A9s_Diffie-Hellman_bas%C3%A9_sur_les_courbes_elliptiques" target="_blank">ECDH</a>, 
       which is currently widely used in the SSL/TLS protocols for securing
       protocols for securing computer network exchanges. Moreover, the ECC is
       also generally used in order to carry out electronic signatures
       via the protocols
-      <a href="https://fr.wikipedia.org/wiki/Elliptic_curve_digital_signature_algorithm">ECDSA</a>
-      and <a href="https://fr.wikipedia.org/wiki/EdDSA">EdDSA</a>.
+      <a href="https://fr.wikipedia.org/wiki/Elliptic_curve_digital_signature_algorithm" target="_blank">ECDSA</a>
+      and <a href="https://fr.wikipedia.org/wiki/EdDSA" target="_blank">EdDSA</a>.
     </p>
     <p>
       However, the ECC is based on a "twisted" addition law defined between
@@ -47,9 +47,9 @@
     <p>
         Before using these curves to encrypt our messages, we must understand them. 
         Elliptic curves are defined in three common types of curves: 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_elliptique'>Weierstrass</a>, 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_de_Montgomery'>Montgomery</a>, 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_d%27Edwards'>Edwards</a>. 
+        <a href='https://fr.wikipedia.org/wiki/Courbe_elliptique' target="_blank">Weierstrass</a>, 
+        <a href='https://fr.wikipedia.org/wiki/Courbe_de_Montgomery' target="_blank">Montgomery</a>, 
+        <a href='https://fr.wikipedia.org/wiki/Courbe_d%27Edwards' target="_blank">Edwards</a>. 
         Here are the equations :
     </p>
     <p align='center'>
@@ -83,13 +83,11 @@ export default {
 #titre {
   color: var(--sidebar-bg-color);
   font-family: "Raleway", sans-serif;
-  margin-left: 28%;
 }
 
 #corps {
   color: #2D3142;
   font-family: "Raleway", sans-serif;
-  margin-left: 28%;
 }
 
 a {
