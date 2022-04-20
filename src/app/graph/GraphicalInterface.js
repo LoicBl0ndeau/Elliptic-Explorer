@@ -393,8 +393,8 @@ export class ModCurveGraph extends Graphic {
       showXAxis: false,
       showYAxis: false,
     });
-    this.calculator.setMathBounds({ bottom: -0.5, top: this.p*1.5 + 0.5, left: -0.5, right: this.p + 0.5 })
-    this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(0,0),(${this.p},0),(${this.p},${this.p}),(0,${this.p})])`,fill:0,color:Graphic.Colors.line})
+    this.calculator.setMathBounds({ bottom: -0.5, top: this.p * 1.5 + 0.5, left: -0.5, right: this.p + 0.5 })
+    this.calculator.setExpression({ id: 'border', latex: `\\operatorname{polygon}([(0,0),(${this.p},0),(${this.p},${this.p}),(0,${this.p})])`, fill: 0, color: Graphic.Colors.line })
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
@@ -410,20 +410,20 @@ export class ModCurveGraph extends Graphic {
       that.addStaticPoint(item);
     });
     that.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
-    var i=0;
+    var i = 0;
     try {
       this.calculator.setExpressions([
-          { id: `L_{3}`, latex: `L_{3}=\\left[0...${this.p}-1\\right]` },
+        { id: `L_{3}`, latex: `L_{3}=\\left[0...${this.p}-1\\right]` },
       ]);
     } catch (error) {
       throw new Error(`An error has occured adding modular lines : ${error}`);
     }
-    for(i=0; i<this.p; i++){
-      try{
+    for (i = 0; i < this.p; i++) {
+      try {
         this.calculator.setExpressions([
-          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point},
-      ]);
-      }catch (error) {
+          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point },
+        ]);
+      } catch (error) {
         throw new Error(`An error has occured adding modular lines : ${error}`);
       }
     }
@@ -462,11 +462,18 @@ export class ModCurveGraph extends Graphic {
             isSecondPoint = !isSecondPoint;
           }
         }
-        if (that.selectedPoints[1][0]== undefined){
+        if (that.selectedPoints[1][0] == undefined) {
           return
         }
-        
-        that.displayModulo();
+
+        //selectionner le point infini
+        if ((x_arrondi == Math.round(that.getValueOfParameter(`x_{${listPoints.length}}`))) && ((that.getValueOfParameter(`y_{${listPoints.length}}`) - 0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`) + 0.5))) {
+          // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
+          isSecondPoint ? that.selectedPoints[1] = [null, null] : that.selectedPoints[0] = [null, null];
+          isSecondPoint ? that.idSelectedPoints[1] = listPoints.length : that.idSelectedPoints[0] = listPoints.length;
+          isSecondPoint = !isSecondPoint;
+        }
+
         let point1 = that.newPoint(
           that.selectedPoints[0][0],
           that.selectedPoints[0][1]
@@ -475,17 +482,28 @@ export class ModCurveGraph extends Graphic {
           that.selectedPoints[1][0],
           that.selectedPoints[1][1]
         );
-        isTheSamePoint=that.equalPoints(point1,point2);
+
+        if ((that.selectedPoints[1][0] != undefined) && (((!point1.isInfinity()) || (!point2.isInfinity())))) {
+          that.displayModulo();
+          isTheSamePoint = that.equalPoints(point1, point2);
+          let addiPoint = that.getCoord(that.addPoints(point1, point2));
+          that.displayAddPoint(addiPoint, isTheSamePoint);
+        }
+
+        if (point1.isInfinity() || (point2.isInfinity())) {
+          isTheSamePoint = that.equalPoints(point1, point2);
+          let addiPoint = that.getCoord(that.addPoints(point1, point2));
+          that.displayAddPoint(addiPoint, isTheSamePoint);
+          that.displayInfinity();
+        }
+
+        that.displayModulo();
+        isTheSamePoint = that.equalPoints(point1, point2);
         let addiPoint = that.getCoord(that.addPoints(point1, point2));
         that.displayAddPoint(addiPoint, isTheSamePoint);
       } catch (error) {
-        that.element.removeEventListener('click',click);
+        that.element.removeEventListener('click', click);
       }
-
     });
   }
-
-
-
-
 }
