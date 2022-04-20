@@ -69,6 +69,9 @@
     <p align='center'>
         Enjoy the experience !!!!
     </p>
+    <p align='center'>
+      <img :src="require('@/views/img/bannierejunia.jpg')" width="800" height="150"/>
+    </p>
   </div>
 </template>
 
@@ -93,4 +96,5 @@ export default {
 a {
   color: #2D3142;
 }
+
 </style>
