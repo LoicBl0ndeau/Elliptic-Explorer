@@ -385,17 +385,16 @@ export class ModCurveGraph extends Graphic {
   * @constructor
   * @param {string} element - The ID of the HTML element where the calculator will be.
   */
-  constructor(element) {
+  constructor(element, p) {
     super(element);
+    this.p = p;
     this.calculator.updateSettings({
       showGrid: false,
       showXAxis: false,
       showYAxis: false,
     });
-    let m=5
-    this.calculator.setMathBounds({bottom:-0.5,top:m+0.5,left:-0.5,right:m+0.5})
-    console.log(this.getExpressionById(`s_{${this.addSegment([0,0,m,m,0],[0,m,m,0,0])}}`))
-    //this.setExpressionParameters(`s_{${1}}`,{columns:[1]})
+    this.calculator.setMathBounds({ bottom: -0.5, top: this.p*1.5 + 0.5, left: -0.5, right: this.p + 0.5 })
+    this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(0,0),(${this.p},0),(${this.p},${this.p}),(0,${this.p})])`,fill:0,color:Graphic.Colors.line})
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
@@ -444,44 +443,49 @@ export class ModCurveGraph extends Graphic {
     var calculatorRect = that.element.getBoundingClientRect();
     this.element.addEventListener('click', function click(evt) {
       // when user click on the screen, we go into this function
-      var coordonnees_souris = that.calculator.pixelsToMath({
-        x: evt.clientX - calculatorRect.left,
-        y: evt.clientY - calculatorRect.top
-      })
-      var x = coordonnees_souris.x;
-      var y = coordonnees_souris.y;
-      var x_arrondi = Math.round(x);
-      var y_arrondi = Math.round(y);
-      //on arrondit les coordonées
-      for (i = 1; i < listPoints.length; i++) {
-        //on compare avec les id des points de la courbe modualire
-        if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
-          // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
-          isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
-          isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
-          isSecondPoint = !isSecondPoint;
-          // document.removeEventListener('click', click);
+      try {
+        var coordonnees_souris = that.calculator.pixelsToMath({
+          x: evt.clientX - calculatorRect.left,
+          y: evt.clientY - calculatorRect.top
+        })
+        var x = coordonnees_souris.x;
+        var y = coordonnees_souris.y;
+        var x_arrondi = Math.round(x);
+        var y_arrondi = Math.round(y);
+        //on arrondit les coordonées
+        for (i = 1; i < listPoints.length; i++) {
+          //on compare avec les id des points de la courbe modualire
+          if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
+            // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
+            isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
+            isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
+            isSecondPoint = !isSecondPoint;
+          }
         }
-      }
-      if (that.selectedPoints[1][0]!= undefined){
+        if (that.selectedPoints[1][0]== undefined){
+          return
+        }
+        
         that.displayModulo();
+        let point1 = that.newPoint(
+          that.selectedPoints[0][0],
+          that.selectedPoints[0][1]
+        );
+        let point2 = that.newPoint(
+          that.selectedPoints[1][0],
+          that.selectedPoints[1][1]
+        );
+        isTheSamePoint=that.equalPoints(point1,point2);
+        let addiPoint = that.getCoord(that.addPoints(point1, point2));
+        that.displayAddPoint(addiPoint, isTheSamePoint);
+      } catch (error) {
+        that.element.removeEventListener('click',click);
       }
-      
-      let point1 = that.newPoint(
-        that.selectedPoints[0][0],
-        that.selectedPoints[0][1]
-      );
-      let point2 = that.newPoint(
-        that.selectedPoints[1][0],
-        that.selectedPoints[1][1]
-      );
-      isTheSamePoint=that.equalPoints(point1,point2);
-      let addiPoint = that.getCoord(that.addPoints(point1, point2));
-      that.displayAddPoint(addiPoint, isTheSamePoint);
+
     });
   }
 
-  
 
-  
+
+
 }
