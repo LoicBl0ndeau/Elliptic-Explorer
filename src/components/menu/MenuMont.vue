@@ -8,18 +8,20 @@
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
+      <span id="a-error-mess-montgomery"></span>
       <label>a</label>
       <input
         id="a-montgomery"
-        @input="menuS.setValueOnGraphFromUserInput('A', 'a-montgomery')"
+        @input="menuS.setValueOnGraphFromUserInput('A', 'a-montgomery'); verifyA();"
       /><br />
     </span>
 
     <span class="parameter">
+      <span id="b-error-mess-montgomery"> </span>
       <label>b</label>
       <input
         id="b-montgomery"
-        @input="menuS.setValueOnGraphFromUserInput('B', 'b-montgomery')"
+        @input="menuS.setValueOnGraphFromUserInput('B', 'b-montgomery'); verifyB();"
       /><br />
     </span>
 
@@ -140,6 +142,24 @@ export default {
       this.graphS.destroy();
       this.displayNewCurve();
       this.graphS.showMul(currentPoint, k);
+    },
+    verifyA() {
+      let value = this.menuS.getFloatFromInputId('a-montgomery');
+      if (value <= 2 && value >= -2)
+        this.menuS.displayLaTeX(
+          "a-error-mess-montgomery", 
+          "\\color{yellow} a \\text{ must be defined such as : }\\newline a \\notin [-2, 2]\\newline");
+      else 
+        this.menuS.displayLaTeX("a-error-mess-montgomery", "");
+    },
+    verifyB() {
+      let value = this.menuS.getFloatFromInputId('b-montgomery');
+      if (value == 0)
+        this.menuS.displayLaTeX(
+          "b-error-mess-montgomery", 
+          "\\color{yellow} b \\text{ must be non-null}\\newline");
+      else 
+        this.menuS.displayLaTeX("b-error-mess-montgomery", "");
     },
     updateMenuInputWithGraphValue() {
       try {
