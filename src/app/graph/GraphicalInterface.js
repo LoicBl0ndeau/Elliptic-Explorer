@@ -454,7 +454,7 @@ export class ModCurveGraph extends Graphic {
         var y_arrondi = Math.round(y);
         //on arrondit les coordonées
         for (i = 1; i < listPoints.length; i++) {
-          //on compare avec les id des points de la courbe modualire
+          //on compare avec les id des points de la courbe modualire.
           if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
             // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
             isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
