@@ -83,13 +83,11 @@ export default {
 #titre {
   color: var(--sidebar-bg-color);
   font-family: "Raleway", sans-serif;
-  margin-left: 28%;
 }
 
 #corps {
   color: #2D3142;
   font-family: "Raleway", sans-serif;
-  margin-left: 28%;
 }
 
 a {
