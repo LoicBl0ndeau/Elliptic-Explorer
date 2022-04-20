@@ -464,9 +464,16 @@ export class ModCurveGraph extends Graphic {
           // document.removeEventListener('click', click);
         }
       }
-      if (that.selectedPoints[1][0]!= undefined){
-        that.displayModulo();
-      }
+      var x_aaa=(that.getValueOfParameter(`y_{${listPoints.length}}`))-0.5;
+      console.log(x_aaa);
+      //selectionner le point infini
+      if ((x_arrondi == Math.round(that.getValueOfParameter(`x_{${listPoints.length}}`))) && ((that.getValueOfParameter(`y_{${listPoints.length}}`)-0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`)+0.5))) {
+        // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
+        console.log('infinityyyyy')
+        isSecondPoint ? that.selectedPoints[1] = [null, null] : that.selectedPoints[0] = [null, null];
+        isSecondPoint ? that.idSelectedPoints[1] = listPoints.length : that.idSelectedPoints[0] = listPoints.length;
+        isSecondPoint = !isSecondPoint;
+      } 
       
       let point1 = that.newPoint(
         that.selectedPoints[0][0],
@@ -476,9 +483,20 @@ export class ModCurveGraph extends Graphic {
         that.selectedPoints[1][0],
         that.selectedPoints[1][1]
       );
-      isTheSamePoint=that.equalPoints(point1,point2);
-      let addiPoint = that.getCoord(that.addPoints(point1, point2));
-      that.displayAddPoint(addiPoint, isTheSamePoint);
+
+      if ((that.selectedPoints[1][0]!= undefined) && (((!point1.isInfinity()) || (!point2.isInfinity())))){
+        that.displayModulo();
+        isTheSamePoint=that.equalPoints(point1,point2);
+        let addiPoint = that.getCoord(that.addPoints(point1, point2));
+        that.displayAddPoint(addiPoint, isTheSamePoint);
+      }
+      
+      if (point1.isInfinity() || (point2.isInfinity())){
+        isTheSamePoint=that.equalPoints(point1,point2);
+        let addiPoint = that.getCoord(that.addPoints(point1, point2));
+        that.displayAddPoint(addiPoint, isTheSamePoint);
+        that.displayInfinity();
+      }
     });
   }
 
