@@ -1,12 +1,12 @@
 <template>
-  <link
+  <!-- <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
   />
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
-  />
+  /> -->
 
   <div
     id="mySidebar"
@@ -15,36 +15,59 @@
     @mouseout="toggleSidebar"
   >
     <a @click="open('about')">
-      <span class="material-icons">info</span>
+      <img
+        class="material-icons filter-orange"
+        src="images/info_black_24dp.svg"
+      />
       <span class="icon-text">About EE</span> </a
     ><br />
 
     <a @click="open('shortmod')">
-      <span class="material-icons">chevron_right</span>
+      <img
+        id="menu-shortmod"
+        class="material-icons filter-orange"
+        src="images/chevron_right_black_24dp.svg"
+      />
       <span class="icon-text">Short Weierstrass</span> </a
     ><br />
     <MenuShortMod v-show="isOpen.shortmod" ref="shortmod" />
 
     <a @click="open('weierstrass')">
-      <span class="material-icons">chevron_right</span>
+      <img
+        id="menu-weierstrass"
+        class="material-icons filter-orange"
+        src="images/chevron_right_black_24dp.svg"
+      />
       <span class="icon-text">Weierstrass</span> </a
     ><br />
     <MenuWeierstrass v-show="isOpen.weierstrass" ref="weierstrass" />
 
     <a @click="open('montgomery')">
-      <span class="material-icons">chevron_right</span>
+      <img
+        id="menu-montgomery"
+        class="material-icons filter-orange"
+        src="images/chevron_right_black_24dp.svg"
+      />
       <span class="icon-text">Montgomery</span> </a
     ><br />
     <MenuMontgomery v-show="isOpen.montgomery" ref="montgomery" />
 
     <a @click="open('edwards')">
-      <span class="material-icons">chevron_right</span>
+      <img
+        id="menu-edwards"
+        class="material-icons filter-orange"
+        src="images/chevron_right_black_24dp.svg"
+      />
       <span class="icon-text">Edwards</span> </a
     ><br />
     <MenuEdwards v-show="isOpen.edwards" ref="edwards" />
 
     <a @click="changePinStatus">
-      <span id="pin" class="material-icons">push_pin</span>
+      <img
+        id="pin"
+        class="material-icons filter-orange"
+        src="images/push_pin_black_24dp-filled.svg"
+      />
     </a>
   </div>
 </template>
@@ -95,17 +118,34 @@ export default {
   methods: {
     /** Open the selected menu, close the others. */
     open(menu) {
-      for (const [key] of Object.entries(this.isOpen)) {
-        if (key == "about") {
-          document.getElementById('about-div').style.display = "inline";
-          document.getElementById('graph-div').style.display = "none";
+      if (menu == "about") {
+        // hide graph and show about div
+        document.getElementById("about-div").style.display = "inline";
+        document.getElementById("graph-div").style.display = "none";
+      }
+      else {
+        // hide about div and show graph
+        document.getElementById("about-div").style.display = "none";
+        document.getElementById("graph-div").style.display = "inline";
+      }
+      // get the curves names
+      let keysOfIsOpen = Object.keys(this.isOpen);
+      // remove "about" from keys (it's the 1st elem of the list)
+      keysOfIsOpen.shift();
+
+      for (const curvename of keysOfIsOpen) {
+        if (curvename == menu) {
+          this.isOpen[curvename] = true;
+          this.$refs[curvename].displayDefaultCurve();
+          // show expand arrow
+          document.getElementById(`menu-${curvename}`).src =
+            "images/expand_more_black_24dp.svg";
+        } else {
+          this.isOpen[curvename] = false;
+          // show chevron right arrow
+          document.getElementById(`menu-${curvename}`).src =
+            "images/chevron_right_black_24dp.svg";
         }
-        else if (key == menu) {
-          document.getElementById('about-div').style.display = "none";
-          document.getElementById('graph-div').style.display = "inline";
-          this.isOpen[key] = true;
-          this.$refs[key].displayDefaultCurve();
-        } else this.isOpen[key] = false;
       }
     },
     // hide sidebar on mouse over if pinned=false
@@ -129,9 +169,11 @@ export default {
     // change pin boolean value and change pin icon
     changePinStatus() {
       if (this.pinned) {
-        document.getElementById("pin").className = "material-icons-outlined";
+        document.getElementById("pin").className = "material-icons-outlined filter-orange";
+        document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
       } else {
-        document.getElementById("pin").className = "material-icons";
+        document.getElementById("pin").className = "material-icons filter-orange";
+        document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
       }
       this.pinned = !this.pinned;
     },

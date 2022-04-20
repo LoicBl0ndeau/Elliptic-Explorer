@@ -37,6 +37,10 @@ body {
   color: #f1f1f1;
 }
 
+.filter-orange {
+  filter: brightness(0) saturate(100%) invert(92%) sepia(15%) saturate(6581%) hue-rotate(304deg) brightness(95%) contrast(102%);
+}
+
 
 /* SIDEBAR AND MENU - enables sliding in rigths proportions  ==========================*/
 

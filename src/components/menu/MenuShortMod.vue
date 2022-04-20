@@ -28,7 +28,7 @@
     <span class="parameter">
       <select id="choix-op-short" @change="displayCurveWithSelectedOperation">
         <option selected="yes">Addition</option>
-        <option>Multiplication</option></select
+        <option disabled>Multiplication</option></select
       ><br />
     </span>
 
