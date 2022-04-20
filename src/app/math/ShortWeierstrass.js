@@ -246,7 +246,7 @@ export class ShortWeierstrass extends ModCurveGraph {
         let negPoint = getCoord(this.newPoint(addPoint[0],addPoint[1]).neg());
         var i=1;
         var j=1;
-        for (i=1; i<(listPoints.length+1) ; i++ ){
+        for (i=1; i<listPoints.length ; i++ ){
             if ((addPoint[0]==this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1]==this.getValueOfParameter(`y_{${i}}`))){
                 this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint })
                 var idAdd=i;
@@ -264,13 +264,5 @@ export class ShortWeierstrass extends ModCurveGraph {
             }  
         }
           
-    }
-
-    displayInfinity(){
-        this.calculator.removeExpressions([
-            { id: `e` },
-            { id: `f` },
-            { id: `s_{${this.segmentId}}` },
-        ]);
     }
 }
