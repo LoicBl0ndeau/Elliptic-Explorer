@@ -385,9 +385,8 @@ export class ModCurveGraph extends Graphic {
   * @constructor
   * @param {string} element - The ID of the HTML element where the calculator will be.
   */
-  constructor(element, p) {
+  constructor(element) {
     super(element);
-    this.p = p;
     this.calculator.updateSettings({
       showGrid: false,
       showXAxis: false,
@@ -469,8 +468,8 @@ export class ModCurveGraph extends Graphic {
         //selectionner le point infini
         if ((x_arrondi == Math.round(that.getValueOfParameter(`x_{${listPoints.length}}`))) && ((that.getValueOfParameter(`y_{${listPoints.length}}`) - 0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`) + 0.5))) {
           // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
-          isSecondPoint ? that.selectedPoints[1] = [null, null] : that.selectedPoints[0] = [null, null];
-          isSecondPoint ? that.idSelectedPoints[1] = listPoints.length : that.idSelectedPoints[0] = listPoints.length;
+          isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
+          isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
           isSecondPoint = !isSecondPoint;
         }
 

@@ -19,7 +19,7 @@
 
     <span class="parameter">
       <label>p</label>
-      <input id="p" placeholder="prime number"/><br />
+      <input id="p" /><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
 
