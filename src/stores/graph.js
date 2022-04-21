@@ -86,6 +86,15 @@ export const graphStore = defineStore('graph', {
         newY = `y_{n${pointId}}`;
       }
       this.graph.setValueOfParameter(`y_{${pointId}}`, newY)
-    }
+    },
+    displayLines(bool) {
+      this.graph.showLines(bool);
+    },
+    displayLabels(bool) {
+      this.graph.showLabels(bool);
+    },
+    displaySegments(bool) {
+      this.graph.showSegments(bool);
+    },
   }
 });

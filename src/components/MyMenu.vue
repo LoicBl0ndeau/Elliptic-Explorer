@@ -14,12 +14,42 @@
     @mouseover="toggleSidebar"
     @mouseout="toggleSidebar"
   >
+    <div id="graph-settings" style="display: none">
+      <div id="options">
+        <h3>Graph Parameters</h3>
+
+        Show lines :
+        <input
+          type="checkbox"
+          id="showLinesCheckbox"
+          @change="graphS.displayLines(!getCheckBoxValue('showLinesCheckbox'))"
+          checked
+        /><br />
+        Show labels :
+        <input
+          type="checkbox"
+          id="showLabelsCheckbox"
+          @change="graphS.displayLabels(getCheckBoxValue('showLabelsCheckbox'))"
+          checked
+        /><br />
+        Show segments :
+        <input
+          type="checkbox"
+          id="showSegmentsCheckbox"
+          @change="
+            graphS.displaySegments(getCheckBoxValue('showSegmentsCheckbox'))
+          "
+          checked
+        /><br />
+      </div>
+    </div>
+
     <a @click="open('about')">
       <img
         class="material-icons filter-orange"
         src="images/info_black_24dp.svg"
       />
-      <span class="icon-text">About EE</span> </a
+      <span class="icon-text">About EE</span></a
     ><br />
 
     <a @click="open('shortmod')">
@@ -69,6 +99,14 @@
         src="images/push_pin_black_24dp-filled.svg"
       />
     </a>
+
+    <img
+      id="graph-settings-icon"
+      class="material-icons filter-orange"
+      src="images/settings_black_24dp.svg"
+      style="display: none"
+      @click="changeGraphParamDisplay()"
+    />
   </div>
 </template>
 
@@ -78,6 +116,7 @@ import MenuShortMod from "./menu/MenuShortMod";
 import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
+import { graphStore } from "@/stores/graph.js";
 
 export default {
   name: "MyMenu",
@@ -86,6 +125,11 @@ export default {
     MenuWeierstrass,
     MenuMontgomery,
     MenuEdwards,
+  },
+  setup() {
+    const graphS = graphStore();
+
+    return { graphS };
   },
   data() {
     return {
@@ -119,14 +163,16 @@ export default {
     /** Open the selected menu, close the others. */
     open(menu) {
       if (menu == "about") {
-        // hide graph and show about div
+        // hide graph and graph param; show about div
         document.getElementById("about-div").style.display = "inline";
         document.getElementById("graph-div").style.display = "none";
-      }
-      else {
-        // hide about div and show graph
+        document.getElementById("graph-settings").style.display = "none";
+        document.getElementById("graph-settings-icon").style.display = "none";
+      } else {
+        // hide about div; show graph and graph param
         document.getElementById("about-div").style.display = "none";
         document.getElementById("graph-div").style.display = "inline";
+        document.getElementById("graph-settings-icon").style.display = "inline";
       }
       // get the curves names
       let keysOfIsOpen = Object.keys(this.isOpen);
@@ -169,13 +215,25 @@ export default {
     // change pin boolean value and change pin icon
     changePinStatus() {
       if (this.pinned) {
-        document.getElementById("pin").className = "material-icons-outlined filter-orange";
+        document.getElementById("pin").className =
+          "material-icons-outlined filter-orange";
         document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
       } else {
-        document.getElementById("pin").className = "material-icons filter-orange";
-        document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
+        document.getElementById("pin").className =
+          "material-icons filter-orange";
+        document.getElementById("pin").src =
+          "images/push_pin_black_24dp-filled.svg";
       }
       this.pinned = !this.pinned;
+    },
+    changeGraphParamDisplay() {
+      let status = document.getElementById("graph-settings").style.display;
+      if (status == "block")
+        document.getElementById("graph-settings").style.display = "none";
+      else document.getElementById("graph-settings").style.display = "block";
+    },
+    getCheckBoxValue(htmlID) {
+      return document.getElementById(htmlID).checked;
     },
   },
 };

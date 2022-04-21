@@ -98,7 +98,25 @@ body {
   position: absolute;
   top: 0;
   margin-top: 5px;
-  vertical-align: middle;
+  padding-bottom: 3px;
+  font-size: 30px;
+}
+
+#graph-settings {
+  color: white;
+  padding: 10px 20px;
+  margin: 20px;
+  border: dotted;
+  border-color: white;
+  text-align: right;
+
+}
+
+#graph-settings-icon {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  margin-top: 5px;
   padding-bottom: 3px;
   font-size: 30px;
 }
