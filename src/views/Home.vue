@@ -1,7 +1,10 @@
 <template>
   <MyMenu />
+  <!-- the content outside the menu should always be
+  in this "main" div. -->
   <div id="main">
     <div id="about-div">
+      <!-- english by default -->
       <AccueilAnglais />
     </div>
     <div id="graph-div">

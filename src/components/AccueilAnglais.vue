@@ -70,7 +70,7 @@
         Enjoy the experience !!!!
     </p>
     <p align='center'>
-      <img :src="require('@/views/img/bannierejunia.jpg')" width="800" height="150"/>
+      <img src="images/bannierejunia.jpg" width="800" height="150"/>
     </p>
   </div>
 </template>

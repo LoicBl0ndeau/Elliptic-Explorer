@@ -1,9 +1,9 @@
 <template>
+  <!-- NOTE: the id MUST be "calculator", otherwise the graph won't display, see stores/graph.js -->
   <div id="calculator"></div>
 </template>
 
 <script>
-// import { WeierstrassGraph } from "@/app/graph/supported_curves_on_R/weierstrass/WeierstrassGraph.js";
 
 export default {
   name: "MyGraph",

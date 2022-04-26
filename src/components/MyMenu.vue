@@ -1,19 +1,11 @@
 <template>
-  <!-- <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-  />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
-  /> -->
-
   <div
     id="mySidebar"
     class="sidebar"
     @mouseover="toggleSidebar"
     @mouseout="toggleSidebar"
   >
+    <!-- param menu, not displayed by default -->
     <div id="graph-settings" style="display: none">
       <div id="options">
         <h3>Graph Parameters</h3>
@@ -133,7 +125,7 @@ export default {
   },
   data() {
     return {
-      // param affichage sous menus
+      // list of the of the submenus in the sidebar
       isOpen: {
         about: false,
         shortmod: false,
@@ -141,8 +133,9 @@ export default {
         montgomery: false,
         edwards: false,
       },
-      // the menu is fixed by default
-      pinned: true,
+      // the menu is fixed and not minized by default
+      isPinned: true,
+      isMinimized: false,
       // get computed size of sidebar when mouse is on or over
       width: getComputedStyle(document.documentElement).getPropertyValue(
         "--sidebar-width"
@@ -161,17 +154,21 @@ export default {
   },
   methods: {
     /** Open the selected menu, close the others. */
-    open(menu) {
-      if (menu == "about") {
-        // hide graph and graph param; show about div
-        document.getElementById("about-div").style.display = "inline";
+    open(selectedMenu) {
+      // special case for the "about" submenu, as it's not a curve.
+      if (selectedMenu == "about") {
+        // hide graph; display "about-div" id
         document.getElementById("graph-div").style.display = "none";
+        document.getElementById("about-div").style.display = "inline";
+        // hide graph optionnal settings
         document.getElementById("graph-settings").style.display = "none";
         document.getElementById("graph-settings-icon").style.display = "none";
       } else {
-        // hide about div; show graph and graph param
+        // display a curve
+        // hide "about div"; displays graph and graph param in menu
         document.getElementById("about-div").style.display = "none";
         document.getElementById("graph-div").style.display = "inline";
+        // display gear icon for optionnal settings
         document.getElementById("graph-settings-icon").style.display = "inline";
       }
       // get the curves names
@@ -180,7 +177,7 @@ export default {
       keysOfIsOpen.shift();
 
       for (const curvename of keysOfIsOpen) {
-        if (curvename == menu) {
+        if (curvename == selectedMenu) {
           this.isOpen[curvename] = true;
           this.$refs[curvename].displayDefaultCurve();
           // show expand arrow
@@ -194,43 +191,43 @@ export default {
         }
       }
     },
-    // hide sidebar on mouse over if pinned=false
     toggleSidebar() {
-      if (!this.pinned) {
-        if (this.mini) {
-          // console.log("opening sidebar");
+      if (!this.isPinned) {
+        // hide sidebar on mouse over if menu not pinnned
+        if (this.isMinimized) {
+          // open sidebar menu
           document.getElementById("mySidebar").style.width = this.width;
           document.getElementById("main").style.marginLeft =
             this.mainIDMarginLeft;
-          this.mini = false;
         } else {
-          // console.log("closing sidebar");
+          // close sidebar menu
           document.getElementById("mySidebar").style.width = this.miniWidth;
           document.getElementById("main").style.marginLeft =
             this.mainIDMarginLeftMinimized;
-          this.mini = true;
         }
+        this.isMinimized = !this.isMinimized;
       }
     },
-    // change pin boolean value and change pin icon
     changePinStatus() {
-      if (this.pinned) {
+      if (this.isPinned) {
+        // change pin icon to its outlined version
         document.getElementById("pin").className =
           "material-icons-outlined filter-orange";
         document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
       } else {
+        // fill pin icon
         document.getElementById("pin").className =
           "material-icons filter-orange";
-        document.getElementById("pin").src =
-          "images/push_pin_black_24dp-filled.svg";
+        document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
       }
-      this.pinned = !this.pinned;
+      this.isPinned = !this.isPinned;
     },
     changeGraphParamDisplay() {
       let status = document.getElementById("graph-settings").style.display;
       if (status == "block")
         document.getElementById("graph-settings").style.display = "none";
-      else document.getElementById("graph-settings").style.display = "block";
+      else
+        document.getElementById("graph-settings").style.display = "block";
     },
     getCheckBoxValue(htmlID) {
       return document.getElementById(htmlID).checked;
