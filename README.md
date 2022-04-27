@@ -84,7 +84,7 @@ Pour comprendre le concept de stores et les avantages de la libraire Pinia :
 
 `"Pinia is a store library for Vue, it allows you to share a state across components/pages."`
 
-L'intérêt des stores est donc de pouvoir partager la lecture/écriture d'une même variable entre plusieurs components/pages, mais également rendre accessibles des méthodes à tous les components/pages.
+L'intérêt des stores est donc de pouvoir partager la lecture/écriture d'une même variable entre plusieurs components/pages, mais également de rendre accessibles des méthodes à tous les components/pages.
 
 Nous utilisons deux *stores* pour cette app. 
 
