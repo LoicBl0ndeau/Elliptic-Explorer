@@ -87,9 +87,7 @@ L'intérêt des stores est donc de pouvoir partager la lecture/écriture d'une m
 Nous utilisons deux *stores* pour cette app. 
 
 - ![src/stores/menu.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/menu.js) pour centraliser certaines méthodes utilisées par les compenents du menu.
-- ![src/stores/graph.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/graph.js) qui initialise l'affichage des graphiques desmosAPI à partir de notre librairie `
-![Graphical Interface](https://github.com/DanielArian/elliptic-explorer/tree/main/src/app/graph).
+- ![src/stores/graph.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/graph.js) qui initialise l'affichage des graphiques desmosAPI à partir de notre librairie 
+![GraphicalInterface](https://github.com/DanielArian/elliptic-explorer/tree/main/src/app/graph) .
 De plus, elle centralise les méthodes utilisées sur le site et disponibles pour toutes les 
-instances de graph générées par cette librairie. Vous pourrez également remarquer qu'une variable 
-`graph` est initialisée à `null` : c'est lorsqu'aucun graph n'a encore été affiché. Une fois qu'un
-graph est généré, cette variable prend la valeur de l'instance du graph (cf. le code) dans le store.
+instances de graph générées par cette librairie. 
