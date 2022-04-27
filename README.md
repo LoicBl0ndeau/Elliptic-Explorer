@@ -1,5 +1,6 @@
 # elliptic-explorer
 
+
 ## Project setup
 ```
 npm install
@@ -46,7 +47,7 @@ Toutefois, les remarques ci-dessous pourront vous aider à le reprendre en main.
 
 #### Le menu latéral
 
-Si vous souhaitez créer une nouvelle *view*, il est nécessaire de reprendre la structure
+Si vous souhaitez créer une nouvelle *view* au site, il est nécessaire de reprendre la structure
 suivante :
 
 ```html
@@ -91,3 +92,63 @@ Nous utilisons deux *stores* pour cette app.
 ![GraphicalInterface](https://github.com/DanielArian/elliptic-explorer/tree/main/src/app/graph) .
 De plus, elle centralise les méthodes utilisées sur le site et disponibles pour toutes les 
 instances de graph générées par cette librairie. 
+
+#### Rajouter une nouvelle courbe (sous-menu) au menu
+
+1. Créer un component dans ![src/components/menu](https://github.com/DanielArian/elliptic-explorer/tree/main/src/components/menu). Ce component doit **au minimum** avoir cette structure :
+
+```html
+<template>
+  <div class="submenu">
+      <!-- whatever you want -->
+</template>
+
+<script>
+export default {
+  name: "<YourComponentName>",
+  methods: {
+    displayDefaultCurve() {
+      // whatever you want
+    },
+  }
+</script>
+
+<style lang="css" scoped >
+    @import "@/css/submenu.css";
+</style>
+```
+
+Pour la suite, on supposera que ce fichier est `YourComponentName.vue`.
+
+2. Intégrer ce sous-menu au menu. 
+
+Commencez par importer votre component dans la section *script* du component. Puis, rajouter dans
+la partie *template* le code suivant :
+
+```html
+<a @click="open('<YourCurveName>')">
+      <img
+        id="menu-<YourCurveName>"
+        class="material-icons filter-orange"
+        src="images/chevron_right_black_24dp.svg"
+      />
+      <span class="icon-text">Title of submenu</span> </a
+    ><br />
+    <YourComponentName v-show="isOpen.<YourCurveName>" ref="<YourCurveName>" />
+```
+
+Puis dans la partie script, dans la méthode `data()`, rajouter une entrée au dictionnaire
+`isOpen` avec le nom de votre courbe dont la valeur est false. Par exemple :
+
+```js
+isOpen: {
+    about: false,
+    shortmod: false,
+    weierstrass: false,
+    montgomery: false,
+    edwards: false,
+    <YourCurveName>: false,       // <-- new line added
+    },
+```
+
+3. Fini !
