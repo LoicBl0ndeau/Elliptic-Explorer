@@ -1,5 +1,6 @@
 # elliptic-explorer
 
+![Elliptic Explorer v1](https://i.imgur.com/vnKWUWQ.gif)
 
 ## Project setup
 ```
@@ -28,17 +29,17 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Génération de graphiques
 
-A l'heure actuelle, nous n'utilisons que la librairie ![DesmosAPI](https://www.desmos.com/api/v1.7/docs/index.html) pour générer les graphiques.
-L'ensemble de nos fonctions pour générer ces courbes sont documentées dans ![GraphicalInterfaceDocumentation/index.html](https://github.com/DanielArian/elliptic-explorer/blob/main/GraphicalInterfaceDocumentation/index.html)
+A l'heure actuelle, nous n'utilisons que la librairie [DesmosAPI](https://www.desmos.com/api/v1.7/docs/index.html) pour générer les graphiques.
+L'ensemble de nos fonctions pour générer ces courbes sont documentées dans [GraphicalInterfaceDocumentation/index.html](https://github.com/DanielArian/elliptic-explorer/blob/main/GraphicalInterfaceDocumentation/index.html)
 
 Remarque: afin de pouvoir la dernière version (v1.7) dans l'environnement NodeJs, nous avons du créer un package desmosAPI
-sur npmjs.com. Pour y acceder : ![https://www.npmjs.com/package/desmosapi](https://www.npmjs.com/package/desmosapi)
+sur npmjs.com. Pour y acceder : [https://www.npmjs.com/package/desmosapi](https://www.npmjs.com/package/desmosapi)
 
 ### Calculs cryptographiques
 
-Pour les calculs modulaires, nous utilisons la librairie ![elliptic](https://github.com/indutny/elliptic).
+Pour les calculs modulaires, nous utilisons la librairie [elliptic](https://github.com/indutny/elliptic).
 Pour le moment, nous avons uniquement implémenté l'arithmétiques modulaire sur les courbes de *Short Weierstrass*.
-Vous retrouverez nos fonctions documentées dans ![/src/app/math/ShortWeierstrass.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/app/math/ShortWeierstrass.js)
+Vous retrouverez nos fonctions documentées dans [/src/app/math/ShortWeierstrass.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/app/math/ShortWeierstrass.js)
 
 ### Le site en lui même
 
@@ -87,15 +88,15 @@ L'intérêt des stores est donc de pouvoir partager la lecture/écriture d'une m
 
 Nous utilisons deux *stores* pour cette app. 
 
-- ![src/stores/menu.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/menu.js) pour centraliser certaines méthodes utilisées par les compenents du menu.
-- ![src/stores/graph.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/graph.js) qui initialise l'affichage des graphiques desmosAPI à partir de notre librairie 
-![GraphicalInterface](https://github.com/DanielArian/elliptic-explorer/tree/main/src/app/graph) .
+- [src/stores/menu.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/menu.js) pour centraliser certaines méthodes utilisées par les compenents du menu.
+- [src/stores/graph.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/graph.js) qui initialise l'affichage des graphiques desmosAPI à partir de notre librairie 
+[GraphicalInterface](https://github.com/DanielArian/elliptic-explorer/tree/main/src/app/graph) .
 De plus, elle centralise les méthodes utilisées sur le site et disponibles pour toutes les 
 instances de graph générées par cette librairie. 
 
 #### Rajouter une nouvelle courbe (sous-menu) au menu
 
-1. Créer un component dans ![src/components/menu](https://github.com/DanielArian/elliptic-explorer/tree/main/src/components/menu). Ce component doit **au minimum** avoir cette structure :
+1. Créer un component dans [src/components/menu](https://github.com/DanielArian/elliptic-explorer/tree/main/src/components/menu). Ce component doit **au minimum** avoir cette structure :
 
 ```html
 <template>
