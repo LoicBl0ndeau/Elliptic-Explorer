@@ -46,7 +46,7 @@ Vous retrouverez nos fonctions documentées dans [/src/app/math/ShortWeierstrass
 L'architecture du site est *classique* pour une app en VueJs.
 Toutefois, les remarques ci-dessous pourront vous aider à le reprendre en main.
 
-#### Le menu latéral
+#### Ajouter une view
 
 Si vous souhaitez créer une nouvelle *view* au site, il est nécessaire de reprendre la structure
 suivante :
