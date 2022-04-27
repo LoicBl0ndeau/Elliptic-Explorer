@@ -49,7 +49,7 @@ Toutefois, les remarques ci-dessous pourront vous aider à le reprendre en main.
 Si vous souhaitez créer une nouvelle *view*, il est nécessaire de reprendre la structure
 suivante :
 
-```js
+```html
 <template>
   <MyMenu />
   <!-- the content outside the menu should always be
