@@ -32,13 +32,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 A l'heure actuelle, nous n'utilisons que la librairie [DesmosAPI](https://www.desmos.com/api/v1.7/docs/index.html) pour générer les graphiques.
 L'ensemble de nos fonctions pour générer ces courbes sont documentées dans [GraphicalInterfaceDocumentation/index.html](https://github.com/DanielArian/elliptic-explorer/blob/main/GraphicalInterfaceDocumentation/index.html)
 
-Remarque: afin de pouvoir la dernière version (v1.7) dans l'environnement NodeJs, nous avons du créer un package desmosAPI
-sur npmjs.com. Pour y acceder : [https://www.npmjs.com/package/desmosapi](https://www.npmjs.com/package/desmosapi)
+Remarque: afin de pouvoir la dernière version (v1.7) dans l'environnement NodeJs, nous avons dû créer un package desmosAPI
+sur npmjs.com. Pour y accéder : [https://www.npmjs.com/package/desmosapi](https://www.npmjs.com/package/desmosapi)
 
 ### Calculs cryptographiques
 
 Pour les calculs modulaires, nous utilisons la librairie [elliptic](https://github.com/indutny/elliptic).
-Pour le moment, nous avons uniquement implémenté l'arithmétiques modulaire sur les courbes de *Short Weierstrass*.
+Pour le moment, nous avons uniquement implémenté l'arithmétique modulaire sur les courbes de *Short Weierstrass*.
 Vous retrouverez nos fonctions documentées dans [/src/app/math/ShortWeierstrass.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/app/math/ShortWeierstrass.js)
 
 ### Le site en lui même
@@ -75,7 +75,7 @@ export default {
 ```
 
 Cela permet au CSS de correctement fonctionner, notamment si vous souhaitez réduire
-le menu, pour réajuster le contenu au dimensions de la page.
+le menu, pour réajuster le contenu aux dimensions de la page.
 
 #### Les Stores (librairie Pinia)
 
