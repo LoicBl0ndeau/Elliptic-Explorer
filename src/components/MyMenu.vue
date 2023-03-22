@@ -84,6 +84,16 @@
     ><br />
     <MenuEdwards v-show="isOpen.edwards" ref="edwards" />
 
+    <a @click="open('TestVuePeriodique2D')">
+      <img
+        id="menu-TestVuePeriodique2D"
+        class="material-icons filter-orange"
+        src="images/chevron_right_black_24dp.svg"
+      />
+      <span class="icon-text">Test Vue Périodique 2D</span> </a
+    ><br />
+    <MenuTestVuePeriodique2D v-show="isOpen.TestVuePeriodique2D" ref="TestVuePeriodique2D" />
+
     <a @click="changePinStatus">
       <img
         id="pin"
@@ -109,6 +119,7 @@ import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
 import { graphStore } from "@/stores/graph.js";
+import MenuTestVuePeriodique2D from "./menu/MenuTestVuePeriodique2D.vue";
 
 export default {
   name: "MyMenu",
@@ -117,7 +128,8 @@ export default {
     MenuWeierstrass,
     MenuMontgomery,
     MenuEdwards,
-  },
+    MenuTestVuePeriodique2D
+},
   setup() {
     const graphS = graphStore();
 
@@ -132,6 +144,7 @@ export default {
         weierstrass: false,
         montgomery: false,
         edwards: false,
+        TestVuePeriodique2D: false,
       },
       // the menu is fixed and not minized by default
       isPinned: true,
