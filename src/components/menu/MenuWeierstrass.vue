@@ -1,5 +1,8 @@
 <template>
   <div class="submenu">
+    <h3 class="section">General Curve Equation</h3>
+    
+    <div id="general-weierstrass-eq"></div>
 
     <h3 class="section">Curve Equation</h3>
     
@@ -11,7 +14,8 @@
       <label>a1</label>
       <input
         id="a1"
-        @input="menuS.setValueOnGraphFromUserInput('a_{1}', 'a1')"
+        @input="menuS.setValueOnGraphFromUserInput('a_{1}', 'a1');updateLatex();"
+        type="number"
       /><br />
     </span>
 
@@ -19,7 +23,8 @@
       <label>a3</label>
       <input
         id="a3"
-        @input="menuS.setValueOnGraphFromUserInput('a_{3}', 'a3')"
+        @input="menuS.setValueOnGraphFromUserInput('a_{3}', 'a3');updateLatex();"
+        type="number"
       /><br />
     </span>
 
@@ -27,7 +32,8 @@
       <label>a2</label>
       <input
         id="a2"
-        @input="menuS.setValueOnGraphFromUserInput('a_{2}', 'a2')"
+        type="number"
+        @input="menuS.setValueOnGraphFromUserInput('a_{2}', 'a2');updateLatex();"
       /><br />
     </span>
 
@@ -35,7 +41,8 @@
       <label>a4</label>
       <input
         id="a4"
-        @input="menuS.setValueOnGraphFromUserInput('a_{4}', 'a4')"
+        type="number"
+        @input="menuS.setValueOnGraphFromUserInput('a_{4}', 'a4');updateLatex();"
       /><br />
     </span>
 
@@ -43,7 +50,8 @@
       <label>a6</label>
       <input
         id="a6"
-        @input="menuS.setValueOnGraphFromUserInput('a_{6}', 'a6')"
+        type="number"
+        @input="menuS.setValueOnGraphFromUserInput('a_{6}', 'a6');updateLatex();"
       /><br />
     </span>
 
@@ -64,6 +72,7 @@
       <input
         id="x1"
         class="coord"
+        type="number"
         @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1')"
       />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
@@ -74,6 +83,7 @@
         <label>x2</label>
         <input
           id="x2"
+          type="number"
           class="coord"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2')"
         />
@@ -116,7 +126,7 @@ export default {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
     // display curve equation
-    this.menuS.displayLaTeX('weierstrass-eq', "y^2 + a_1 xy + a_3y = \\newline x^3 + a_2 x^2 + a_4 x + a_6");
+    this.menuS.displayLaTeX('general-weierstrass-eq', "y^2 + a_1 xy + a_3y = \\newline x^3 + a_2 x^2 + a_4 x + a_6");
   },
   methods: {
     displayDefaultCurve() {
@@ -128,6 +138,9 @@ export default {
 
       let xP = -2;
       let xQ = 1;
+
+      // Display latex
+      this.menuS.displayLaTeX('weierstrass-eq', "y^2 + "+a1+" xy + "+a3+"y = \\newline x^3 + "+a2+" x^2 + "+a4+" x + "+a6);
 
       this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
       this.graphS.showAddition(xP, xQ);
@@ -143,7 +156,19 @@ export default {
       let a2 = this.menuS.getFloatFromInputId("a2");
       let a4 = this.menuS.getFloatFromInputId("a4");
       let a6 = this.menuS.getFloatFromInputId("a6");
+      // Display latex
+      this.menuS.displayLaTeX('weierstrass-eq', "y^2 + "+a1+" xy + "+a3+"y = \\newline x^3 + "+a2+" x^2 + "+a4+" x + "+a6);
+
       this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
+    },
+    updateLatex(){
+      let a1 = this.menuS.getFloatFromInputId("a1");
+      let a3 = this.menuS.getFloatFromInputId("a3");
+      let a2 = this.menuS.getFloatFromInputId("a2");
+      let a4 = this.menuS.getFloatFromInputId("a4");
+      let a6 = this.menuS.getFloatFromInputId("a6");
+      // Display latex
+      this.menuS.displayLaTeX('weierstrass-eq', "y^2 + "+a1+" xy + "+a3+"y = \\newline x^3 + "+a2+" x^2 + "+a4+" x + "+a6);
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();

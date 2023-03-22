@@ -1,5 +1,8 @@
 <template>
   <div class="submenu">
+    <h3 class="section">General Curve Equation</h3>
+
+    <div id="general-short-eq" ></div>
 
     <h3 class="section">Curve Equation</h3>
     
@@ -9,17 +12,17 @@
 
     <span class="parameter">
       <label>a</label>
-      <input id="a" /><br />
+      <input type="number" id="a" /><br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b" /><br />
+      <input id="b" type="number" /><br />
     </span>
 
     <span class="parameter">
       <label>p</label>
-      <input id="p" placeholder="prime number"/><br />
+      <input type="number" id="p" placeholder="prime number"/><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
 
@@ -74,8 +77,8 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
-    // display latex
-    this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
+    // Display latex  
+    this.menuS.displayLaTeX('general-short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
   },
   methods: {
     displayDefaultCurve() {
@@ -83,6 +86,8 @@ export default {
       this.menuS.setValueById("a", 2);
       this.menuS.setValueById("b", 1);
       this.menuS.setValueById("p", 5);
+      // Display Latex
+      this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
       // enables add on click
       this.graphS.getGraph.addClickPoints();
       window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
@@ -91,6 +96,7 @@ export default {
       let a = this.menuS.getIntFromInputId("a");
       let b = this.menuS.getIntFromInputId("b");
       let p = this.menuS.getIntFromInputId("p");
+      this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{'+p+'}\\equiv  x^3 + '+a+'x + '+b);
       this.graphS.displayShort(a, b, p);
       this.graphS.getGraph.addClickPoints();
     },
