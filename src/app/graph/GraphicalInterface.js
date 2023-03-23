@@ -34,7 +34,8 @@ export class Graphic {
     point: "#2c3e50",
     line: "#000000",
     segment: "#2d70b3",
-    finalPoint: "#ff0000"
+    finalPoint: "#ff0000",
+    pointOnCurve: "#388c46"
   }
 
   get getElement() {

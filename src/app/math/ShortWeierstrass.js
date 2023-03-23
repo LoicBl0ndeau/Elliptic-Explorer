@@ -223,14 +223,32 @@ export class ShortWeierstrass extends ModCurveGraph {
                 { id: `L_{2}`, latex: `L_{2}=[\\frac{m}{2}i\\operatorname{for}i=[-lm...lm]]` },
                 { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})` },
                 { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})` },
-                { id: `d`, latex: `d=(x_{${this.idSelectedPoints[0]}}y_{${this.idSelectedPoints[1]}}-x_{${this.idSelectedPoints[1]}}y_{${this.idSelectedPoints[0]}})` },
+                //{ id: `d`, latex: `d=(x_{${this.idSelectedPoints[0]}}y_{${this.idSelectedPoints[1]}}-x_{${this.idSelectedPoints[1]}}y_{${this.idSelectedPoints[0]}})` },
                 { id: `c`, latex: `c=\\left\\{\\left|a\\right|>\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{1})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{1})y_{${this.idSelectedPoints[0]}},\\left|a\\right|\\le\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{2})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{2})y_{${this.idSelectedPoints[0]}}\\right\\}` },          
             ]);
-
             this.calculator.setExpressions([
                 //{ id: `e`, latex: `\\operatorname{mod}\\left(ax+by,m\\right)\\ =\\operatorname{mod}\\left(d,m\\right)\\ \\left\\{-0.5<x<m-0.5\\right\\}\\ \\left\\{-0.5<y<m-0.5\\right\\}`, color: Graphic.Colors.curve },
                 { id: `f`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\} \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.curve },
             ]);
+
+            // Plot the points on the curve and color them in green
+            this.calculator.model.observe('expressionAnalysis', () => { //As Desmos is asynchrounous, we need to wait for the expression to be analysed
+                // get the value of 'a', 'b' and 'c'
+                var a = this.getValueOfParameter(`a`);
+                var b = this.getValueOfParameter(`b`);
+                var c = this.getValueOfParameter(`c`);
+
+                // If values in listCoordPoints solves the equation of a*x+b*y=c, we display the points in green
+                this.listCoordPoints.forEach(item => {
+                    if (c.includes(a * item[0] + b * item[1])) {
+                        //get the current index of the point
+                        var index = this.listCoordPoints.indexOf(item) + 1;
+                        //set the color of the point to green
+                        this.setExpressionParameters(`p_{${index}}`, { color: Graphic.Colors.pointOnCurve });
+                    }
+                });
+            });
+
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
         }
