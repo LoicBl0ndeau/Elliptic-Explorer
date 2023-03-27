@@ -47,17 +47,17 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @param {integer || string} y y-coordinate
      * @returns {Point} point
      */
-    newPoint(x, y) { //ATTENtion ici
-        let p = this.p;
-        while (x < -p/2) {
-            x = x + p;
-        }
-        while (y < -p/2) {
-            y = y + p;
-        }
-        console.log(x,y);
+    newPoint(x, y) {
         //Create a point on the shortW curve
-        return this.shortWcurve.point(x, y, true);
+        var point = this.shortWcurve.point(x, y, true);
+        //Coordinates are automatically set to positive so we need to convert them to negative if necessary
+        if(y < 0){
+            point.y.words[0] *= -1 //negate the y-coordinate
+        }
+        if(x < 0){
+            point.x.words[0] *= -1 //negate the x-coordinate
+        }
+        return point
     }
 
     /**
@@ -172,10 +172,10 @@ export class ShortWeierstrass extends ModCurveGraph {
         let listPoints = this.listPoints;
         var calculx;
         var calculy;
-        var screenSize = Math.round(p/2);
-        for (var y = -screenSize; y < screenSize; y++) {
+        var screenSize = Math.floor(p/2);
+        for (var y = -screenSize; y <= screenSize; y++) {
             calculy = (Math.pow(y, 2)) % p;
-            for (var x = -screenSize; x < screenSize; x++) {
+            for (var x = -screenSize; x <= screenSize; x++) {
                 calculx = (Math.pow(x, 3) + (a * x) + b) % p;
                 if (calculy == calculx) {
                     listPoints.push(this.newPoint(x, y));
@@ -183,14 +183,6 @@ export class ShortWeierstrass extends ModCurveGraph {
             }
         }
         listPoints.push(this.newPoint(null, null));
-        console.log("ah");
-        console.log(listPoints);
-        listPoints.forEach(item => {
-            console.log("b!");
-            console.log(this.getCoord(item));
-            //console.log(item.x.words,item.y.words);
-        });
-
     }
 
     /**
@@ -202,7 +194,6 @@ export class ShortWeierstrass extends ModCurveGraph {
         listPoints.forEach(item => {
             listCoordPoints.push(this.getCoord(item));
         });
-        console.log(listCoordPoints);
     }
 
     /**
@@ -226,7 +217,8 @@ export class ShortWeierstrass extends ModCurveGraph {
      */
     displayModulo() {
         var modulo = this.p;
-        var lignes =5;
+        var lignes = Math.floor(Math.sqrt(modulo));
+        console.log('lignes', lignes);
         try {
             this.calculator.setExpressions([
                 { id: `m`, latex: `m=${modulo}` },
@@ -235,12 +227,8 @@ export class ShortWeierstrass extends ModCurveGraph {
                 { id: `L_{2}`, latex: `L_{2}=[\\frac{m}{2}i\\operatorname{for}i=[-lm...lm]]` },
                 { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})` },
                 { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})` },
-                //{ id: `d`, latex: `d=(x_{${this.idSelectedPoints[0]}}y_{${this.idSelectedPoints[1]}}-x_{${this.idSelectedPoints[1]}}y_{${this.idSelectedPoints[0]}})` },
                 { id: `c`, latex: `c=\\left\\{\\left|a\\right|>\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{1})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{1})y_{${this.idSelectedPoints[0]}},\\left|a\\right|\\le\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{2})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{2})y_{${this.idSelectedPoints[0]}}\\right\\}` },          
-            ]);
-            this.calculator.setExpressions([
-                //{ id: `e`, latex: `\\operatorname{mod}\\left(ax+by,m\\right)\\ =\\operatorname{mod}\\left(d,m\\right)\\ \\left\\{-0.5<x<m-0.5\\right\\}\\ \\left\\{-0.5<y<m-0.5\\right\\}`, color: Graphic.Colors.curve },
-                { id: `f`, latex: `(ax+by)=c \\left\\{0<x<m\\right\\} \\left\\{0<y<m\\right\\}`, color: Graphic.Colors.curve },
+                { id: `f`, latex: `(ax+by)=c \\left\\{-${this.p/2}<x<${this.p/2}\\right\\} \\left\\{-${this.p/2}<y<${this.p/2}\\right\\}`, color: Graphic.Colors.curve }, //Here to choose the centering of the square for the lines of the modulo
             ]);
 
             // Plot the points on the curve and color them in green
@@ -260,7 +248,6 @@ export class ShortWeierstrass extends ModCurveGraph {
                     }
                 });
             });
-
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
         }

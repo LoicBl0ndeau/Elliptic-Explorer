@@ -416,7 +416,7 @@ export class ModCurveGraph extends Graphic {
     var i=0;
     try {
       this.calculator.setExpressions([
-          { id: `L_{3}`, latex: `L_{3}=\\left[-${this.p/2}...${this.p/2}\\right]` }, // Here to set the position of points on the x axis
+          { id: `L_{3}`, latex: `L_{3}=\\left[-${Math.floor(this.p/2)}...${Math.floor(this.p/2)}\\right]` }, // Here to set the position of points on the x axis
       ]);
       console.log(this.calculator.getExpressions());
     } catch (error) {
@@ -425,7 +425,7 @@ export class ModCurveGraph extends Graphic {
     for(i=0; i<this.p; i++){
       try{
         this.calculator.setExpressions([
-          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i-this.p/2})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point}, // Here to set the position of points on the y axis
+          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i-Math.floor(this.p/2)})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point}, // Here to set the position of points on the y axis
       ]);
       }catch (error) {
         throw new Error(`An error has occured adding modular lines : ${error}`);
