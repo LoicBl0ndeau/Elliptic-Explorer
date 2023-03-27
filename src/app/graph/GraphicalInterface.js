@@ -394,8 +394,10 @@ export class ModCurveGraph extends Graphic {
       showXAxis: false,
       showYAxis: false,
     });
-    this.calculator.setMathBounds({ bottom: -0.5, top: this.p*1.5 + 0.5, left: -0.5, right: this.p + 0.5 })
-    this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(0,0),(${this.p},0),(${this.p},${this.p}),(0,${this.p})])`,fill:0,color:Graphic.Colors.line})
+    // Set the center point of the screen (only for the user, not for the graph)
+    this.calculator.setMathBounds({ bottom: -0.5-this.p/2, top: 1.5*this.p/2 + 0.5, left: -0.5-this.p/2, right: 0.5+this.p/2});
+    // Set the border of the screen
+    this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(-${this.p/2},-${this.p/2}),(${this.p/2},-${this.p/2}),(${this.p/2},${this.p/2}),(-${this.p/2},${this.p/2})])`,fill:0,color:Graphic.Colors.line});
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
@@ -414,15 +416,16 @@ export class ModCurveGraph extends Graphic {
     var i=0;
     try {
       this.calculator.setExpressions([
-          { id: `L_{3}`, latex: `L_{3}=\\left[0...${this.p}-1\\right]` },
+          { id: `L_{3}`, latex: `L_{3}=\\left[-${this.p/2}...${this.p/2}\\right]` }, // Here to set the position of points on the x axis
       ]);
+      console.log(this.calculator.getExpressions());
     } catch (error) {
       throw new Error(`An error has occured adding modular lines : ${error}`);
     }
     for(i=0; i<this.p; i++){
       try{
         this.calculator.setExpressions([
-          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point},
+          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i-this.p/2})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point}, // Here to set the position of points on the y axis
       ]);
       }catch (error) {
         throw new Error(`An error has occured adding modular lines : ${error}`);

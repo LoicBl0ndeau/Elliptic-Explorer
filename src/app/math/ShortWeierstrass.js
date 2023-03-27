@@ -10,7 +10,7 @@ import { Graphic, ModCurveGraph } from '../graph/GraphicalInterface.js';
 export function getCoord(point) {
     if (point.inf)
         return [null, null];
-    return [point.getX().toNumber(), point.getY().toNumber()];
+    return [point.x.words[0], point.y.words[0]];
 }
 
 export class ShortWeierstrass extends ModCurveGraph {
@@ -47,15 +47,17 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @param {integer || string} y y-coordinate
      * @returns {Point} point
      */
-    newPoint(x, y) {
+    newPoint(x, y) { //ATTENtion ici
         let p = this.p;
-        while (x < 0) {
+        while (x < -p/2) {
             x = x + p;
         }
-        while (y < 0) {
+        while (y < -p/2) {
             y = y + p;
         }
-        return this.shortWcurve.point(x, y, false);
+        console.log(x,y);
+        //Create a point on the shortW curve
+        return this.shortWcurve.point(x, y, true);
     }
 
     /**
@@ -66,8 +68,8 @@ export class ShortWeierstrass extends ModCurveGraph {
     getCoord(point) {
         let p = this.p;
         if (point.inf)
-            return [p/2, 1.5*p];
-        return [point.getX().toNumber(), point.getY().toNumber()];
+            return [0, 1.5*p/2 + 0.5];
+        return [point.x.words[0], point.y.words[0]];
     }
 
 
@@ -170,16 +172,25 @@ export class ShortWeierstrass extends ModCurveGraph {
         let listPoints = this.listPoints;
         var calculx;
         var calculy;
-        for (var y = 0; y < p; y++) {
+        var screenSize = Math.round(p/2);
+        for (var y = -screenSize; y < screenSize; y++) {
             calculy = (Math.pow(y, 2)) % p;
-            for (var x = 0; x < p; x++) {
+            for (var x = -screenSize; x < screenSize; x++) {
                 calculx = (Math.pow(x, 3) + (a * x) + b) % p;
                 if (calculy == calculx) {
                     listPoints.push(this.newPoint(x, y));
                 }
             }
         }
-        listPoints.push(this.newPoint(null, null))
+        listPoints.push(this.newPoint(null, null));
+        console.log("ah");
+        console.log(listPoints);
+        listPoints.forEach(item => {
+            console.log("b!");
+            console.log(this.getCoord(item));
+            //console.log(item.x.words,item.y.words);
+        });
+
     }
 
     /**
@@ -191,6 +202,7 @@ export class ShortWeierstrass extends ModCurveGraph {
         listPoints.forEach(item => {
             listCoordPoints.push(this.getCoord(item));
         });
+        console.log(listCoordPoints);
     }
 
     /**
