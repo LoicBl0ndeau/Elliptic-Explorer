@@ -45,19 +45,20 @@ export class ShortWeierstrass extends ModCurveGraph {
      * Create the point with coordinates (x, y) from the curve (the point is linked to the curve)
      * @param {integer || string} x x-coordinate
      * @param {integer || string} y y-coordinate
+     * @param {boolean} isRed true if force redgomery representation, false otherwise
      * @returns {Point} point
      */
-    newPoint(x, y) {
+    newPoint(x, y, isRed) {
         //Create a point on the shortW curve
-        var point = this.shortWcurve.point(x, y, true);
+        var point = this.shortWcurve.point(x, y, isRed);
         //Coordinates are automatically set to positive so we need to convert them to negative if necessary
         if(y < 0){
-            point.y.words[0] *= -1 //negate the y-coordinate
+            point.y.words[0] *= -1; //negate the y-coordinate
         }
         if(x < 0){
-            point.x.words[0] *= -1 //negate the x-coordinate
+            point.x.words[0] *= -1; //negate the x-coordinate
         }
-        return point
+        return point;
     }
 
     /**
@@ -67,7 +68,7 @@ export class ShortWeierstrass extends ModCurveGraph {
      */
     getCoord(point) {
         let p = this.p;
-        if (point.inf)
+        if (point.inf) //if the point is the point at infinity
             return [0, 1.5*p/2 + 0.5];
         return [point.x.words[0], point.y.words[0]];
     }
@@ -100,7 +101,23 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @returns {Point} Point resulting from the addition P+Q
      */
     addPoints(P, Q) {
-        return (P.add(Q));
+        if(P.inf != true && Q.inf != true){
+            var lambda = (Q.y.words[0] - P.y.words[0]) / (Q.x.words[0] - P.x.words[0]);
+            var x = lambda**2 - P.x.words[0] - Q.x.words[0];
+            var y = lambda * (P.x.words[0] - x) - P.y.words[0];
+            if(x == "Infinity" || y == "Infinity"){
+                return this.listPoints[this.listPoints.length-1];
+            }
+            return this.newPoint(x, y, true);
+        }
+        else{
+            if(P.inf === true){
+                return P;
+            }
+            else{
+                return Q;
+            }
+        }
     }
 
 
@@ -178,11 +195,11 @@ export class ShortWeierstrass extends ModCurveGraph {
             for (var x = -screenSize; x <= screenSize; x++) {
                 calculx = (Math.pow(x, 3) + (a * x) + b) % p;
                 if (calculy == calculx) {
-                    listPoints.push(this.newPoint(x, y));
+                    listPoints.push(this.newPoint(x, y, true));
                 }
             }
         }
-        listPoints.push(this.newPoint(null, null));
+        listPoints.push(this.newPoint(null, null, true));
     }
 
     /**
@@ -218,7 +235,6 @@ export class ShortWeierstrass extends ModCurveGraph {
     displayModulo() {
         var modulo = this.p;
         var lignes = Math.floor(Math.sqrt(modulo));
-        console.log('lignes', lignes);
         try {
             this.calculator.setExpressions([
                 { id: `m`, latex: `m=${modulo}` },
@@ -230,24 +246,6 @@ export class ShortWeierstrass extends ModCurveGraph {
                 { id: `c`, latex: `c=\\left\\{\\left|a\\right|>\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{1})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{1})y_{${this.idSelectedPoints[0]}},\\left|a\\right|\\le\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{2})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{2})y_{${this.idSelectedPoints[0]}}\\right\\}` },          
                 { id: `f`, latex: `(ax+by)=c \\left\\{-${this.p/2}<x<${this.p/2}\\right\\} \\left\\{-${this.p/2}<y<${this.p/2}\\right\\}`, color: Graphic.Colors.curve }, //Here to choose the centering of the square for the lines of the modulo
             ]);
-
-            // Plot the points on the curve and color them in green
-            this.calculator.model.observe('expressionAnalysis', () => { //As Desmos is asynchrounous, we need to wait for the expression to be analysed
-                // get the value of 'a', 'b' and 'c'
-                var a = this.getValueOfParameter(`a`);
-                var b = this.getValueOfParameter(`b`);
-                var c = this.getValueOfParameter(`c`);
-
-                // If values in listCoordPoints solves the equation of a*x+b*y=c, we display the points in green
-                this.listCoordPoints.forEach(item => {
-                    if (c.includes(a * item[0] + b * item[1])) {
-                        //get the current index of the point
-                        var index = this.listCoordPoints.indexOf(item) + 1;
-                        //set the color of the point to green
-                        this.setExpressionParameters(`p_{${index}}`, { color: Graphic.Colors.pointOnCurve });
-                    }
-                });
-            });
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
         }
@@ -260,26 +258,49 @@ export class ShortWeierstrass extends ModCurveGraph {
      */
     displayAddPoint(addPoint, isTheSamePoint) {
         let listPoints = this.listPoints;
-        let negPoint = getCoord(this.newPoint(addPoint[0], addPoint[1]).neg());
         var i = 1;
         var j = 1;
-        for (i = 1; i < listPoints.length+1; i++) {
-            if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
-                this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint })
-                var idAdd = i;
+        this.calculator.model.observe('expressionAnalysis', () => { //As Desmos is asynchrounous, we need to wait for the expression to be analysed
+            this.calculator.model.unobserve('expressionAnalysis'); //We don't need to observe anymore otherwise it will loop infinitely
+            // get the value of 'a', 'b' and 'c'
+            var a = this.getValueOfParameter(`a`);
+            var b = this.getValueOfParameter(`b`);
+            var c = this.getValueOfParameter(`c`);
+            //To know if the user clicked twice on the same point
+            var isExactlyTheSamePoint = false;
+            if(this.selectedPoints[0][0] == this.selectedPoints[1][0] && this.selectedPoints[0][1] == this.selectedPoints[1][1]){
+                isExactlyTheSamePoint = true;
             }
-            else {
-                this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point })
-            }
-        }
-        this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
-        if (!isTheSamePoint) {
-            for (j = 1; j < listPoints.length; j++) {
-                if ((negPoint[0] == this.getValueOfParameter(`x_{${j}}`)) && (negPoint[1] == this.getValueOfParameter(`y_{${j}}`))) {
-                    this.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
+            for (i = 1; i < listPoints.length+1; i++) {
+                if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
+                    this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint });
+                    var idAdd = i;
+                }
+                // Else if values in listCoordPoints solves the equation of a*x+b*y=c, we display the points in green
+                else if(c.includes(a * this.getValueOfParameter(`x_{${i}}`) + b * this.getValueOfParameter(`y_{${i}}`)) && i != listPoints.length && !isExactlyTheSamePoint){
+                    this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.pointOnCurve });
+                }
+                else {
+                    this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point });
                 }
             }
-        }
+            if(isExactlyTheSamePoint){
+                this.setExpressionParameters(`p_{${this.idSelectedPoints[0]}}`, { color: Graphic.Colors.pointOnCurve });
+            }
+            //Remove the previous segment in any case
+            this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
+            if(isTheSamePoint){
+                this.setExpressionParameters(`p_{${listPoints.length}}`, { color: Graphic.Colors.finalPoint });
+            }
+            else{
+                //Add the segment if the point is not the same as the initial point
+                for (j = 1; j < listPoints.length; j++) {
+                    if ((addPoint[0] == this.getValueOfParameter(`x_{${j}}`)) && (-addPoint[1] == this.getValueOfParameter(`y_{${j}}`))) {
+                        this.addSegment([`x_{${idAdd}}`, `x_{${j}}`], [`y_{${idAdd}}`, `y_{${j}}`]);
+                    }
+                }
+            }
+        });
     }
 
     displayInfinity(){

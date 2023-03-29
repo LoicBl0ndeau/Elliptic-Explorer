@@ -59,6 +59,11 @@
       </span>
     </div>
 
+    <h3 class="section">Result</h3>
+    <span class="parameter">
+      <span id="result-x-y-shortmod" class="result"></span><br />
+    </span>
+
   </div>
 </template>
 

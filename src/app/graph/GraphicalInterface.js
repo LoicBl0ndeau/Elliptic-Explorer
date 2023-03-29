@@ -418,7 +418,6 @@ export class ModCurveGraph extends Graphic {
       this.calculator.setExpressions([
           { id: `L_{3}`, latex: `L_{3}=\\left[-${Math.floor(this.p/2)}...${Math.floor(this.p/2)}\\right]` }, // Here to set the position of points on the x axis
       ]);
-      console.log(this.calculator.getExpressions());
     } catch (error) {
       throw new Error(`An error has occured adding modular lines : ${error}`);
     }
@@ -454,56 +453,67 @@ export class ModCurveGraph extends Graphic {
         })
         var x = coordonnees_souris.x;
         var y = coordonnees_souris.y;
+        // We round the coordinates to have the same coordinates as the points
         var x_arrondi = Math.round(x);
         var y_arrondi = Math.round(y);
-        //on arrondit les coordonées
+        // This variable is used at the end to know if the user clicked on a point to know if we have to do something
+        var changed = false;
         for (i = 1; i < listPoints.length; i++) {
-          //on compare avec les id des points de la courbe modualire
+          // Checking if the user clicked on a point
           if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
-            // le booléen permet de garder le premier point puis le deuxieme et d'alterner entre les deux à chaque nouveau click
+            // isSecondPoint alternate between True and False
             isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
             isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
             isSecondPoint = !isSecondPoint;
+            changed = true;
           }
         }
-        //selectionner le point infini
+        // If the infinite point is selected
         if (((that.getValueOfParameter(`x_{${listPoints.length}}`)-0.5) <= x_arrondi) && (x_arrondi <= (that.getValueOfParameter(`x_{${listPoints.length}}`)+0.5)) && ((that.getValueOfParameter(`y_{${listPoints.length}}`)-0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`)+0.5))) {
           isSecondPoint ? that.selectedPoints[1] = [null, null] : that.selectedPoints[0] = [null, null];
           isSecondPoint ? that.idSelectedPoints[1] = listPoints.length : that.idSelectedPoints[0] = listPoints.length;
           isSecondPoint = !isSecondPoint;
+          changed = true;
         } 
 
-        let point1 = that.newPoint(
+        var point1 = that.newPoint(
           that.selectedPoints[0][0],
-          that.selectedPoints[0][1]
+          that.selectedPoints[0][1],
+          true
         );
-        let point2 = that.newPoint(
+        var point2 = that.newPoint(
           that.selectedPoints[1][0],
-          that.selectedPoints[1][1]
+          that.selectedPoints[1][1],
+          true
         );
 
-        if ((that.selectedPoints[1][0]== undefined) && (!point2.isInfinity())){
+        if ( (that.selectedPoints[1][0] == undefined && !point2.isInfinity()) || changed === false ){ // If the user didn't click on a point, we do nothing
           return
         }
         
         that.displayModulo();
-        
+
         isTheSamePoint=that.equalPoints(point1,point2);
         let addiPoint = that.getCoord(that.addPoints(point1, point2));
-        that.displayAddPoint(addiPoint, isTheSamePoint);
-        if (point1.isInfinity() || (point2.isInfinity())){
-          that.displayInfinity();
+
+        //If the two points have the same absolute y-coordinate, it has the same behavior as the infinity point
+        if(Math.abs(that.selectedPoints[0][1]) == Math.abs(that.selectedPoints[1][1]) || (point1.isInfinity() || point2.isInfinity())){
+          isTheSamePoint = true;
         }
-
-
+        if (point1.isInfinity() || point2.isInfinity()){
+          that.displayInfinity();
+          isTheSamePoint = true;
+        }
+        if(isTheSamePoint){
+          document.getElementById("result-x-y-shortmod").innerHTML = `(Infinity, Infinity)`;
+        }
+        else{
+          document.getElementById("result-x-y-shortmod").innerHTML = `(${addiPoint[0]},   ${addiPoint[1]})`;
+        }
+        that.displayAddPoint(addiPoint, isTheSamePoint);
       } catch (error) {
-        that.element.removeEventListener('click',click);
+        //console.warn("error : " + error);
       }
-
     });
   }
-
-
-
-
 }
