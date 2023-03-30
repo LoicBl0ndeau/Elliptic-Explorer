@@ -25,6 +25,15 @@
       <input type="number" id="p" placeholder="prime number"/><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
+    
+    <h3 class="section">
+      Periodic view
+      <!-- Rounded switch -->
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label>
+    </h3>
 
     <h3 class="section">Operations</h3>
 

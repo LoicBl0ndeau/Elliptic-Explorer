@@ -186,13 +186,15 @@ export class ShortWeierstrass extends ModCurveGraph {
         let a = this.param.a;
         let b = this.param.b;
         let p = this.p;
+        this.listPoints.length = 0;
         let listPoints = this.listPoints;
         var calculx;
         var calculy;
-        var screenSize = Math.floor(p/2);
-        for (var y = -screenSize; y <= screenSize; y++) {
+        var screenSizeX = Math.floor(this.width/2)-1;
+        var screenSizeY = Math.floor(this.height/2)-1;
+        for (var y = -screenSizeY; y <= screenSizeY; y++) {
             calculy = (Math.pow(y, 2)) % p;
-            for (var x = -screenSize; x <= screenSize; x++) {
+            for (var x = -screenSizeX; x <= screenSizeX; x++) {
                 calculx = (Math.pow(x, 3) + (a * x) + b) % p;
                 if (calculy == calculx) {
                     listPoints.push(this.newPoint(x, y, true));
@@ -207,6 +209,7 @@ export class ShortWeierstrass extends ModCurveGraph {
      */
     findCoordPoints() {
         let listPoints = this.listPoints;
+        this.listCoordPoints.length = 0;
         let listCoordPoints = this.listCoordPoints;
         listPoints.forEach(item => {
             listCoordPoints.push(this.getCoord(item));

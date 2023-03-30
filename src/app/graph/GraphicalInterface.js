@@ -396,7 +396,36 @@ export class ModCurveGraph extends Graphic {
     });
     // Set the center point of the screen (only for the user, not for the graph)
     this.calculator.setMathBounds({ bottom: -0.5-this.p/2, top: 1.5*this.p/2 + 0.5, left: -0.5-this.p/2, right: 0.5+this.p/2});
-    // Set the border of the screen
+    let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
+    let height = mathCoordinates.top-mathCoordinates.bottom;
+    let width = mathCoordinates.right-mathCoordinates.left;
+    this.height = height;
+    this.width = width;
+    //The function when the user move the screen
+    const debounce = () => {
+      if(document.querySelector(".switch input").checked){
+        this.calculator.unobserve('graphpaperBounds'); //To avoid too many events
+        let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
+        let height = mathCoordinates.top-mathCoordinates.bottom;
+        let width = mathCoordinates.right-mathCoordinates.left;
+        this.height = height;
+        this.width = width;
+        for(let i = 1; i <= this.listPoints.length; i++) { //Remove all the previous points
+          this.calculator.removeExpression({id:`x_{${i}}`});
+          this.calculator.removeExpression({id:`y_{${i}}`});
+          this.calculator.removeExpression({id:`p_{${i}}`});
+        }
+        this.pointId = 0;
+        this.findAllPoints();
+        this.findCoordPoints();
+        this.displayPoints();
+        this.addClickPoints();
+        this.calculator.observe('graphpaperBounds', debounce); //To reactivate the event after calculations
+      }
+    };
+    document.querySelector(".switch input").addEventListener("click", debounce); //Load new points when the user clicks on the switch
+    this.calculator.observe('graphpaperBounds', debounce); //When the user move the graph
+      // Set the border of the screen
     this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(-${this.p/2},-${this.p/2}),(${this.p/2},-${this.p/2}),(${this.p/2},${this.p/2}),(-${this.p/2},${this.p/2})])`,fill:0,color:Graphic.Colors.line});
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];

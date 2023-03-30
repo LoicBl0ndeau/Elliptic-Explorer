@@ -10,7 +10,7 @@ export default {
   name: "ModularWeierstrass",
   mounted() {
     let graphMod = new ShortWeierstrass("calculator", 3, 1, 7);
-
+    
     graphMod.findAllPoints();
     graphMod.findCoordPoints();
 
