@@ -1,17 +1,6 @@
-import elliptic from 'elliptic';
-import BN from 'bn.js';
+const elliptic = require('elliptic');
+const BN = require('bn.js');
 import { Graphic, ModCurveGraph } from '../graph/GraphicalInterface.js';
-
-/**
- * Get the coordinates of a point in the form [x, y]
- * @param {Point} point point
- * @returns {Array} the x y coordinates of the point in the form [x, y] with x and y integers
- */
-export function getCoord(point) {
-    if (point.inf)
-        return [null, null];
-    return [point.x.words[0], point.y.words[0]];
-}
 
 export class ShortWeierstrass extends ModCurveGraph {
 
@@ -34,7 +23,11 @@ export class ShortWeierstrass extends ModCurveGraph {
             a: a,
             b: b,
         }
-        this.shortWcurve = new elliptic.curve.short({ ...this.param, ...{ p } });
+        this.shortWcurve = new elliptic.curve.short({
+            a: new BN(a),
+            b: new BN(b),
+            p: new BN(p),
+          });
         this.listPoints = [];
     }
 
@@ -54,20 +47,18 @@ export class ShortWeierstrass extends ModCurveGraph {
      * Create the point with coordinates (x, y) from the curve (the point is linked to the curve)
      * @param {integer || string} x x-coordinate
      * @param {integer || string} y y-coordinate
-     * @param {boolean} isRed true if force redgomery representation, false otherwise
      * @returns {Point} point
      */
-    newPoint(x, y, isRed) {
+    newPoint(x, y) {
+        var p = this.p;
         //Create a point on the shortW curve
-        var point = this.shortWcurve.point(x, y, isRed);
-        //Coordinates are automatically set to positive so we need to convert them to negative if necessary
-        if(y < 0){
-            point.y.words[0] *= -1; //negate the y-coordinate
+        while (x < 0) {
+            x += p;
         }
-        if(x < 0){
-            point.x.words[0] *= -1; //negate the x-coordinate
+        while (y < 0) {
+            y += p;
         }
-        return point;
+        return this.shortWcurve.point(new BN(x), new BN(y));
     }
 
     /**
@@ -76,12 +67,10 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @returns {Array} the x y coordinates of the point in the form [x, y] with x and y integers
      */
     getCoord(point) {
-        let p = this.p;
         if (point.inf) //if the point is the point at infinity
-            return [0, 1.5*p/2 + 0.5];
-        return [point.x.words[0], point.y.words[0]];
+            return [0, 1.5*this.p/2 + 0.5];
+        return [point.getX().toNumber(), point.getY().toNumber()];
     }
-
 
     /**
      * To know if a point belongs to the curve
@@ -107,28 +96,25 @@ export class ShortWeierstrass extends ModCurveGraph {
      * Add two points
      * @param {Point} P point on curve
      * @param {Point} Q point on curve
-     * @returns {Point} Point resulting from the addition P+Q
+     * @returns {CoordPoint} Coordinates of resulting point from the addition P+Q
      */
     addPoints(P, Q) {
-        if(P.inf != true && Q.inf != true){
-            var lambda = (Q.y.words[0] - P.y.words[0]) / (Q.x.words[0] - P.x.words[0]);
-            var x = lambda**2 - P.x.words[0] - Q.x.words[0];
-            var y = lambda * (P.x.words[0] - x) - P.y.words[0];
-            if(x == "Infinity" || y == "Infinity"){
-                return this.listPoints[this.listPoints.length-1];
-            }
-            return this.newPoint(x, y, true);
+        var resPoint = P.add(Q);
+        let resCoordPoint = this.getCoord(resPoint);        
+        while (resCoordPoint[0] > this.p/2) {
+            resCoordPoint[0] -= this.p;
         }
-        else{
-            if(P.inf === true){
-                return P;
-            }
-            else{
-                return Q;
-            }
+        while (resCoordPoint[0] < -this.p/2) {
+            resCoordPoint[0] += this.p;
         }
+        while (resCoordPoint[1] > this.p/2) {
+            resCoordPoint[1] -= this.p;
+        }
+        while (resCoordPoint[1] < -this.p/2) {
+            resCoordPoint[1] += this.p;
+        }
+        return resCoordPoint;
     }
-
 
     /**
      * Multiply P by k
@@ -195,31 +181,26 @@ export class ShortWeierstrass extends ModCurveGraph {
         let a = this.param.a;
         let b = this.param.b;
         let p = this.p;
+        this.listCoordPoints.length = 0;
+        let listCoordPoints = this.listCoordPoints;
+        this.listPoints.length = 0;
         let listPoints = this.listPoints;
         var calculx;
         var calculy;
-        var screenSize = Math.floor(p/2);
-        for (var y = -screenSize; y <= screenSize; y++) {
-            calculy = (Math.pow(y, 2)) % p;
-            for (var x = -screenSize; x <= screenSize; x++) {
-                calculx = (Math.pow(x, 3) + (a * x) + b) % p;
-                if (calculy == calculx) {
-                    listPoints.push(this.newPoint(x, y, true));
+        var screenSizeX = Math.floor(this.width/2)-1;
+        var screenSizeY = Math.floor(this.height/2)-1;
+        for (var y = -screenSizeY; y <= screenSizeY; y++) {
+            calculy = (Math.pow(y, 2));
+            for (var x = -screenSizeX; x <= screenSizeX; x++) {
+                calculx = (Math.pow(x, 3) + (a * x) + b);
+                if ((calculy - calculx)%p == 0) {
+                    listCoordPoints.push([x, y]);
+                    listPoints.push(this.newPoint(x, y));
                 }
             }
         }
-        listPoints.push(this.newPoint(null, null, true));
-    }
-
-    /**
-     * Transform the list of points into a list of point coordinates
-     */
-    findCoordPoints() {
-        let listPoints = this.listPoints;
-        let listCoordPoints = this.listCoordPoints;
-        listPoints.forEach(item => {
-            listCoordPoints.push(this.getCoord(item));
-        });
+        listCoordPoints.push([0, 1.5*this.p/2 + 0.5]);
+        listPoints.push(this.newPoint(null, null));
     }
 
     /**
@@ -298,10 +279,7 @@ export class ShortWeierstrass extends ModCurveGraph {
             }
             //Remove the previous segment in any case
             this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
-            if(isTheSamePoint){
-                this.setExpressionParameters(`p_{${listPoints.length}}`, { color: Graphic.Colors.finalPoint });
-            }
-            else{
+            if(!isTheSamePoint){
                 //Add the segment if the point is not the same as the initial point
                 for (j = 1; j < listPoints.length; j++) {
                     if ((addPoint[0] == this.getValueOfParameter(`x_{${j}}`)) && (-addPoint[1] == this.getValueOfParameter(`y_{${j}}`))) {

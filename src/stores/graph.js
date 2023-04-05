@@ -93,7 +93,6 @@ export const graphStore = defineStore('graph', {
       this.graph = new ShortWeierstrass("calculator", a, b, p);
       this.graph.showCurve();
       this.graph.findAllPoints();
-      this.graph.findCoordPoints();
       this.graph.displayPoints();
       
     },
