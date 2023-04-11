@@ -91,7 +91,17 @@ export const graphStore = defineStore('graph', {
       if (this.graph != null)
         this.destroy();
       this.graph = new ShortWeierstrass("calculator", a, b, p);
-      this.graph.showCurve();
+    
+      const curveToggle = document.getElementById('curve-toggle');
+
+      // Ajouter un gestionnaire d'événements pour le changement d'état du checkbox
+      curveToggle.addEventListener('change', () => {
+        if (curveToggle.checked) {
+          this.graph.showCurve();
+        } else {
+          this.graph.hideCurve();
+        }
+      });
       this.graph.findAllPoints();
       this.graph.displayPoints();
       
