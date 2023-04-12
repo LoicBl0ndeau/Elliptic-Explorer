@@ -9,9 +9,10 @@ import { ShortWeierstrass } from "@/app/math/ShortWeierstrass.js";
 export default {
   name: "ModularWeierstrass",
   mounted() {
-    let graphMod = new ShortWeierstrass("calculator", 2, 1, 5);
-    
+    let graphMod = new ShortWeierstrass("calculator", 3, 1, 7);
+
     graphMod.findAllPoints();
+    graphMod.findCoordPoints();
 
     graphMod.displayPoints();
     graphMod.addClickPoints();
