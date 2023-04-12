@@ -13,6 +13,7 @@ import { WeierstrassGraph } from "@/app/graph/supported_curves_on_R/weierstrass/
 import { MontgomeryGraph } from "@/app/graph/supported_curves_on_R/montgomery/MontgomeryGraph.js";
 import { EdwardsCurve } from "@/app/graph/supported_curves_on_R/edwards/EdwardsCurve.js";
 import { ShortWeierstrass } from '@/app/math/ShortWeierstrass.js';
+import { PeriodicShortWeierstrass } from '@/app/math/ShortWeierstrass.js';
 
 export const graphStore = defineStore('graph', {
   state: () => ({
@@ -92,7 +93,23 @@ export const graphStore = defineStore('graph', {
         this.destroy();
       this.graph = new ShortWeierstrass("calculator", a, b, p);
       this.graph.findAllPoints();
-      this.graph.findCoordPoints();
+      this.graph.displayPoints();
+    },
+    /**
+     * Construct the curve with equation y^2 = x^3 + ax + b mod p
+     * 
+     * The following HTML code must be in web page:
+     * \<div id="calculator">\</div>
+     * 
+     * @param {integer ou string} a first parameter
+     * @param {integer ou string} b second parameter
+     * @param {integer ou string} p modulo
+     */
+    displayShortPeriodic(a, b, p) {
+      if (this.graph != null)
+        this.destroy();
+      this.graph = new PeriodicShortWeierstrass("calculator", a, b, p);
+      this.graph.findAllPoints();
       this.graph.displayPoints();
     },
     // common methods for all graphs ===============================================

@@ -2,34 +2,37 @@
   <div class="submenu">
     <h3 class="section">General Curve Equation</h3>
 
-    <div id="general-short-eq" ></div>
+    <div id="general-short-eqp" ></div>
 
     <h3 class="section">Curve Equation</h3>
     
-    <div id="short-eq" ></div>
+    <div id="short-eqp" ></div>
 
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
       <label>a</label>
-      <input type="number" id="a" /><br />
+      <input type="number" id="ap" /><br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b" type="number" /><br />
+      <input id="bp" type="number" /><br />
     </span>
 
     <span class="parameter">
       <label>p</label>
-      <input type="number" id="p" placeholder="prime number"/><br />
+      <input type="number" id="pp" placeholder="prime number"/><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
+
+    <br>
+    <button id="update">Update</button>
 
     <h3 class="section">Operations</h3>
 
     <span class="parameter">
-      <select id="choix-op-short" @change="displayCurveWithSelectedOperation">
+      <select id="choix-op-shortp" @change="displayCurveWithSelectedOperation">
         <option selected="yes">Addition</option>
         <option disabled>Multiplication</option></select
       ><br />
@@ -37,22 +40,22 @@
 
     <span class="parameter">
       <label>(x1, y1)</label>
-      <input id="x1-y1-short" value="" readonly/>
+      <input id="x1-y1-shortp" value="" readonly/>
     </span>
 
-    <div id="addition-short">
+    <div id="addition-shortp">
       <span class="parameter">
         <label>(x2, y2)</label>
-        <input id="x2-y2-short" readonly/>
+        <input id="x2-y2-shortp" readonly/>
       </span>
     </div>
 
-    <div id="multiplication-short" style="display: none">
+    <div id="multiplication-shortp" style="display: none">
       <span class="parameter">
         <label>Factor</label>
         <input
           type="number"
-          id="factor-short" 
+          id="factor-shortp" 
           value="2"
           style="width: 40px" />
         <button>Compute</button><br />
@@ -61,7 +64,7 @@
 
     <h3 class="section">Result</h3>
     <span class="parameter">
-      <span id="result-x-y-shortmod" class="result"></span><br />
+      <span id="result-x-y-shortmodp" class="result"></span><br />
     </span>
 
   </div>
@@ -71,7 +74,7 @@
 import { graphStore } from "@/stores/graph.js";
 import { menuStore } from "@/stores/menu.js";
 export default {
-  name: "MenuShort",
+  name: "MenuShortModPeriodic",
   setup() {
     const graphS = graphStore();
     const menuS = menuStore();
@@ -81,36 +84,36 @@ export default {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
     // Display latex  
-    this.menuS.displayLaTeX('general-short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
+    this.menuS.displayLaTeX('general-short-eqp', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
   },
   methods: {
     displayDefaultCurve() {
-      this.graphS.displayShort(2, 1, 5);
-      this.menuS.setValueById("a", 2);
-      this.menuS.setValueById("b", 1);
-      this.menuS.setValueById("p", 5);
+      this.graphS.displayShortPeriodic(2, 1, 5);
+      this.menuS.setValueById("ap", 2);
+      this.menuS.setValueById("bp", 1);
+      this.menuS.setValueById("pp", 5);
       // Display Latex
-      this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
+      this.menuS.displayLaTeX('short-eqp', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
       // enables add on click
       this.graphS.getGraph.addClickPoints();
       window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
-      let a = this.menuS.getIntFromInputId("a");
-      let b = this.menuS.getIntFromInputId("b");
-      let p = this.menuS.getIntFromInputId("p");
-      this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{'+p+'}\\equiv  x^3 + '+a+'x + '+b);
-      this.graphS.displayShort(a, b, p);
+      let a = this.menuS.getIntFromInputId("ap");
+      let b = this.menuS.getIntFromInputId("bp");
+      let p = this.menuS.getIntFromInputId("pp");
+      this.menuS.displayLaTeX('short-eqp', 'y^2 \\underset{'+p+'}\\equiv  x^3 + '+a+'x + '+b);
+      this.graphS.displayShortPeriodic(a, b, p);
       this.graphS.getGraph.addClickPoints();
     },
     enableAdditionOnClick() {
       try {
         this.menuS.setValueById(
-          "x1-y1-short",
+          "x1-y1-shortp",
           `(${this.graphS.getGraph.selectedPoints[0][0]}, ${this.graphS.getGraph.selectedPoints[0][1]})`
         );
         this.menuS.setValueById(
-          "x2-y2-short",
+          "x2-y2-shortp",
           `(${this.graphS.getGraph.selectedPoints[1][0]}, ${this.graphS.getGraph.selectedPoints[1][1]})`
         );
       } catch (err) {
@@ -119,14 +122,14 @@ export default {
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();
-      let op = this.menuS.getValueById("choix-op-short");
+      let op = this.menuS.getValueById("choix-op-shortp");
       if (op == "Addition") {
-        this.menuS.hideElementById("multiplication-short");
-        this.menuS.displayElementById("addition-short");
+        this.menuS.hideElementById("multiplication-shortp");
+        this.menuS.displayElementById("addition-shortp");
       }
       if (op == "Multiplication") {
-        this.menuS.displayElementById("multiplication-short");
-        this.menuS.hideElementById("addition-short");
+        this.menuS.displayElementById("multiplication-shortp");
+        this.menuS.hideElementById("addition-shortp");
       }
     },
   },

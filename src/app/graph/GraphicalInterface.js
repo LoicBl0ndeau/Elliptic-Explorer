@@ -419,10 +419,10 @@ export class ModCurveGraph extends Graphic {
         this.findAllPoints();
         this.displayPoints();
         this.addClickPoints();
-        // wait 100ms before reactivating the event
+        // wait 1000ms before reactivating the event
         setTimeout(() => {
           this.calculator.observe('graphpaperBounds', debounce);
-        }, 1000);
+        }, 100);
         //this.calculator.observe('graphpaperBounds', debounce); //To reactivate the event after calculations
       }
     };
@@ -563,4 +563,177 @@ export class ModCurveGraph extends Graphic {
       }
     });
   }
+}
+
+export class PModCurveGraph extends Graphic{
+  /**
+   * Represents a graphic calculator
+   * @constructor
+   * @param {string} element - The id of the element where the calculator will be displayed
+   */
+  constructor(element, p) {
+    super(element);
+    this.p = p;
+    
+    let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
+    this.height = mathCoordinates.top - mathCoordinates.bottom;
+    this.width = mathCoordinates.right - mathCoordinates.left;
+
+    const debounce = () => {
+        let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
+        this.height = mathCoordinates.top - mathCoordinates.bottom;
+        this.width = mathCoordinates.right - mathCoordinates.left;
+
+        // if listPoints exist, we remove them
+        if(this.listPoints != undefined){
+          for(let i = 0; i < this.listPoints.length; i++){
+            this.calculator.removeExpression({id:`x_{${i}}`});
+            this.calculator.removeExpression({id:`y_{${i}}`});
+            this.calculator.removeExpression({id:`p_{${i}}`});
+          }
+        }
+        this.pointId = 0;
+        this.findAllPoints();
+        this.displayPoints();
+        this.addClickPoints();
+    };
+    // event listener when button "update" is clicked
+    document.querySelector('#update').addEventListener('click', debounce);
+
+      // Set the border of the screen
+    this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(-${this.p/2},-${this.p/2}),(${this.p/2},-${this.p/2}),(${this.p/2},${this.p/2}),(-${this.p/2},${this.p/2})])`,fill:0,color:Graphic.Colors.line, lineOpacity: 0.2});
+    this.listCoordPoints = [];
+    this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
+    this.idSelectedPoints = [0, 0];
+
+  }
+
+    /**
+   * Display all static points of the modular curve from the list of points
+   */
+    displayPoints() {
+      var that = this;
+      let listPoints = this.listCoordPoints;
+      listPoints.forEach(function (item) {
+        that.addStaticPoint(item);
+      });
+      that.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
+      var i=0;
+      try {
+        this.calculator.setExpressions([
+            { id: `L_{3}`, latex: `L_{3}=\\left[-${Math.floor(this.width/2)}...${Math.floor(this.width/2)}\\right]` }, // Here to set the position of points on the x axis
+        ]);
+      } catch (error) {
+        throw new Error(`An error has occured adding modular lines : ${error}`);
+      }
+      for(i=0; i<this.height; i++){
+        try{
+          this.calculator.setExpressions([
+            { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i-Math.floor(this.height/2)})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point}, // Here to set the position of points on the y axis
+        ]);
+        }catch (error) {
+          throw new Error(`An error has occured adding modular lines : ${error}`);
+        }
+      }
+    }
+    /**
+     * Recover the coordinates of two points and display modulo and the result of addition
+     */
+    addClickPoints() {
+      let listPoints = this.listCoordPoints;
+      var isSecondPoint = false;
+      var isTheSamePoint = false;
+      var that = this;
+      var i = 1;
+      // Find the pixel coordinates of the graphpaper origin:
+      // that.calculator.mathToPixels({ x: 0, y: 0 });
+      // Find the math coordinates of the mouse
+      var calculatorRect = that.element.getBoundingClientRect();
+      this.element.addEventListener('click', function click(evt) {
+        // when user click on the screen, we go into this function
+        try {
+          var coordonnees_souris = that.calculator.pixelsToMath({
+            x: evt.clientX - calculatorRect.left,
+            y: evt.clientY - calculatorRect.top
+          })
+          var x = coordonnees_souris.x;
+          var y = coordonnees_souris.y;
+          // We round the coordinates to have the same coordinates as the points
+          var x_arrondi = Math.round(x);
+          var y_arrondi = Math.round(y);
+          // This variable is used at the end to know if the user clicked on a point to know if we have to do something
+          var changed = false;
+          for (i = 1; i < listPoints.length; i++) {
+            // Checking if the user clicked on a point
+            if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
+              // isSecondPoint alternate between True and False
+              isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
+              isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
+              isSecondPoint = !isSecondPoint;
+              changed = true;
+            }
+          }
+          var isInfinityPoint = false;
+          // If the infinite point is selected
+          if (((that.getValueOfParameter(`x_{${listPoints.length}}`)-0.5) <= x_arrondi) && (x_arrondi <= (that.getValueOfParameter(`x_{${listPoints.length}}`)+0.5)) && ((that.getValueOfParameter(`y_{${listPoints.length}}`)-0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`)+0.5))) {
+            if(isSecondPoint){
+              that.selectedPoints[1] = [undefined, undefined];
+              that.idSelectedPoints[1] = listPoints.length;
+            }else{
+              that.selectedPoints[0] = [undefined, undefined];
+              that.idSelectedPoints[0] = listPoints.length;
+            }
+            changed = true;
+            isInfinityPoint = true;
+          } 
+  
+          var point1 = that.newPoint(
+            that.selectedPoints[0][0],
+            that.selectedPoints[0][1],
+          );
+          var point2 = that.newPoint(
+            that.selectedPoints[1][0],
+            that.selectedPoints[1][1],
+          );
+          
+          // If the user clicked on the infinity point, we set the point to infinity
+          if(isInfinityPoint){
+            if(isSecondPoint){
+              point2.inf = true;
+            }else{
+              point1.inf = true;
+            }
+          }
+          
+          // If the user didn't click on a point or it is his first clicked point, we do nothing
+          if ( ((that.selectedPoints[1][0] == undefined && that.selectedPoints[1][1] == undefined) && !point2.isInfinity()) || changed === false ){
+            return;
+          }
+  
+          isTheSamePoint=that.equalPoints(point1,point2);
+          let addCoordPoint = that.addPoints(point1, point2);
+  
+          document.getElementById("result-x-y-shortmod").innerHTML = `(${addCoordPoint[0]},   ${addCoordPoint[1]})`;
+          if(point1.inf || point2.inf){
+            console.log("infinity");
+            that.displayInfinity();
+            isTheSamePoint = true;    
+          }
+          else{
+            //If the two points have the same absolute y-coordinate, it has the same behavior as the infinity point
+            if ((Math.abs(that.selectedPoints[0][1]) == Math.abs(that.selectedPoints[1][1]) && (that.selectedPoints[0][0] == that.selectedPoints[1][0]))){
+              isTheSamePoint = true;
+              addCoordPoint = that.newPoint(null, null);
+              addCoordPoint.inf = true;
+              addCoordPoint = that.getCoord(addCoordPoint);
+              document.getElementById("result-x-y-shortmod").innerHTML = `(Infinity, Infinity)`;
+            }
+            that.displayModulo();
+          }
+          that.displayAddPoint(addCoordPoint, isTheSamePoint);
+        } catch (error) {
+          //console.warn("error : " + error);
+        }
+      });
+    }
 }
