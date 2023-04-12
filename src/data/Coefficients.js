@@ -1,64 +1,98 @@
-import Forme from './Forme.js';
-
 class Coefficients {
+    // Modulo
+    p = 5;
 
-    #forme;
-    #coefficients = {};
+    // Short Weierstrass & Montgomery coefficients
+    a = 3;
+    b = 2;
 
-    constructor() {
-        this.setForme(Forme.UNDEFINED);
+    // Edwards coefficients
+    c = 2;
+    d = 1;
+
+    // Weierstrass coefficients
+    a1 = 0;
+    a2 = 4;
+    a3 = 0;
+    a4 = 2;
+    a6 = 1;
+
+
+    showCoefficients() {
+        console.log(JSON.parse(JSON.stringify(this)));
     }
 
-    setForme(forme) {
-        if (Object.values(Forme).includes(forme)) {
-            this.#forme = forme;
-        } else {
-            console.log('La forme donnée comme argument (' + forme + ') est invalide.');
+    getModulo() {
+        return this.p;
+    }
+
+    setCoef(name, value) {
+        switch (name) {
+            case 'a1':
+                this.a1 = value;
+                break;
+            case 'a2':
+                this.a2 = value;
+                break;
+            case 'a3':
+                this.a3 = value;
+                break;
+            case 'a4':
+                this.a4 = value;
+                break;
+            case 'a6':
+                this.a6 = value;
+                break;
+            case 'a':
+                this.a = value;
+                break;
+            case 'b':
+                this.b = value;
+                break;
+            case 'c':
+                this.c = value;
+                break;
+            case 'd':
+                this.d = value;
+                break;
+            case 'p':
+                this.p = value;
+                break;
+            default:
+                console.log('Le coefficient n\'est pas défini.');
+                break;
         }
     }
 
-    getForme() {
-        return this.#forme;
+    getWeierstrassCoefficients() {
+        return {
+            a1: this.a1,
+            a2: this.a2,
+            a3: this.a3,
+            a4: this.a4,
+            a6: this.a6
+        }
+
     }
 
-    getCoefficients() {
-        return this.#coefficients;
+    getShortWeierstrassCoefficients() {
+        return {
+            a: this.a,
+            b: this.b
+        }
     }
 
+    getMontgomeryCoefficients() {
+        return {
+            a: this.a,
+            b: this.b
+        }
+    }
 
-    defaultCoefficients() {
-        switch (this.#forme) {
-            case Forme.SHORT_WEIERSTRASS:
-                this.#coefficients = {
-                    'a': 3,
-                    'b': 2,
-                    'p': 5
-                }
-                break;
-            case Forme.WEIERSTRASS:
-                this.#coefficients = {
-                    'a1': 0,
-                    'a2': 4,
-                    'a3': 0,
-                    'a4': 2,
-                    'a6': 1,
-                }
-                break;
-            case Forme.MONTGOMERY:
-                this.#coefficients = {
-                    'a': 6,
-                    'b': 2
-                }
-                break;
-            case Forme.EDWARDS:
-                this.#coefficients = {
-                    'c': 2,
-                    'd': 1
-                }
-                break;
-            default:
-                console.log('La forme actuelle n\'est pas définie.');
-                break;
+    getEdwardsCoefficients() {
+        return {
+            c: this.c,
+            d: this.d
         }
     }
 

@@ -54,6 +54,10 @@ body {
   color: #eb9671;
 }
 
+#p_span {
+  display: none;
+}
+
 /* SIDEBAR AND MENU - enables sliding in rigths proportions  ==========================*/
 
 /* This is for all the content outside the sidebar.

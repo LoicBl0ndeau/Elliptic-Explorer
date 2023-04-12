@@ -2,7 +2,7 @@
   <div class="submenu">
 
     <h3 class="section">Curve Equation</h3>
-    
+
     <div id="edwards-eq"></div>
 
     <h3 class="section">Parameters</h3>
@@ -11,50 +11,33 @@
 
     <span class="parameter">
       <label>c</label>
-      <input
-        id="c"
-        @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();"
-      /><br />
+      <input id="c" value="2" @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();" /><br />
     </span>
 
     <span class="parameter">
       <label>d</label>
-      <input
-        id="d"
-        @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();"
-      /><br />
+      <input id="d" value="1" @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();" /><br />
     </span>
 
     <h3 class="section">Operations</h3>
 
     <span class="parameter">
-      <select
-        id="choix-op-edwards"
-        @change="displayCurveWithSelectedOperation"
-      >
+      <select id="choix-op-edwards" @change="displayCurveWithSelectedOperation">
         <option selected="yes">Addition</option>
-        <option>Multiplication</option></select
-      ><br />
+        <option>Multiplication</option>
+      </select><br />
     </span>
 
     <span class="parameter">
       <label>x1</label>
-      <input
-        id="x1-edwards"
-        class="coord"
-        @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')"
-      />
+      <input id="x1-edwards" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition-edwards">
       <span class="parameter">
         <label>x2</label>
-        <input
-          id="x2-edwards"
-          class="coord"
-          @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')"
-        />
+        <input id="x2-edwards" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
@@ -62,11 +45,7 @@
     <div id="multiplication-edwards" style="display: none">
       <span class="parameter">
         <label>Factor</label>
-        <input
-          type="number"
-          id="factor-edwards"
-          value="2"
-          style="width: 40px" />
+        <input type="number" id="factor-edwards" value="2" style="width: 40px" />
         <button @click="computeMul">Compute</button><br />
       </span>
     </div>
@@ -148,12 +127,12 @@ export default {
       let d = this.menuS.getFloatFromInputId('d');
       if (c == 0 || d == 0)
         this.menuS.displayLaTeX(
-          "error-mess-edwards", 
+          "error-mess-edwards",
           "\\color{yellow} c \\text{ and } d \\text{ must be } \\newline \\text{defined such as : } \\newline c \\ne 0 \\text{ and } d \\ne 0 \\newline"
         );
-      else if (c != 0 && d == 1 / c**4) {
+      else if (c != 0 && d == 1 / c ** 4) {
         this.menuS.displayLaTeX(
-          "error-mess-edwards", 
+          "error-mess-edwards",
           "\\color{yellow} d \\text{ must be defined such as : }\\newline d \\ne \\frac{1}{c^4} \\newline"
         );
       }

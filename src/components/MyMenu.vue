@@ -37,14 +37,42 @@
 
       </div>
 
+      <p id="avertissementCorps">Veuillez choisir un corps.</p>
+
     </div>
 
+
+
+    <div id="equation">
+      <h1>
+        Equation
+      </h1>
+
+      <h2>
+        Forme :
+        <select name="forme" id="forme" @change="formeChange()">
+          <option value="Undefined" selected>Undefined</option>
+          <option value="Short_Weierstrass">Short Weierstrass</option>
+          <option value="Weierstrass">Weierstrass</option>
+          <option value="Montgomery">Montgomery</option>
+          <option value="Edwards">Edwards</option>
+        </select>
+      </h2>
+
+      <p id="avertissementForme">Veuillez choisir une forme.</p>
+
+      <MenuShortMod v-show="isOpen.Short_Weierstrass" ref="Short_Weierstrass" :controleur='controleurObject' />
+      <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurObject' />
+      <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurObject' />
+      <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurObject' />
+
+    </div>
 
     <div id="vues_disponibles">
       <h1>
         Vues disponibles
       </h1>
-      <p id="avertissementVue">Veuillez choisir un corps.</p>
+      <p id="avertissementVue">Veuillez choisir une forme.</p>
 
       <div class="flexbox">
         <div id="vue2D" @click="setVue('vue2D')">
@@ -80,62 +108,13 @@
       </div>
     </div>
 
-    <div id="equation">
-      <h1>
-        Equation
-      </h1>
-
-      <h2>
-        Forme :
-        <select name="forme" id="forme" @change="formeChange()">
-          <option value="Undefined" selected>Undefined</option>
-          <option value="Short_Weierstrass">Short Weierstrass</option>
-          <option value="Weierstrass">Weierstrass</option>
-          <option value="Montgomery">Montgomery</option>
-          <option value="Edwards">Edwards</option>
-        </select>
-      </h2>
-
-      <p id="avertissementForme">Veuillez choisir une forme.</p>
-
-      <MenuShortMod v-show="isOpen.Short_Weierstrass" ref="Short_Weierstrass" />
-      <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" />
-      <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" />
-      <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" />
-
-    </div>
-
-
     <a @click="open('about')">
       <img class="material-icons filter-orange" src="images/info_black_24dp.svg" />
       <span class="icon-text">About EE</span></a><br />
 
-    <!--  
-    <a @click="open('shortmod')">
-      <img id="menu-shortmod" class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" />
-      <span class="icon-text">Short Weierstrass</span> </a><br />
-    <MenuShortMod v-show="isOpen.shortmod" ref="shortmod" />
-
-    <a @click="open('weierstrass')">
-      <img id="menu-weierstrass" class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" />
-      <span class="icon-text">Weierstrass</span> </a><br />
-    <MenuWeierstrass v-show="isOpen.weierstrass" ref="weierstrass" />
-
-    <a @click="open('montgomery')">
-      <img id="menu-montgomery" class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" />
-      <span class="icon-text">Montgomery</span> </a><br />
-    <MenuMontgomery v-show="isOpen.montgomery" ref="montgomery" />
-
-    <a @click="open('edwards')">
-      <img id="menu-edwards" class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" />
-      <span class="icon-text">Edwards</span> </a><br />
-    <MenuEdwards v-show="isOpen.edwards" ref="edwards" />
-    -->
     <a @click="changePinStatus">
       <img id="pin" class="material-icons filter-orange" src="images/push_pin_black_24dp-filled.svg" />
     </a>
-
-
 
     <img id="graph-settings-icon" class="material-icons filter-orange" src="images/settings_black_24dp.svg"
       style="display: none" @click="changeGraphParamDisplay()" />
@@ -149,13 +128,9 @@ import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
 import { graphStore } from "@/stores/graph.js";
-
-import WeierstrassManager from "@/data/WeierstrassManager.js";
 import Controleur from "@/data/Controleur.js";
 
-let dataManager = new WeierstrassManager();
 let controleur = new Controleur();
-
 
 export default {
   name: "MyMenu",
@@ -172,6 +147,7 @@ export default {
   },
   data() {
     return {
+      controleurObject: controleur,
       // list of the of the submenus in the sidebar
       isOpen: {
         about: false,
@@ -200,25 +176,10 @@ export default {
     };
   },
   methods: {
-    formeChange() {
-      let forme = document.getElementById('forme').value;
-      let oldForme = controleur.getForme();
-
-      controleur.setForme(forme);
-
-      if (forme == "Undefined") {
-        document.getElementById('avertissementForme').style.display = "block";
-      } else {
-        document.getElementById('avertissementForme').style.display = "none";
-      }
-      this.isOpen[oldForme] = false;
-      this.isOpen[forme] = true;
-
-    },
     setCorps(value) {
+      document.getElementById('avertissementCorps').style.display = "none";
       // hide the warning if the user selects a corps
       if (controleur.getCorps() == "Undefined") {
-        document.getElementById('avertissementVue').style.display = "none";
         document.getElementById('vues_disponibles').children[2].style.display = "block";
       }
       controleur.setCorps(value);
@@ -234,10 +195,12 @@ export default {
 
       switch (value) {
         case "R":
+          document.getElementById("p_span").style.display = "none";
           document.getElementById("corps_reels").classList.add("selected");
           availableVues = ["vue2D", "vue3D"];
           break;
         case "P":
+          document.getElementById("p_span").style.display = "block";
           document.getElementById("corps_modulo").classList.add("selected");
           availableVues = ["vueFinie", "vuePeriodique"];
           break;
@@ -251,38 +214,68 @@ export default {
           child.style.display = "none";
         }
       });
-      controleur.getInformations();
+    },
+    formeChange() {
+      let forme = document.getElementById('forme').value;
+      let oldForme = controleur.getForme();
 
+      if (controleur.getCorps() != "Undefined") {
+        controleur.setForme(forme);
+
+        if (forme == "Undefined") {
+          document.getElementById('avertissementForme').style.display = "block";
+        } else {
+          document.getElementById('avertissementForme').style.display = "none";
+        }
+        this.isOpen[oldForme] = false;
+        this.isOpen[forme] = true;
+
+        document.getElementById('avertissementVue').innerText = "Veuiilez choisir une vue.";
+      }
     },
     setVue(value) {
-      controleur.setVue(value);
+      if (controleur.getForme() != "Undefined") {
+        document.getElementById('avertissementVue').style.display = "none";
+        controleur.setVue(value);
 
-      // remove the selected class from all the menu items and add it to the selected one
-      document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
-        child.classList.remove("selected");
-      });
+        // remove the selected class from all the menu items and add it to the selected one
+        document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
+          child.classList.remove("selected");
+        });
 
-      switch (value) {
-        case "vue2D":
-          document.getElementById("vue2D").classList.add("selected");
-          break;
-        case "vue3D":
-          document.getElementById("vue3D").classList.add("selected");
-          break;
-        case "vueFinie":
-          document.getElementById("vueFinie").classList.add("selected");
-          break;
-        case "vuePerspective":
-          document.getElementById("vuePerspective").classList.add("selected");
-          break;
-        case "vuePeriodique":
-          document.getElementById("vuePeriodique").classList.add("selected");
-          break;
-        default:
-          console.log("Erreur : vue non reconnue");
-          break;
+        switch (value) {
+          case "vue2D":
+            document.getElementById("vue2D").classList.add("selected");
+            break;
+          case "vue3D":
+            document.getElementById("vue3D").classList.add("selected");
+            break;
+          case "vueFinie":
+            document.getElementById("vueFinie").classList.add("selected");
+            break;
+          case "vuePerspective":
+            document.getElementById("vuePerspective").classList.add("selected");
+            break;
+          case "vuePeriodique":
+            document.getElementById("vuePeriodique").classList.add("selected");
+            break;
+          default:
+            console.log("Erreur : vue non reconnue");
+            break;
+        }
+
+        // display the graph
+        console.log(JSON.parse(JSON.stringify(this.graphS)));
+        document.getElementById("about-div").style.display = "none";
+        document.getElementById("graph-div").style.display = "inline";
+        // display gear icon for optionnal settings
+        document.getElementById("graph-settings-icon").style.display = "inline";
+
+        let keysOfIsOpen = Object.keys(this.isOpen);
+        console.log(keysOfIsOpen);
+        //this.$refs[curvename].displayDefaultCurve();
+
       }
-      controleur.getInformations();
     },
     /** Open the selected menu, close the others. */
     open(selectedMenu) {
@@ -295,7 +288,6 @@ export default {
         document.getElementById("graph-settings").style.display = "none";
         document.getElementById("graph-settings-icon").style.display = "none";
       } else {
-        dataManager.getEquivalentEquation(selectedMenu);
         // display a curve
         // hide "about div"; displays graph and graph param in menu
         document.getElementById("about-div").style.display = "none";
