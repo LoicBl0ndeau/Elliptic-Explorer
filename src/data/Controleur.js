@@ -12,15 +12,8 @@ class Controleur {
     coefficients = new Coefficients();
 
 
-
     constructor() {
-        this.coefficients = {
-            'a': 2,
-            'b': 3,
-            'p': 5
-        }
-        this.forme = Forme.UNDEFINED;
-
+        this.coefficients.a = 0;
     }
 
     getInformations() {
@@ -78,6 +71,7 @@ class Controleur {
     getForme() {
         return this.forme;
     }
+
     setForme(value) {
         switch (value) {
             case 'Short_Weierstrass':

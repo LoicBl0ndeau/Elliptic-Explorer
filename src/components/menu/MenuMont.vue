@@ -2,7 +2,7 @@
   <div class="submenu">
 
     <h3 class="section">Curve Equation</h3>
-    
+
     <div id="montgomery-eq"></div>
 
     <h3 class="section">Parameters</h3>
@@ -10,51 +10,36 @@
     <span class="parameter">
       <span id="a-error-mess-montgomery"></span>
       <label>a</label>
-      <input
-        id="a-montgomery"
-        @input="menuS.setValueOnGraphFromUserInput('A', 'a-montgomery'); verifyA();"
-      /><br />
+      <input id="a-montgomery" value="3"
+        @input="menuS.setValueOnGraphFromUserInput('A', 'a-montgomery'); verifyA();" /><br />
     </span>
 
     <span class="parameter">
       <span id="b-error-mess-montgomery"> </span>
       <label>b</label>
-      <input
-        id="b-montgomery"
-        @input="menuS.setValueOnGraphFromUserInput('B', 'b-montgomery'); verifyB();"
-      /><br />
+      <input id="b-montgomery" value="2"
+        @input="menuS.setValueOnGraphFromUserInput('B', 'b-montgomery'); verifyB();" /><br />
     </span>
 
     <h3 class="section">Operations</h3>
 
     <span class="parameter">
-      <select
-        id="choix-op-montgomery"
-        @change="displayCurveWithSelectedOperation"
-      >
+      <select id="choix-op-montgomery" @change="displayCurveWithSelectedOperation">
         <option selected="yes">Addition</option>
-        <option>Multiplication</option></select
-      ><br />
+        <option>Multiplication</option>
+      </select><br />
     </span>
 
     <span class="parameter">
       <label>x1</label>
-      <input
-        id="x1-montgomery"
-        class="coord"
-        @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')"
-      />
+      <input id="x1-montgomery" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition-montgomery">
       <span class="parameter">
         <label>x2</label>
-        <input
-          id="x2-montgomery"
-          class="coord"
-          @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')"
-        />
+        <input id="x2-montgomery" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
@@ -62,11 +47,7 @@
     <div id="multiplication-montgomery" style="display: none">
       <span class="parameter">
         <label>Factor</label>
-        <input
-          type="number"
-          id="factor-montgomery" 
-          value="2"
-          style="width: 40px" />
+        <input type="number" id="factor-montgomery" value="2" style="width: 40px" />
         <button @click="computeMul">Compute</button><br />
       </span>
     </div>
@@ -147,18 +128,18 @@ export default {
       let value = this.menuS.getFloatFromInputId('a-montgomery');
       if (value <= 2 && value >= -2)
         this.menuS.displayLaTeX(
-          "a-error-mess-montgomery", 
+          "a-error-mess-montgomery",
           "\\color{yellow} a \\text{ must be defined such as : }\\newline a \\notin [-2, 2]\\newline");
-      else 
+      else
         this.menuS.displayLaTeX("a-error-mess-montgomery", "");
     },
     verifyB() {
       let value = this.menuS.getFloatFromInputId('b-montgomery');
       if (value == 0)
         this.menuS.displayLaTeX(
-          "b-error-mess-montgomery", 
+          "b-error-mess-montgomery",
           "\\color{yellow} b \\text{ must be non-null}\\newline");
-      else 
+      else
         this.menuS.displayLaTeX("b-error-mess-montgomery", "");
     },
     updateMenuInputWithGraphValue() {

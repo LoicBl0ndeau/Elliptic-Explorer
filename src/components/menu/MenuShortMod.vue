@@ -1,25 +1,26 @@
 <template>
   <div class="submenu">
-
     <h3 class="section">Curve Equation</h3>
-    
-    <div id="short-eq" ></div>
+
+    <div id="short-eq"></div>
 
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
       <label>a</label>
-      <input id="a" /><br />
+      <input id="a" @change="setCoefficient('a')" value="3" />
+      <br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b" /><br />
+      <input id="b" @change="setCoefficient('b')" value="2" />
+      <br />
     </span>
 
-    <span class="parameter">
+    <span class="parameter" id="p_span">
       <label>p</label>
-      <input id="p" placeholder="prime number"/><br />
+      <input id="p" placeholder="prime number" value="5" @change="setCoefficient('p')" /><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
 
@@ -28,30 +29,26 @@
     <span class="parameter">
       <select id="choix-op-short" @change="displayCurveWithSelectedOperation">
         <option selected="yes">Addition</option>
-        <option disabled>Multiplication</option></select
-      ><br />
+        <option disabled>Multiplication</option>
+      </select><br />
     </span>
 
     <span class="parameter">
       <label>(x1, y1)</label>
-      <input id="x1-y1-short" value="" readonly/>
+      <input id="x1-y1-short" value="" readonly />
     </span>
 
     <div id="addition-short">
       <span class="parameter">
         <label>(x2, y2)</label>
-        <input id="x2-y2-short" readonly/>
+        <input id="x2-y2-short" readonly />
       </span>
     </div>
 
     <div id="multiplication-short" style="display: none">
       <span class="parameter">
         <label>Factor</label>
-        <input
-          type="number"
-          id="factor-short" 
-          value="2"
-          style="width: 40px" />
+        <input type="number" id="factor-short" value="2" style="width: 40px" />
         <button>Compute</button><br />
       </span>
     </div>
@@ -68,6 +65,12 @@ let dataManager = new WeierstrassManager();
 
 export default {
   name: "MenuShort",
+  props: {
+    controleur: {
+      type: Object,
+      required: true
+    }
+  },
   setup() {
     const graphS = graphStore();
     const menuS = menuStore();
@@ -81,6 +84,10 @@ export default {
     this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
   },
   methods: {
+    setCoefficient(coef) {
+      this.controleur.coefficients.setCoef(coef, parseInt(document.getElementById(coef).value));
+      console.log(this.controleur.coefficients.getShortWeierstrassCoefficients())
+    },
     displayDefaultCurve() {
       //dataManager.getEquivalentEquation();
       let parameters = dataManager.getParameters();
