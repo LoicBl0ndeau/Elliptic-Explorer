@@ -1,104 +1,144 @@
 <template>
-  <div
-    id="mySidebar"
-    class="sidebar"
-    @mouseover="toggleSidebar"
-    @mouseout="toggleSidebar"
-  >
+  <div id="mySidebar" class="sidebar" @mouseover="toggleSidebar" @mouseout="toggleSidebar">
     <!-- param menu, not displayed by default -->
     <div id="graph-settings" style="display: none">
       <div id="options">
         <h3>Graph Parameters</h3>
 
         Show lines :
-        <input
-          type="checkbox"
-          id="showLinesCheckbox"
-          @change="graphS.displayLines(!getCheckBoxValue('showLinesCheckbox'))"
-          checked
-        /><br />
+        <input type="checkbox" id="showLinesCheckbox"
+          @change="graphS.displayLines(!getCheckBoxValue('showLinesCheckbox'))" checked /><br />
         Show labels :
-        <input
-          type="checkbox"
-          id="showLabelsCheckbox"
-          @change="graphS.displayLabels(getCheckBoxValue('showLabelsCheckbox'))"
-          checked
-        /><br />
+        <input type="checkbox" id="showLabelsCheckbox"
+          @change="graphS.displayLabels(getCheckBoxValue('showLabelsCheckbox'))" checked /><br />
         Show segments :
-        <input
-          type="checkbox"
-          id="showSegmentsCheckbox"
-          @change="
-            graphS.displaySegments(getCheckBoxValue('showSegmentsCheckbox'))
-          "
-          checked
-        /><br />
+        <input type="checkbox" id="showSegmentsCheckbox" @change="
+          graphS.displaySegments(getCheckBoxValue('showSegmentsCheckbox'))
+        " checked /><br />
       </div>
     </div>
 
-    <a @click="open('about')">
-      <img
-        class="material-icons filter-orange"
-        src="images/info_black_24dp.svg"
-      />
-      <span class="icon-text">About EE</span></a
-    ><br />
 
+    <div id="corps">
+      <h1>Corps de l'équation</h1>
+
+      <div class="flexbox">
+        <div id="corps_reels" @click="setCorps('R')">
+          <span>R</span>
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Réels</span>
+        </div>
+
+        <div id="corps_modulo" @click="setCorps('P')">
+          <span>%</span>
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Modulo P</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div id="vues_disponibles">
+      <h1>
+        Vues disponibles
+      </h1>
+      <p id="avertissementVue">Veuillez choisir un corps.</p>
+
+      <div class="flexbox">
+        <div id="vue2D" @click="setVue('vue2D')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Vue 2D</span>
+        </div>
+
+        <div id="vueFinie" @click="setVue('vueFinie')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Vue finie</span>
+        </div>
+
+        <div id="vue3D" @click="setVue('vue3D')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Vue 3D</span>
+        </div>
+
+        <div id="vuePeriodique" @click="setVue('vuePeriodique')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Vue périodique</span>
+        </div>
+
+        <div id="vuePerspective" @click="setVue('vuePerspective')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Vue perspective</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="equation">
+      <h1>
+        Equation
+      </h1>
+
+      <h2>
+        Forme :
+        <select name="forme" id="forme" @change="formeChange()">
+          <option value="Undefined" selected>Undefined</option>
+          <option value="Short_Weierstrass">Short Weierstrass</option>
+          <option value="Weierstrass">Weierstrass</option>
+          <option value="Montgomery">Montgomery</option>
+          <option value="Edwards">Edwards</option>
+        </select>
+      </h2>
+
+      <p id="avertissementForme">Veuillez choisir une forme.</p>
+
+      <MenuShortMod v-show="isOpen.Short_Weierstrass" ref="Short_Weierstrass" />
+      <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" />
+      <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" />
+      <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" />
+
+    </div>
+
+
+    <a @click="open('about')">
+      <img class="material-icons filter-orange" src="images/info_black_24dp.svg" />
+      <span class="icon-text">About EE</span></a><br />
+
+    <!--  
     <a @click="open('shortmod')">
-      <img
-        id="menu-shortmod"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Short Weierstrass</span> </a
-    ><br />
+      <img id="menu-shortmod" class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" />
+      <span class="icon-text">Short Weierstrass</span> </a><br />
     <MenuShortMod v-show="isOpen.shortmod" ref="shortmod" />
 
     <a @click="open('weierstrass')">
-      <img
-        id="menu-weierstrass"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Weierstrass</span> </a
-    ><br />
+      <img id="menu-weierstrass" class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" />
+      <span class="icon-text">Weierstrass</span> </a><br />
     <MenuWeierstrass v-show="isOpen.weierstrass" ref="weierstrass" />
 
     <a @click="open('montgomery')">
-      <img
-        id="menu-montgomery"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Montgomery</span> </a
-    ><br />
+      <img id="menu-montgomery" class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" />
+      <span class="icon-text">Montgomery</span> </a><br />
     <MenuMontgomery v-show="isOpen.montgomery" ref="montgomery" />
 
     <a @click="open('edwards')">
-      <img
-        id="menu-edwards"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Edwards</span> </a
-    ><br />
+      <img id="menu-edwards" class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" />
+      <span class="icon-text">Edwards</span> </a><br />
     <MenuEdwards v-show="isOpen.edwards" ref="edwards" />
-
+    -->
     <a @click="changePinStatus">
-      <img
-        id="pin"
-        class="material-icons filter-orange"
-        src="images/push_pin_black_24dp-filled.svg"
-      />
+      <img id="pin" class="material-icons filter-orange" src="images/push_pin_black_24dp-filled.svg" />
     </a>
 
-    <img
-      id="graph-settings-icon"
-      class="material-icons filter-orange"
-      src="images/settings_black_24dp.svg"
-      style="display: none"
-      @click="changeGraphParamDisplay()"
-    />
+
+
+    <img id="graph-settings-icon" class="material-icons filter-orange" src="images/settings_black_24dp.svg"
+      style="display: none" @click="changeGraphParamDisplay()" />
   </div>
 </template>
 
@@ -109,6 +149,13 @@ import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
 import { graphStore } from "@/stores/graph.js";
+
+import WeierstrassManager from "@/data/WeierstrassManager.js";
+import Controleur from "@/data/Controleur.js";
+
+let dataManager = new WeierstrassManager();
+let controleur = new Controleur();
+
 
 export default {
   name: "MyMenu",
@@ -128,10 +175,10 @@ export default {
       // list of the of the submenus in the sidebar
       isOpen: {
         about: false,
-        shortmod: false,
-        weierstrass: false,
-        montgomery: false,
-        edwards: false,
+        Short_Weierstrass: false,
+        Weierstrass: false,
+        Montgomery: false,
+        Edwards: false,
       },
       // the menu is fixed and not minized by default
       isPinned: true,
@@ -153,6 +200,90 @@ export default {
     };
   },
   methods: {
+    formeChange() {
+      let forme = document.getElementById('forme').value;
+      let oldForme = controleur.getForme();
+
+      controleur.setForme(forme);
+
+      if (forme == "Undefined") {
+        document.getElementById('avertissementForme').style.display = "block";
+      } else {
+        document.getElementById('avertissementForme').style.display = "none";
+      }
+      this.isOpen[oldForme] = false;
+      this.isOpen[forme] = true;
+
+    },
+    setCorps(value) {
+      // hide the warning if the user selects a corps
+      if (controleur.getCorps() == "Undefined") {
+        document.getElementById('avertissementVue').style.display = "none";
+        document.getElementById('vues_disponibles').children[2].style.display = "block";
+      }
+      controleur.setCorps(value);
+      controleur.setVue("Undefined");
+
+      // remove the selected class from all the menu items and add it to the selected one
+      // also display the available vues for the selected corps
+      document.getElementById("corps").children[1].childNodes.forEach((child) => {
+        child.classList.remove("selected");
+      });
+
+      let availableVues = []
+
+      switch (value) {
+        case "R":
+          document.getElementById("corps_reels").classList.add("selected");
+          availableVues = ["vue2D", "vue3D"];
+          break;
+        case "P":
+          document.getElementById("corps_modulo").classList.add("selected");
+          availableVues = ["vueFinie", "vuePeriodique"];
+          break;
+      }
+
+      document.getElementById('vues_disponibles').children[2].childNodes.forEach((child) => {
+        child.classList.remove("selected");
+        if (availableVues.includes(child.id)) {
+          child.style.display = "flex";
+        } else {
+          child.style.display = "none";
+        }
+      });
+      controleur.getInformations();
+
+    },
+    setVue(value) {
+      controleur.setVue(value);
+
+      // remove the selected class from all the menu items and add it to the selected one
+      document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
+        child.classList.remove("selected");
+      });
+
+      switch (value) {
+        case "vue2D":
+          document.getElementById("vue2D").classList.add("selected");
+          break;
+        case "vue3D":
+          document.getElementById("vue3D").classList.add("selected");
+          break;
+        case "vueFinie":
+          document.getElementById("vueFinie").classList.add("selected");
+          break;
+        case "vuePerspective":
+          document.getElementById("vuePerspective").classList.add("selected");
+          break;
+        case "vuePeriodique":
+          document.getElementById("vuePeriodique").classList.add("selected");
+          break;
+        default:
+          console.log("Erreur : vue non reconnue");
+          break;
+      }
+      controleur.getInformations();
+    },
     /** Open the selected menu, close the others. */
     open(selectedMenu) {
       // special case for the "about" submenu, as it's not a curve.
@@ -164,6 +295,7 @@ export default {
         document.getElementById("graph-settings").style.display = "none";
         document.getElementById("graph-settings-icon").style.display = "none";
       } else {
+        dataManager.getEquivalentEquation(selectedMenu);
         // display a curve
         // hide "about div"; displays graph and graph param in menu
         document.getElementById("about-div").style.display = "none";

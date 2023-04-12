@@ -32,7 +32,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 A l'heure actuelle, nous n'utilisons que la librairie [DesmosAPI](https://www.desmos.com/api/v1.7/docs/index.html) pour générer les graphiques.
 L'ensemble de nos fonctions pour générer ces courbes sont documentées dans [GraphicalInterfaceDocumentation/index.html](https://github.com/DanielArian/elliptic-explorer/blob/main/GraphicalInterfaceDocumentation/index.html)
 
-Remarque: afin de pouvoir la dernière version (v1.7) dans l'environnement NodeJs, nous avons dû créer un package desmosAPI
+Remarque: afin de pouvoir utiliser la dernière version (v1.7) dans l'environnement NodeJs, nous avons dû créer un package desmosAPI
 sur npmjs.com. Pour y accéder : [https://www.npmjs.com/package/desmosapi](https://www.npmjs.com/package/desmosapi)
 
 ### Calculs cryptographiques
@@ -88,7 +88,7 @@ L'intérêt des stores est donc de pouvoir partager la lecture/écriture d'une m
 
 Nous utilisons deux *stores* pour cette app. 
 
-- [src/stores/menu.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/menu.js) pour centraliser certaines méthodes utilisées par les compenents du menu.
+- [src/stores/menu.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/menu.js) pour centraliser certaines méthodes utilisées par les components du menu.
 - [src/stores/graph.js](https://github.com/DanielArian/elliptic-explorer/blob/main/src/stores/graph.js) qui initialise l'affichage des graphiques desmosAPI à partir de notre librairie 
 [GraphicalInterface](https://github.com/DanielArian/elliptic-explorer/tree/main/src/app/graph) .
 De plus, elle centralise les méthodes utilisées sur le site et disponibles pour toutes les 

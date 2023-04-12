@@ -1,8 +1,5 @@
 <template>
   <div class="submenu">
-    <h3 class="section">General Curve Equation</h3>
-    
-    <div id="general-edwards-eq"></div>
 
     <h3 class="section">Curve Equation</h3>
     
@@ -16,7 +13,6 @@
       <label>c</label>
       <input
         id="c"
-        type="number"
         @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();"
       /><br />
     </span>
@@ -25,7 +21,6 @@
       <label>d</label>
       <input
         id="d"
-        type="number"
         @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();"
       /><br />
     </span>
@@ -47,7 +42,6 @@
       <input
         id="x1-edwards"
         class="coord"
-        type="number"
         @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')"
       />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
@@ -59,7 +53,6 @@
         <input
           id="x2-edwards"
           class="coord"
-          type="number"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')"
         />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
@@ -101,7 +94,7 @@ export default {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
     // display curve equation
-    this.menuS.displayLaTeX('general-edwards-eq', "x^2 + y^2 = c^2(1 +dx^2y^2)");
+    this.menuS.displayLaTeX('edwards-eq', "x^2 + y^2 = c^2(1 +dx^2y^2)");
   },
   methods: {
     displayDefaultCurve() {
@@ -113,9 +106,6 @@ export default {
 
       this.graphS.displayEdwards(c, d);
       this.graphS.showAddition(xP, xQ);
-
-      // Display latex
-      this.menuS.displayLaTeX('edwards-eq', "x^2 + y^2 = "+c+"^2(1 +"+d+"x^2y^2)");
 
       // display default operation (Addition)
       this.menuS.setValueById("choix-op-edwards", "Addition");
@@ -169,7 +159,6 @@ export default {
       }
       else
         this.menuS.displayLaTeX("error-mess-edwards", "");
-        this.menuS.displayLaTeX('edwards-eq', "x^2 + y^2 = "+c+"^2(1 +"+d+"x^2y^2)");
     },
     updateMenuInputWithGraphValue() {
       try {

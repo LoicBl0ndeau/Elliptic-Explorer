@@ -1,8 +1,5 @@
 <template>
   <div class="submenu">
-    <h3 class="section">General Curve Equation</h3>
-    
-    <div id="general-montgomery-eq"></div>
 
     <h3 class="section">Curve Equation</h3>
     
@@ -16,7 +13,6 @@
       <input
         id="a-montgomery"
         @input="menuS.setValueOnGraphFromUserInput('A', 'a-montgomery'); verifyA();"
-        type="number"
       /><br />
     </span>
 
@@ -26,7 +22,6 @@
       <input
         id="b-montgomery"
         @input="menuS.setValueOnGraphFromUserInput('B', 'b-montgomery'); verifyB();"
-        type="number"
       /><br />
     </span>
 
@@ -48,7 +43,6 @@
         id="x1-montgomery"
         class="coord"
         @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')"
-        type="number"
       />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
@@ -60,7 +54,6 @@
           id="x2-montgomery"
           class="coord"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')"
-          type="number"
         />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
@@ -101,7 +94,7 @@ export default {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
     // display curve equation
-    this.menuS.displayLaTeX('general-montgomery-eq', "ay^2 = x^3 + bx +x");
+    this.menuS.displayLaTeX('montgomery-eq', "ay^2 = x^3 + bx +x");
   },
   methods: {
     displayDefaultCurve() {
@@ -113,9 +106,6 @@ export default {
 
       this.graphS.displayMontgomery(a, b);
       this.graphS.showAddition(xP, xQ);
-
-      // Display latex
-      this.menuS.displayLaTeX('montgomery-eq', a+"y^2 = x^3 + "+b+"x +x");
 
       // display default operation (Addition)
       this.menuS.setValueById("choix-op-montgomery", "Addition");
@@ -161,7 +151,6 @@ export default {
           "\\color{yellow} a \\text{ must be defined such as : }\\newline a \\notin [-2, 2]\\newline");
       else 
         this.menuS.displayLaTeX("a-error-mess-montgomery", "");
-        this.menuS.displayLaTeX('montgomery-eq', value+"y^2 = x^3 + "+this.menuS.getFloatFromInputId("b-montgomery")+"x +x");
     },
     verifyB() {
       let value = this.menuS.getFloatFromInputId('b-montgomery');
@@ -171,7 +160,6 @@ export default {
           "\\color{yellow} b \\text{ must be non-null}\\newline");
       else 
         this.menuS.displayLaTeX("b-error-mess-montgomery", "");
-        this.menuS.displayLaTeX('montgomery-eq', this.menuS.getFloatFromInputId("a-montgomery")+"y^2 = x^3 + "+value+"x +x");
     },
     updateMenuInputWithGraphValue() {
       try {
