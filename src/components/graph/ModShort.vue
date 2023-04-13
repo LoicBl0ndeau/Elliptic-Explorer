@@ -11,6 +11,7 @@ export default {
     let graphMod = new ShortWeierstrass("calculator", 2, 1, 5);
     
     graphMod.findAllPoints();
+
     graphMod.displayPoints();
     graphMod.addClickPoints();
     /* window.setInterval(function () {

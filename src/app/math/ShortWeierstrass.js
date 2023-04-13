@@ -28,6 +28,11 @@ export class ShortWeierstrass extends ModCurveGraph {
             b: new BN(b),
             p: new BN(p),
           });
+        this.shortWcurve = new elliptic.curve.short({
+            a: new BN(a),
+            b: new BN(b),
+            p: new BN(p),
+          });
         this.listPoints = [];
     }
 
@@ -43,12 +48,17 @@ export class ShortWeierstrass extends ModCurveGraph {
     newPoint(x, y) {
         var p = this.p;
         //Create a point on the shortW curve
+        var p = this.p;
+        //Create a point on the shortW curve
         while (x < 0) {
+            x += p;
             x += p;
         }
         while (y < 0) {
             y += p;
+            y += p;
         }
+        return this.shortWcurve.point(new BN(x), new BN(y));
         return this.shortWcurve.point(new BN(x), new BN(y));
     }
 
@@ -58,6 +68,8 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @returns {Array} the x y coordinates of the point in the form [x, y] with x and y integers
      */
     getCoord(point) {
+        if (point.inf) //if the point is the point at infinity
+            return [0, 1.5*this.p/2 + 0.5];
         if (point.inf) //if the point is the point at infinity
             return [0, 1.5*this.p/2 + 0.5];
         return [point.getX().toNumber(), point.getY().toNumber()];
@@ -87,7 +99,7 @@ export class ShortWeierstrass extends ModCurveGraph {
      * Add two points
      * @param {Point} P point on curve
      * @param {Point} Q point on curve
-     * @returns {CoordPoint} Coordinates of resulting point from the addition P+Q
+     * @returns {resCoordPoint} Coordinates of resulting point from the addition P+Q
      */
     addPoints(P, Q) {
         var resPoint = P.add(Q);
@@ -192,7 +204,7 @@ export class ShortWeierstrass extends ModCurveGraph {
             }
         }
         console.log(listCoordPoints.length);
-        listCoordPoints.push([(this.calculator.graphpaperBounds.mathCoordinates.left + this.calculator.graphpaperBounds.mathCoordinates.right) / 2, this.calculator.graphpaperBounds.mathCoordinates.top - 0.5]);
+        listCoordPoints.push([0, 1.5*this.p/2 + 0.5]);
         listPoints.push(this.newPoint(null, null));
     }
 
@@ -239,7 +251,7 @@ export class ShortWeierstrass extends ModCurveGraph {
      * @param {Array} addPoint coordinates of the additionnal point
      * @param {boolean} isTheSamePoint true if we do P+P
      */
-    displayAddPoint(addPoint, isTheSamePoint) {
+    displayAddPoint(addPoint, isTheSamePoint, isInfinityAPointOnCurve) {
         let listPoints = this.listPoints;
         var i = 1;
         var j = 1;
@@ -255,20 +267,26 @@ export class ShortWeierstrass extends ModCurveGraph {
                 isExactlyTheSamePoint = true;
             }
             for (i = 1; i < listPoints.length+1; i++) {
+                // If the values of the additionnal point are in the listCoordPoints, we display the point in red
                 if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint });
                     var idAdd = i;
                 }
                 // Else if values in listCoordPoints solves the equation of a*x+b*y=c, we display the points in green
-                else if(c.includes(a * this.getValueOfParameter(`x_{${i}}`) + b * this.getValueOfParameter(`y_{${i}}`)) && i != listPoints.length && !isExactlyTheSamePoint){
+                else if(c.includes(a * this.getValueOfParameter(`x_{${i}}`) + b * this.getValueOfParameter(`y_{${i}}`)) && i != listPoints.length && !isExactlyTheSamePoint && !isInfinityAPointOnCurve){
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.pointOnCurve });
                 }
                 else {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point });
                 }
             }
-            if(isExactlyTheSamePoint){
+            //If the user clicked twice on the same point (but not infinity), we display it in green
+            if(isExactlyTheSamePoint && this.idSelectedPoints[0] != this.listPoints.length){
                 this.setExpressionParameters(`p_{${this.idSelectedPoints[0]}}`, { color: Graphic.Colors.pointOnCurve });
+            }
+            //If only one of the point is infinity, we display it in green
+            if(isInfinityAPointOnCurve){
+                this.setExpressionParameters(`p_{${listPoints.length}}`, { color: Graphic.Colors.pointOnCurve });
             }
             //Remove the previous segment in any case
             this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
@@ -533,8 +551,9 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
      * Show the result of the addition in red and draw the segment
      * @param {Array} addPoint coordinates of the additionnal point
      * @param {boolean} isTheSamePoint true if we do P+P
+     * @param {boolean} isInfinityAPointOnCurve true if one of the point is infinity
      */
-    displayAddPoint(addPoint, isTheSamePoint) {
+    displayAddPoint(addPoint, isTheSamePoint, isInfinityAPointOnCurve) {
         let listPoints = this.listPoints;
         var i = 1;
         var j = 1;
@@ -550,20 +569,26 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
                 isExactlyTheSamePoint = true;
             }
             for (i = 1; i < listPoints.length+1; i++) {
+                // If the values of the additionnal point are in the listCoordPoints, we display the point in red
                 if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint });
                     var idAdd = i;
                 }
                 // Else if values in listCoordPoints solves the equation of a*x+b*y=c, we display the points in green
-                else if(c.includes(a * this.getValueOfParameter(`x_{${i}}`) + b * this.getValueOfParameter(`y_{${i}}`)) && i != listPoints.length && !isExactlyTheSamePoint){
+                else if(c.includes(a * this.getValueOfParameter(`x_{${i}}`) + b * this.getValueOfParameter(`y_{${i}}`)) && i != listPoints.length && !isExactlyTheSamePoint && !isInfinityAPointOnCurve){
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.pointOnCurve });
                 }
                 else {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.point });
                 }
             }
-            if(isExactlyTheSamePoint){
+            //If the user clicked twice on the same point (but not infinity), we display it in green
+            if(isExactlyTheSamePoint && this.idSelectedPoints[0] != this.listPoints.length){
                 this.setExpressionParameters(`p_{${this.idSelectedPoints[0]}}`, { color: Graphic.Colors.pointOnCurve });
+            }
+            //If only one of the point is infinity, we display it in green
+            if(isInfinityAPointOnCurve){
+                this.setExpressionParameters(`p_{${listPoints.length}}`, { color: Graphic.Colors.pointOnCurve });
             }
             //Remove the previous segment in any case
             this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
@@ -579,6 +604,7 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
     }
 
     displayInfinity(){
+        // No lines when infinity is selected
         this.calculator.removeExpressions([
             { id: `f` },
             { id: `s_{${this.segmentId}}` },
