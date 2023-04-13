@@ -520,7 +520,6 @@ export class ModCurveGraph extends Graphic {
 
         document.getElementById("result-x-y-shortmod").innerHTML = `(${addCoordPoint[0]},   ${addCoordPoint[1]})`;
         if(point1.inf || point2.inf){
-          console.log("infinity");
           that.displayInfinity();
           isTheSamePoint = true;    
         }
@@ -545,7 +544,6 @@ export class ModCurveGraph extends Graphic {
   updateInfinityPosition(){
     let listPoints = this.listPoints;
     let listCoordPoints = this.listCoordPoints;
-    console.log(listPoints[listPoints.length - 1]);
 
     // remove the last point
     this.calculator.removeExpression({id:`x_{${listPoints.length}}`});
@@ -721,7 +719,6 @@ export class PModCurveGraph extends Graphic{
   
           document.getElementById("result-x-y-shortmod").innerHTML = `(${addCoordPoint[0]},   ${addCoordPoint[1]})`;
           if(point1.inf || point2.inf){
-            console.log("infinity");
             that.displayInfinity();
             isTheSamePoint = true;    
           }
@@ -746,7 +743,6 @@ export class PModCurveGraph extends Graphic{
     updateInfinityPosition(){
       let listPoints = this.listPoints;
       let listCoordPoints = this.listCoordPoints;
-      console.log(listPoints[listPoints.length - 1]);
   
       // remove the last point
       this.calculator.removeExpression({id:`x_{${listPoints.length}}`});
