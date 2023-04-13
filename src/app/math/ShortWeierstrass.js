@@ -31,7 +31,16 @@ export class ShortWeierstrass extends ModCurveGraph {
         this.listPoints = [];
     }
 
-
+    showCurve() {
+        this.calculator.setExpressions([
+          {id: 'courbe', latex: `\\operatorname{mod}\\left(y^{2},${this.p}\\right)=\\operatorname{mod}\\left(x^{3}+${this.param.a}*x+${this.param.b},${this.p}\\right) \\left\\{-${this.p/2}<x<${this.p/2}\\right\\} \\left\\{-${this.p/2}<y<${this.p/2}\\right\\}`, color:Graphic.Colors.point}
+        ])
+        this.saveGraphicState();
+      }
+    
+      hideCurve() {
+        this.calculator.removeExpression({id: 'courbe'});
+      }
 
 
     /**
@@ -338,7 +347,6 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
 
     hideCurve() {
         this.calculator.removeExpression({id: 'courbePeriodic'});
-        this.restoreGraphicState();
     }
 
     /**
