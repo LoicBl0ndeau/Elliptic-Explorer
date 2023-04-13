@@ -1,7 +1,17 @@
 <template>
   <div id="mySidebar" class="sidebar" @mouseover="toggleSidebar" @mouseout="toggleSidebar">
-    <!-- param menu, not displayed by default -->
-    <div id="graph-settings" style="display: none">
+
+    <!-- Pin icon : keep the menu attached or not -->
+    <a @click="changePinStatus">
+      <img id="pin" class="material-icons filter-orange" src="images/push_pin_black_24dp-filled.svg" />
+    </a>
+
+    <!-- Graph settings icon -->
+    <img id="graph-settings-icon" class="material-icons filter-orange" src="images/settings_black_24dp.svg"
+      @click="changeGraphParamDisplay()" />
+
+    <!-- Graph settings section : "display:none" by default, displayed when 'Graph settings icon' is clicked -->
+    <div id="graph-settings">
       <div id="options">
         <h3>Graph Parameters</h3>
 
@@ -18,7 +28,7 @@
       </div>
     </div>
 
-
+    <!-- Corps section -->
     <div id="corps">
       <h1>Corps de l'équation</h1>
 
@@ -41,8 +51,7 @@
 
     </div>
 
-
-
+    <!-- Equation section -->
     <div id="equation">
       <h1>
         Equation
@@ -52,7 +61,7 @@
         Forme :
         <select name="forme" id="forme" @change="formeChange()">
           <option value="Undefined" selected>Undefined</option>
-          <option value="Short_Weierstrass" style="display: none;">Short Weierstrass</option>
+          <option value="Short_Weierstrass">Short Weierstrass</option>
           <option value="Weierstrass">Weierstrass</option>
           <option value="Montgomery">Montgomery</option>
           <option value="Edwards">Edwards</option>
@@ -68,6 +77,7 @@
 
     </div>
 
+    <!-- Vues section -->
     <div id="vues_disponibles">
       <h1>
         Vues disponibles
@@ -81,16 +91,16 @@
           <span>Vue 2D</span>
         </div>
 
-        <div id="vueFinie" @click="setVue('vueFinie')">
-          <!-- <span>...</span> -->
-          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
-          <span>Vue finie</span>
-        </div>
-
         <div id="vue3D" @click="setVue('vue3D')">
           <!-- <span>...</span> -->
           <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
           <span>Vue 3D</span>
+        </div>
+
+        <div id="vueFinie" @click="setVue('vueFinie')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Vue finie</span>
         </div>
 
         <div id="vuePeriodique" @click="setVue('vuePeriodique')">
@@ -108,26 +118,22 @@
       </div>
     </div>
 
-    <a @click="open('about')">
+    <!-- About section -->
+    <a @click="openAbout()">
       <img class="material-icons filter-orange" src="images/info_black_24dp.svg" />
-      <span class="icon-text">About EE</span></a><br />
-
-    <a @click="changePinStatus">
-      <img id="pin" class="material-icons filter-orange" src="images/push_pin_black_24dp-filled.svg" />
+      <span class="icon-text">About EE</span>
     </a>
 
-    <img id="graph-settings-icon" class="material-icons filter-orange" src="images/settings_black_24dp.svg"
-      style="display: none" @click="changeGraphParamDisplay()" />
   </div>
 </template>
 
 
 <script>
+import { graphStore } from "@/stores/graph.js";
 import MenuShortMod from "./menu/MenuShortMod";
 import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
-import { graphStore } from "@/stores/graph.js";
 import Controleur from "@/data/Controleur.js";
 
 let controleur = new Controleur();
@@ -142,14 +148,15 @@ export default {
   },
   setup() {
     const graphS = graphStore();
-
     return { graphS };
+  },
+  mounted() {
+    this.setCorps('R');
   },
   data() {
     return {
-      controleurObject: controleur,
-      // list of the of the submenus in the sidebar
-      isOpen: {
+      controleurObject: controleur, // the controleur object's reference
+      isOpen: { // state list of the submenus (open or not) 
         about: false,
         Short_Weierstrass: false,
         Weierstrass: false,
@@ -176,9 +183,9 @@ export default {
     };
   },
   methods: {
-    setCorps(value) {
-      document.getElementById('avertissementCorps').style.display = "none";
+    setCorps(value) { // set the corps in the controleur object and display the available vues
       // hide the warning if the user selects a corps
+      document.getElementById('avertissementCorps').style.display = "none";
       if (controleur.getCorps() == "Undefined") {
         document.getElementById('vues_disponibles').children[2].style.display = "block";
       }
@@ -192,20 +199,17 @@ export default {
       });
 
       let availableVues = [];
-      let availableFormes = [];
 
       switch (value) {
         case "R":
           document.getElementById("p_span").style.display = "none";
           document.getElementById("corps_reels").classList.add("selected");
-          availableVues = ["vue2D", "vue3D"];
-          availableFormes = ["Undefined", "Weierstrass", "Montgomery", "Edwards"];
+          availableVues = ["vue2D", "vue3D", "vuePerspective"];
           break;
         case "P":
           document.getElementById("p_span").style.display = "block";
           document.getElementById("corps_modulo").classList.add("selected");
           availableVues = ["vueFinie", "vuePeriodique"];
-          availableFormes = ["Undefined", "Short_Weierstrass"];
           break;
       }
 
@@ -218,13 +222,6 @@ export default {
         }
       });
 
-      document.getElementById("forme").childNodes.forEach((child) => {
-        if (availableFormes.includes(child.value)) {
-          child.style.display = "block";
-        } else {
-          child.style.display = "none";
-        }
-      });
       document.getElementById('forme').value = "Undefined";
       this.formeChange();
     },
@@ -278,55 +275,17 @@ export default {
         }
 
         // display the graph
-        console.log(JSON.parse(JSON.stringify(this.graphS)));
         document.getElementById("about-div").style.display = "none";
         document.getElementById("graph-div").style.display = "inline";
-        // display gear icon for optionnal settings
-        document.getElementById("graph-settings-icon").style.display = "inline";
 
-        let keysOfIsOpen = Object.keys(this.isOpen);
-        console.log(keysOfIsOpen);
-        //this.$refs[curvename].displayDefaultCurve();
-
+        // display the graph curve
+        //this.graphS.displayShort()
       }
     },
-    /** Open the selected menu, close the others. */
-    open(selectedMenu) {
-      // special case for the "about" submenu, as it's not a curve.
-      if (selectedMenu == "about") {
-        // hide graph; display "about-div" id
-        document.getElementById("graph-div").style.display = "none";
-        document.getElementById("about-div").style.display = "inline";
-        // hide graph optionnal settings
-        document.getElementById("graph-settings").style.display = "none";
-        document.getElementById("graph-settings-icon").style.display = "none";
-      } else {
-        // display a curve
-        // hide "about div"; displays graph and graph param in menu
-        document.getElementById("about-div").style.display = "none";
-        document.getElementById("graph-div").style.display = "inline";
-        // display gear icon for optionnal settings
-        document.getElementById("graph-settings-icon").style.display = "inline";
-      }
-      // get the curves names
-      let keysOfIsOpen = Object.keys(this.isOpen);
-      // remove "about" from keys (it's the 1st elem of the list)
-      keysOfIsOpen.shift();
-
-      for (const curvename of keysOfIsOpen) {
-        if (curvename == selectedMenu) {
-          this.isOpen[curvename] = true;
-          this.$refs[curvename].displayDefaultCurve();
-          // show expand arrow
-          document.getElementById(`menu-${curvename}`).src =
-            "images/expand_more_black_24dp.svg";
-        } else {
-          this.isOpen[curvename] = false;
-          // show chevron right arrow
-          document.getElementById(`menu-${curvename}`).src =
-            "images/chevron_right_black_24dp.svg";
-        }
-      }
+    openAbout() {
+      // hide graph and display "about-div"
+      document.getElementById("graph-div").style.display = "none";
+      document.getElementById("about-div").style.display = "inline";
     },
     toggleSidebar() {
       if (!this.isPinned) {
@@ -369,10 +328,7 @@ export default {
     getCheckBoxValue(htmlID) {
       return document.getElementById(htmlID).checked;
     },
-  },
-  mounted() {
-    this.setCorps('R');
-  },
+  }
 };
 </script>
 

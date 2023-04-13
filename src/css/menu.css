@@ -180,7 +180,7 @@ body {
   border: dotted;
   border-color: white;
   text-align: right;
-
+  display: none;
 }
 
 #graph-settings-icon {
