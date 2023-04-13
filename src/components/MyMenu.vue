@@ -265,7 +265,6 @@ export default {
         }
 
         // display the graph
-        console.log(JSON.parse(JSON.stringify(this.graphS)));
         document.getElementById("about-div").style.display = "none";
         document.getElementById("graph-div").style.display = "inline";
         // display gear icon for optionnal settings
@@ -273,7 +272,7 @@ export default {
 
         let keysOfIsOpen = Object.keys(this.isOpen);
         console.log(keysOfIsOpen);
-        //this.$refs[curvename].displayDefaultCurve();
+        this.$refs[controleur.getForme()].displayDefaultCurve();
 
       }
     },
