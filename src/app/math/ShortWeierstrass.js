@@ -27,12 +27,7 @@ export class ShortWeierstrass extends ModCurveGraph {
             a: new BN(a),
             b: new BN(b),
             p: new BN(p),
-          });
-        this.shortWcurve = new elliptic.curve.short({
-            a: new BN(a),
-            b: new BN(b),
-            p: new BN(p),
-          });
+        });
         this.listPoints = [];
     }
 
