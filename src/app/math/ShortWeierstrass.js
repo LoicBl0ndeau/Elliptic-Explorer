@@ -48,8 +48,6 @@ export class ShortWeierstrass extends ModCurveGraph {
     newPoint(x, y) {
         var p = this.p;
         //Create a point on the shortW curve
-        var p = this.p;
-        //Create a point on the shortW curve
         while (x < 0) {
             x += p;
             x += p;
@@ -58,7 +56,6 @@ export class ShortWeierstrass extends ModCurveGraph {
             y += p;
             y += p;
         }
-        return this.shortWcurve.point(new BN(x), new BN(y));
         return this.shortWcurve.point(new BN(x), new BN(y));
     }
 
