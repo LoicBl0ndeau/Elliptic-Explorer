@@ -529,18 +529,11 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
      * Display lines of the modulo on a square of modulo x modulo
      */
     displayModulo() {
-        var modulo = this.p;
-        var lignes = Math.floor(Math.sqrt(modulo));
         try {
-            this.calculator.setExpressions([
-                { id: `m`, latex: `m=${modulo}` },
-                { id: `l`, latex: `l=${lignes}` },
-                { id: `L_{1}`, latex: `L_{1}=[m\\frac{b}{a}i\\operatorname{for}i=[-lm...lm]]` },
-                { id: `L_{2}`, latex: `L_{2}=[\\frac{m}{2}i\\operatorname{for}i=[-lm...lm]]` },
-                { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})` },
-                { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})` },
-                { id: `c`, latex: `c=\\left\\{\\left|a\\right|>\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{1})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{1})y_{${this.idSelectedPoints[0]}},\\left|a\\right|\\le\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{2})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{2})y_{${this.idSelectedPoints[0]}}\\right\\}` },          
-                { id: `f`, latex: `(ax+by)=c \\left\\{-${this.p/2}<x<${this.p/2}\\right\\} \\left\\{-${this.p/2}<y<${this.p/2}\\right\\}`, color: Graphic.Colors.curve }, //Here to choose the centering of the square for the lines of the modulo
+            var a = (this.selectedPoints[1][1] - this.selectedPoints[0][1]) / (this.selectedPoints[1][0] - this.selectedPoints[0][0]);
+            var b = this.selectedPoints[0][1] - a * this.selectedPoints[0][0];
+            this.calculator.setExpressions([         
+                { id: `f`, latex: `y=${a}x+${b}`, color: Graphic.Colors.curve }, //f(x) = ax+b
             ]);
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
