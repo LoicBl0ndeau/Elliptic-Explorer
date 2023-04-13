@@ -52,7 +52,7 @@
         Forme :
         <select name="forme" id="forme" @change="formeChange()">
           <option value="Undefined" selected>Undefined</option>
-          <option value="Short_Weierstrass">Short Weierstrass</option>
+          <option value="Short_Weierstrass" style="display: none;">Short Weierstrass</option>
           <option value="Weierstrass">Weierstrass</option>
           <option value="Montgomery">Montgomery</option>
           <option value="Edwards">Edwards</option>
@@ -191,18 +191,21 @@ export default {
         child.classList.remove("selected");
       });
 
-      let availableVues = []
+      let availableVues = [];
+      let availableFormes = [];
 
       switch (value) {
         case "R":
           document.getElementById("p_span").style.display = "none";
           document.getElementById("corps_reels").classList.add("selected");
           availableVues = ["vue2D", "vue3D"];
+          availableFormes = ["Undefined", "Weierstrass", "Montgomery", "Edwards"];
           break;
         case "P":
           document.getElementById("p_span").style.display = "block";
           document.getElementById("corps_modulo").classList.add("selected");
           availableVues = ["vueFinie", "vuePeriodique"];
+          availableFormes = ["Undefined", "Short_Weierstrass"];
           break;
       }
 
@@ -214,6 +217,16 @@ export default {
           child.style.display = "none";
         }
       });
+
+      document.getElementById("forme").childNodes.forEach((child) => {
+        if (availableFormes.includes(child.value)) {
+          child.style.display = "block";
+        } else {
+          child.style.display = "none";
+        }
+      });
+      document.getElementById('forme').value = "Undefined";
+      this.formeChange();
     },
     formeChange() {
       let forme = document.getElementById('forme').value;
@@ -230,7 +243,7 @@ export default {
         this.isOpen[oldForme] = false;
         this.isOpen[forme] = true;
 
-        document.getElementById('avertissementVue').innerText = "Veuiilez choisir une vue.";
+        document.getElementById('avertissementVue').innerText = "Veuillez choisir une vue.";
       }
     },
     setVue(value) {
@@ -356,6 +369,9 @@ export default {
     getCheckBoxValue(htmlID) {
       return document.getElementById(htmlID).checked;
     },
+  },
+  mounted() {
+    this.setCorps('R');
   },
 };
 </script>

@@ -424,7 +424,7 @@ export class ModCurveGraph extends Graphic {
     };
     document.querySelector(".switch input").addEventListener("click", debounce); //Load new points when the user clicks on the switch
     this.calculator.observe('graphpaperBounds', debounce); //When the user move the graph
-      // Set the border of the screen
+    // Set the border of the screen
     this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(-${this.p/2},-${this.p/2}),(${this.p/2},-${this.p/2}),(${this.p/2},${this.p/2}),(-${this.p/2},${this.p/2})])`,fill:0,color:Graphic.Colors.line});
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
