@@ -62,6 +62,12 @@ export class Graphic {
     this.savedState = this.calculator.getState();
   }
 
+  restoreGraphicState() {
+    if (this.graphicState) {
+      this.calculator.setExpressions(this.graphicState);
+    }
+  }
+
   /**
    * Load the latest state of the graphic. A state can be saved using saveGraphicState()
    */
@@ -628,7 +634,6 @@ export class PModCurveGraph extends Graphic{
       // Find the math coordinates of the mouse
       var calculatorRect = that.element.getBoundingClientRect();
       this.element.addEventListener('click', function click(evt) {
-        console.log("click");
         // when user click on the screen, we go into this function
         try {
           var coordonnees_souris = that.calculator.pixelsToMath({
@@ -652,7 +657,6 @@ export class PModCurveGraph extends Graphic{
               changed = true;
             }
           }
-          var isInfinityPoint = false;
           // If the infinite point is selected
           if (((that.getValueOfParameter(`x_{${listPoints.length}}`)-0.5) <= x_arrondi) && (x_arrondi <= (that.getValueOfParameter(`x_{${listPoints.length}}`)+0.5)) && ((that.getValueOfParameter(`y_{${listPoints.length}}`)-0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`)+0.5))) {
             if(isSecondPoint){
@@ -662,8 +666,8 @@ export class PModCurveGraph extends Graphic{
               that.selectedPoints[0] = [undefined, undefined];
               that.idSelectedPoints[0] = listPoints.length;
             }
+            isSecondPoint = !isSecondPoint;
             changed = true;
-            isInfinityPoint = true;
           } 
   
           var point1 = that.newPoint(
@@ -674,14 +678,13 @@ export class PModCurveGraph extends Graphic{
             that.selectedPoints[1][0],
             that.selectedPoints[1][1],
           );
-          
+  
           // If the user clicked on the infinity point, we set the point to infinity
-          if(isInfinityPoint){
-            if(isSecondPoint){
-              point2.inf = true;
-            }else{
-              point1.inf = true;
-            }
+          if(that.idSelectedPoints[0] == listPoints.length){
+            point1.inf = true;
+          }
+          if(that.idSelectedPoints[1] == listPoints.length){
+            point2.inf = true;
           }
           
           // If the user didn't click on a point or it is his first clicked point, we do nothing
@@ -692,24 +695,28 @@ export class PModCurveGraph extends Graphic{
           isTheSamePoint=that.equalPoints(point1,point2);
           let addCoordPoint = that.addPoints(point1, point2);
   
+          // Display the result of the addition in the menu
           document.getElementById("result-x-y-shortmod").innerHTML = `(${addCoordPoint[0]},   ${addCoordPoint[1]})`;
+  
+          that.displayModulo();
+  
           if(point1.inf || point2.inf){
             that.displayInfinity();
-            isTheSamePoint = true;    
+            isTheSamePoint = true;
           }
-          else{
-            //If the two points have the same absolute y-coordinate, it has the same behavior as the infinity point
-            if ((Math.abs(that.selectedPoints[0][1]) == Math.abs(that.selectedPoints[1][1]) && (that.selectedPoints[0][0] == that.selectedPoints[1][0]))){
-              isTheSamePoint = true;
-              addCoordPoint = that.newPoint(null, null);
-              addCoordPoint.inf = true;
-              addCoordPoint = that.getCoord(addCoordPoint);
-              document.getElementById("result-x-y-shortmod").innerHTML = `(Infinity, Infinity)`;
-            }
-            that.displayModulo();
+          //If the two points have the same absolute y-coordinate or it is the same point with a y-coordinate value equal to 0, the result is infinity
+          if ((((Math.abs(that.selectedPoints[0][1]) == Math.abs(that.selectedPoints[1][1])) && (that.selectedPoints[0][0] == that.selectedPoints[1][0])) && (!isTheSamePoint)) || (isTheSamePoint && that.selectedPoints[0][1] == 0 && that.selectedPoints[1][1] == 0) || (point1.inf && point2.inf)){
+            isTheSamePoint = true;
+            addCoordPoint = that.newPoint(null, null);
+            addCoordPoint.inf = true;
+            addCoordPoint = that.getCoord(addCoordPoint);
+            document.getElementById("result-x-y-shortmod").innerHTML = `(Infinity, Infinity)`;
           }
-          console.log("ok");
-          that.displayAddPoint(addCoordPoint, isTheSamePoint);
+  
+          // To know is infinity is one of the clicked points (and only one !)
+          let isInfinityAPointOnCurve = point1.inf ^ point2.inf;
+  
+          that.displayAddPoint(addCoordPoint, isTheSamePoint, isInfinityAPointOnCurve);
         } catch (error) {
           //console.warn("error : " + error);
         }

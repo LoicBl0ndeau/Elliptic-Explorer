@@ -29,6 +29,15 @@
     <br>
     <button id="update">Update</button>
 
+    <h3 class="section">
+      Curve view
+      <!-- Rounded switch -->
+      <label class="switch">
+        <input type="checkbox" id="periodic-toggle">
+        <span class="slider round"></span>
+      </label>
+    </h3>
+
     <h3 class="section">Operations</h3>
 
     <span class="parameter">

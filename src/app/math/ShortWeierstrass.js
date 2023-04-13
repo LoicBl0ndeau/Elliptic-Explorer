@@ -337,8 +337,17 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
         this.listPoints = [];
     }
 
+    showCurvePeriodic() {
+        this.calculator.setExpressions([
+          {id: 'courbePeriodic', latex: `\\operatorname{mod}\\left(y^{2},${this.p}\\right)=\\operatorname{mod}\\left(x^{3}+${this.param.a}*x+${this.param.b},${this.p}\\right)`, color:Graphic.Colors.point}
+        ])
+        this.saveGraphicState();
+    }
 
-
+    hideCurve() {
+        this.calculator.removeExpression({id: 'courbePeriodic'});
+        this.restoreGraphicState();
+    }
 
     /**
      * Create the point with coordinates (x, y) from the curve (the point is linked to the curve)
@@ -365,7 +374,7 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
      */
     getCoord(point) {
         if (point.inf) //if the point is the point at infinity
-            return [0, 1.5*this.p/2 + 0.5];
+            return [0, this.calculator.graphpaperBounds.mathCoordinates.top - 0.5];
         return [point.getX().toNumber(), point.getY().toNumber()];
     }
 
@@ -532,8 +541,10 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
         try {
             var a = (this.selectedPoints[1][1] - this.selectedPoints[0][1]) / (this.selectedPoints[1][0] - this.selectedPoints[0][0]);
             var b = this.selectedPoints[0][1] - a * this.selectedPoints[0][0];
-            this.calculator.setExpressions([         
-                { id: `f`, latex: `y=${a}x+${b}`, color: Graphic.Colors.curve }, //f(x) = ax+b
+            this.calculator.setExpressions([        
+                { id: `a`, latex: `a=${a}`},
+                { id: `b`, latex: `b=${b}`},
+                { id: `f`, latex: `y=ax+b`, color: Graphic.Colors.curve }, //f(x) = ax+b
             ]);
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
@@ -547,15 +558,16 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
      * @param {boolean} isInfinityAPointOnCurve true if one of the point is infinity
      */
     displayAddPoint(addPoint, isTheSamePoint, isInfinityAPointOnCurve) {
+        console.log(addPoint, isTheSamePoint, isInfinityAPointOnCurve);
         let listPoints = this.listPoints;
         var i = 1;
         var j = 1;
         this.calculator.model.observe('expressionAnalysis', () => { //As Desmos is asynchrounous, we need to wait for the expression to be analysed
             this.calculator.model.unobserve('expressionAnalysis'); //We don't need to observe anymore otherwise it will loop infinitely
-            // get the value of 'a', 'b' and 'c'
-            var a = this.getValueOfParameter(`a`);
-            var b = this.getValueOfParameter(`b`);
-            var c = this.getValueOfParameter(`c`);
+            // get the value of 'a' and 'b'
+            var a = this.getValueOfParameter('a');
+            var b = this.getValueOfParameter('b');
+
             //To know if the user clicked twice on the same point
             var isExactlyTheSamePoint = false;
             if(this.selectedPoints[0][0] == this.selectedPoints[1][0] && this.selectedPoints[0][1] == this.selectedPoints[1][1]){
@@ -563,12 +575,13 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
             }
             for (i = 1; i < listPoints.length+1; i++) {
                 // If the values of the additionnal point are in the listCoordPoints, we display the point in red
+                console.log('ici');
                 if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint });
                     var idAdd = i;
                 }
                 // Else if values in listCoordPoints solves the equation of a*x+b*y=c, we display the points in green
-                else if(c.includes(a * this.getValueOfParameter(`x_{${i}}`) + b * this.getValueOfParameter(`y_{${i}}`)) && i != listPoints.length && !isExactlyTheSamePoint && !isInfinityAPointOnCurve){
+                else if((this.getValueOfParameter(`y_{${i}}`) == (a * this.getValueOfParameter(`x_{${i}}`) + b)) && i != listPoints.length && !isExactlyTheSamePoint && !isInfinityAPointOnCurve){
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.pointOnCurve });
                 }
                 else {
