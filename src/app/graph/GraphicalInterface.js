@@ -407,10 +407,6 @@ export class ModCurveGraph extends Graphic {
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
-
-    /*setInterval(() => {
-      this.updateInfinityPosition();
-    }, 200);*/
   }
 
   /**
@@ -543,29 +539,6 @@ export class ModCurveGraph extends Graphic {
       }
     });
   }
-
-  updateInfinityPosition(){
-    let listPoints = this.listPoints;
-    let listCoordPoints = this.listCoordPoints;
-
-    // remove the last point
-    this.calculator.removeExpression({id:`x_{${listPoints.length}}`});
-    this.calculator.removeExpression({id:`y_{${listPoints.length}}`});
-    this.calculator.removeExpression({id:`p_{${listPoints.length}}`});
-
-    // remove the last point from the list
-    listPoints.pop();
-    listCoordPoints.pop();
-
-    // add the new infinity point
-    listCoordPoints.push([0, this.calculator.graphpaperBounds.mathCoordinates.top - 0.5]);
-    listPoints.push(this.newPoint(null, null));
-
-    // add the new point to the calculator
-    this.pointId--;
-    this.addStaticPoint(listCoordPoints[listCoordPoints.length - 1]);
-    this.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
-  }
 }
 
 export class PModCurveGraph extends Graphic{
@@ -609,10 +582,8 @@ export class PModCurveGraph extends Graphic{
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
 
-    setInterval(() => {
-      this.updateInfinityPosition();
-    }, 200);
-
+    // Update the position of the infinity point when the screen is resized
+    this.calculator.observe('graphpaperBounds', this.updateInfinityPosition.bind(this));
   }
 
     /**
@@ -657,6 +628,7 @@ export class PModCurveGraph extends Graphic{
       // Find the math coordinates of the mouse
       var calculatorRect = that.element.getBoundingClientRect();
       this.element.addEventListener('click', function click(evt) {
+        console.log("click");
         // when user click on the screen, we go into this function
         try {
           var coordonnees_souris = that.calculator.pixelsToMath({
@@ -736,6 +708,7 @@ export class PModCurveGraph extends Graphic{
             }
             that.displayModulo();
           }
+          console.log("ok");
           that.displayAddPoint(addCoordPoint, isTheSamePoint);
         } catch (error) {
           //console.warn("error : " + error);
