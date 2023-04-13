@@ -401,38 +401,16 @@ export class ModCurveGraph extends Graphic {
     let width = mathCoordinates.right-mathCoordinates.left;
     this.height = height;
     this.width = width;
-    //The function when the user move the screen
-    const debounce = () => {
-      if(document.querySelector(".switch input").checked){
-        this.calculator.unobserve('graphpaperBounds'); //To avoid too many events
-        let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
-        let height = mathCoordinates.top-mathCoordinates.bottom;
-        let width = mathCoordinates.right-mathCoordinates.left;
-        this.height = height;
-        this.width = width;
-        for(let i = 1; i <= this.listPoints.length; i++) { //Remove all the previous points
-          this.calculator.removeExpression({id:`x_{${i}}`});
-          this.calculator.removeExpression({id:`y_{${i}}`});
-          this.calculator.removeExpression({id:`p_{${i}}`});
-        }
-        this.pointId = 0;
-        this.findAllPoints();
-        this.displayPoints();
-        this.addClickPoints();
-        // wait 1000ms before reactivating the event
-        setTimeout(() => {
-          this.calculator.observe('graphpaperBounds', debounce);
-        }, 100);
-        //this.calculator.observe('graphpaperBounds', debounce); //To reactivate the event after calculations
-      }
-    };
-    document.querySelector(".switch input").addEventListener("click", debounce); //Load new points when the user clicks on the switch
-    this.calculator.observe('graphpaperBounds', debounce); //When the user move the graph
+
       // Set the border of the screen
     this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(-${this.p/2},-${this.p/2}),(${this.p/2},-${this.p/2}),(${this.p/2},${this.p/2}),(-${this.p/2},${this.p/2})])`,fill:0,color:Graphic.Colors.line});
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
+
+    setInterval(() => {
+      this.updateInfinityPosition();
+    }, 200);
   }
 
   /**
@@ -563,6 +541,30 @@ export class ModCurveGraph extends Graphic {
       }
     });
   }
+
+  updateInfinityPosition(){
+    let listPoints = this.listPoints;
+    let listCoordPoints = this.listCoordPoints;
+    console.log(listPoints[listPoints.length - 1]);
+
+    // remove the last point
+    this.calculator.removeExpression({id:`x_{${listPoints.length}}`});
+    this.calculator.removeExpression({id:`y_{${listPoints.length}}`});
+    this.calculator.removeExpression({id:`p_{${listPoints.length}}`});
+
+    // remove the last point from the list
+    listPoints.pop();
+    listCoordPoints.pop();
+
+    // add the new infinity point
+    listCoordPoints.push([0, this.calculator.graphpaperBounds.mathCoordinates.top - 0.5]);
+    listPoints.push(this.newPoint(null, null));
+
+    // add the new point to the calculator
+    this.pointId--;
+    this.addStaticPoint(listCoordPoints[listCoordPoints.length - 1]);
+    this.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
+  }
 }
 
 export class PModCurveGraph extends Graphic{
@@ -605,6 +607,10 @@ export class PModCurveGraph extends Graphic{
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
+
+    setInterval(() => {
+      this.updateInfinityPosition();
+    }, 200);
 
   }
 
@@ -735,5 +741,29 @@ export class PModCurveGraph extends Graphic{
           //console.warn("error : " + error);
         }
       });
+    }
+
+    updateInfinityPosition(){
+      let listPoints = this.listPoints;
+      let listCoordPoints = this.listCoordPoints;
+      console.log(listPoints[listPoints.length - 1]);
+  
+      // remove the last point
+      this.calculator.removeExpression({id:`x_{${listPoints.length}}`});
+      this.calculator.removeExpression({id:`y_{${listPoints.length}}`});
+      this.calculator.removeExpression({id:`p_{${listPoints.length}}`});
+  
+      // remove the last point from the list
+      listPoints.pop();
+      listCoordPoints.pop();
+  
+      // add the new infinity point
+      listCoordPoints.push([0, this.calculator.graphpaperBounds.mathCoordinates.top - 0.5]);
+      listPoints.push(this.newPoint(null, null));
+  
+      // add the new point to the calculator
+      this.pointId--;
+      this.addStaticPoint(listCoordPoints[listCoordPoints.length - 1]);
+      this.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
     }
 }
