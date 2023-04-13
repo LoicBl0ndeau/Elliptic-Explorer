@@ -398,19 +398,8 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
      */
     addPoints(P, Q) {
         var resPoint = P.add(Q);
-        let resCoordPoint = this.getCoord(resPoint);        
-        while (resCoordPoint[0] > this.p/2) {
-            resCoordPoint[0] -= this.p;
-        }
-        while (resCoordPoint[0] < -this.p/2) {
-            resCoordPoint[0] += this.p;
-        }
-        while (resCoordPoint[1] > this.p/2) {
-            resCoordPoint[1] -= this.p;
-        }
-        while (resCoordPoint[1] < -this.p/2) {
-            resCoordPoint[1] += this.p;
-        }
+        let resCoordPoint = this.getCoord(resPoint);
+        console.log("resCoordPoint", resCoordPoint);
         return resCoordPoint;
     }
 
