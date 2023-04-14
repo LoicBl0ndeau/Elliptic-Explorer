@@ -8,7 +8,7 @@ class Coefficients {
 
     // Edwards coefficients
     c = 2;
-    d = 1;
+    d = 2;
 
     // Weierstrass coefficients
     a1 = 0;
@@ -24,6 +24,10 @@ class Coefficients {
 
     getModulo() {
         return this.p;
+    }
+
+    getD() {
+        return this.d;
     }
 
     setCoef(name, value) {

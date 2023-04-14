@@ -30,35 +30,35 @@
 
     <!-- Corps section -->
     <div id="corps">
-      <h1>Corps de l'équation</h1>
+      <h1>Equation field</h1>
 
       <div class="flexbox">
         <div id="corps_reels" @click="setCorps('R')">
           <span>R</span>
           <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
-          <span>Réels</span>
+          <span>Real numbers</span>
         </div>
 
         <div id="corps_modulo" @click="setCorps('P')">
           <span>%</span>
           <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
-          <span>Modulo P</span>
+          <span>Prime field of order p</span>
         </div>
 
       </div>
 
-      <p id="avertissementCorps">Veuillez choisir un corps.</p>
+      <p id="avertissementCorps">Please choose a form.</p>
 
     </div>
 
     <!-- Equation section -->
     <div id="equation">
       <h1>
-        Equation
+        Equation definition
       </h1>
 
       <h2>
-        Forme :
+        Form :
         <select name="forme" id="forme" @change="formeChange()">
           <option value="Undefined" selected>Undefined</option>
           <option value="Short_Weierstrass">Short Weierstrass</option>
@@ -68,7 +68,7 @@
         </select>
       </h2>
 
-      <p id="avertissementForme">Veuillez choisir une forme.</p>
+      <p id="avertissementForme">Please choose a form.</p>
 
       <MenuShortMod v-show="isOpen.Short_Weierstrass" ref="Short_Weierstrass" :controleur='controleurObject' />
       <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurObject' />
@@ -80,39 +80,39 @@
     <!-- Vues section -->
     <div id="vues_disponibles">
       <h1>
-        Vues disponibles
+        Available views
       </h1>
-      <p id="avertissementVue">Veuillez choisir une forme.</p>
+      <p id="avertissementVue">Please choose a view.</p>
 
       <div class="flexbox">
         <div id="vue2D" @click="setVue('vue2D')">
           <!-- <span>...</span> -->
           <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
-          <span>Vue 2D</span>
+          <span>2D view</span>
         </div>
 
         <div id="vue3D" @click="setVue('vue3D')">
           <!-- <span>...</span> -->
           <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
-          <span>Vue 3D</span>
+          <span>3D view</span>
         </div>
 
         <div id="vueFinie" @click="setVue('vueFinie')">
           <!-- <span>...</span> -->
           <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
-          <span>Vue finie</span>
+          <span>Finite view</span>
         </div>
 
         <div id="vuePeriodique" @click="setVue('vuePeriodique')">
           <!-- <span>...</span> -->
           <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
-          <span>Vue périodique</span>
+          <span>Periodic view</span>
         </div>
 
         <div id="vuePerspective" @click="setVue('vuePerspective')">
           <!-- <span>...</span> -->
           <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
-          <span>Vue perspective</span>
+          <span>Perspective view</span>
         </div>
 
       </div>
@@ -239,8 +239,6 @@ export default {
         }
         this.isOpen[oldForme] = false;
         this.isOpen[forme] = true;
-
-        document.getElementById('avertissementVue').innerText = "Veuillez choisir une vue.";
       }
     },
     setVue(value) {
@@ -253,21 +251,38 @@ export default {
           child.classList.remove("selected");
         });
 
+        document.getElementById("calculator").textContent = "";
+
         switch (value) {
           case "vue2D":
             document.getElementById("vue2D").classList.add("selected");
+            this.graphS.displayWeierstrass(
+              controleur.coefficients.a1,
+              controleur.coefficients.a3,
+              controleur.coefficients.a2,
+              controleur.coefficients.a4,
+              controleur.coefficients.a6,
+            );
             break;
           case "vue3D":
             document.getElementById("vue3D").classList.add("selected");
+            document.getElementById("calculator").textContent = "This view is not yet available.";
             break;
           case "vueFinie":
+            this.graphS.displayShort(
+              controleur.coefficients.a,
+              controleur.coefficients.b,
+              controleur.coefficients.p
+            );
             document.getElementById("vueFinie").classList.add("selected");
             break;
           case "vuePerspective":
             document.getElementById("vuePerspective").classList.add("selected");
+            document.getElementById("calculator").textContent = "This view is not yet available.";
             break;
           case "vuePeriodique":
             document.getElementById("vuePeriodique").classList.add("selected");
+            document.getElementById("calculator").textContent = "This view is not yet available.";
             break;
           default:
             console.log("Erreur : vue non reconnue");

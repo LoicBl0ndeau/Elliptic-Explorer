@@ -13,7 +13,7 @@ class Controleur {
 
 
     constructor() {
-        this.coefficients.a = 0;
+
     }
 
     getInformations() {
