@@ -26,6 +26,10 @@
     </span>
     <button @click="displayNewCurve">List Points</button>
 
+    <h3 class="section">Discriminant</h3>
+    <div id="discriminant-short"></div>
+    <div id="discriminant-short-res"></div>
+
     <h3 class="section">
       Curve view
       <!-- Rounded switch -->
@@ -91,6 +95,7 @@ export default {
     setInterval(this.updateMenuInputWithGraphValue, 500);
     // Display latex  
     this.menuS.displayLaTeX('general-short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
+    this.menuS.displayLaTeX('discriminant-short', 'Δ = -16 * (4a^3 + 27b^2)');
   },
   methods: {
     displayDefaultCurve() {
@@ -100,6 +105,7 @@ export default {
       this.menuS.setValueById("p", 5);
       // Display Latex
       this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
+      this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= -944`);
       // enables add on click
       this.graphS.getGraph.addClickPoints();
       window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
@@ -108,9 +114,15 @@ export default {
       let a = this.menuS.getIntFromInputId("a");
       let b = this.menuS.getIntFromInputId("b");
       let p = this.menuS.getIntFromInputId("p");
-      this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{'+p+'}\\equiv  x^3 + '+a+'x + '+b);
-      this.graphS.displayShort(a, b, p);
-      this.graphS.getGraph.addClickPoints();
+      if(this.menuS.isPrime(p)){
+        this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{'+p+'}\\equiv  x^3 + '+a+'x + '+b);
+        this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
+        this.graphS.displayShort(a, b, p);
+        this.graphS.getGraph.addClickPoints();
+      }
+      else{
+        alert("p must be a prime number");
+      }
     },
     enableAdditionOnClick() {
       try {
