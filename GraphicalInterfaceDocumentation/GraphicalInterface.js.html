@@ -90,6 +90,12 @@ export class Graphic {
     this.savedState = this.calculator.getState();
   }
 
+  restoreGraphicState() {
+    if (this.graphicState) {
+      this.calculator.setExpressions(this.graphicState);
+    }
+  }
+
   /**
    * Load the latest state of the graphic. A state can be saved using saveGraphicState()
    */

@@ -1,125 +1,144 @@
 <template>
-  <div
-    id="mySidebar"
-    class="sidebar"
-    @mouseover="toggleSidebar"
-    @mouseout="toggleSidebar"
-  >
-    <!-- param menu, not displayed by default -->
-    <div id="graph-settings" style="display: none">
+  <div id="mySidebar" class="sidebar" @mouseover="toggleSidebar" @mouseout="toggleSidebar">
+
+    <!-- Pin icon : keep the menu attached or not -->
+    <a @click="changePinStatus">
+      <img id="pin" class="material-icons filter-orange" src="images/push_pin_black_24dp-filled.svg" />
+    </a>
+
+    <!-- Graph settings icon -->
+    <img id="graph-settings-icon" class="material-icons filter-orange" src="images/settings_black_24dp.svg"
+      @click="changeGraphParamDisplay()" />
+
+    <!-- Graph settings section : "display:none" by default, displayed when 'Graph settings icon' is clicked -->
+    <div id="graph-settings">
       <div id="options">
         <h3>Graph Parameters</h3>
 
         Show lines :
-        <input
-          type="checkbox"
-          id="showLinesCheckbox"
-          @change="graphS.displayLines(!getCheckBoxValue('showLinesCheckbox'))"
-          checked
-        /><br />
+        <input type="checkbox" id="showLinesCheckbox"
+          @change="graphS.displayLines(!getCheckBoxValue('showLinesCheckbox'))" checked /><br />
         Show labels :
-        <input
-          type="checkbox"
-          id="showLabelsCheckbox"
-          @change="graphS.displayLabels(getCheckBoxValue('showLabelsCheckbox'))"
-          checked
-        /><br />
+        <input type="checkbox" id="showLabelsCheckbox"
+          @change="graphS.displayLabels(getCheckBoxValue('showLabelsCheckbox'))" checked /><br />
         Show segments :
-        <input
-          type="checkbox"
-          id="showSegmentsCheckbox"
-          @change="
-            graphS.displaySegments(getCheckBoxValue('showSegmentsCheckbox'))
-          "
-          checked
-        /><br />
+        <input type="checkbox" id="showSegmentsCheckbox" @change="
+          graphS.displaySegments(getCheckBoxValue('showSegmentsCheckbox'))
+        " checked /><br />
       </div>
     </div>
 
-    <a @click="open('about')">
-      <img
-        class="material-icons filter-orange"
-        src="images/info_black_24dp.svg"
-      />
-      <span class="icon-text">About EE</span></a
-    ><br />
+    <!-- Corps section -->
+    <div id="corps">
+      <h1>Equation field</h1>
 
-    <a @click="open('shortmod')">
-      <img
-        id="menu-shortmod"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Short Weierstrass</span> </a
-    ><br />
-    <MenuShortMod v-show="isOpen.shortmod" ref="shortmod" />
+      <div class="flexbox">
+        <div id="corps_reels" @click="setCorps('R')">
+          <span>R</span>
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Real numbers</span>
+        </div>
 
-    <a @click="open('weierstrass')">
-      <img
-        id="menu-weierstrass"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Weierstrass</span> </a
-    ><br />
-    <MenuWeierstrass v-show="isOpen.weierstrass" ref="weierstrass" />
+        <div id="corps_modulo" @click="setCorps('P')">
+          <span>%</span>
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Prime field of order p</span>
+        </div>
 
-    <a @click="open('montgomery')">
-      <img
-        id="menu-montgomery"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Montgomery</span> </a
-    ><br />
-    <MenuMontgomery v-show="isOpen.montgomery" ref="montgomery" />
+      </div>
 
-    <a @click="open('edwards')">
-      <img
-        id="menu-edwards"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Edwards</span> </a
-    ><br />
-    <MenuEdwards v-show="isOpen.edwards" ref="edwards" />
+      <p id="avertissementCorps">Please choose a form.</p>
 
-    <a @click="open('shortmodperiodic')">
-      <img
-        id="menu-shortmodperiodic"
-        class="material-icons filter-orange"
-        src="images/chevron_right_black_24dp.svg"
-      />
-      <span class="icon-text">Short Weierstrass Periodic</span> </a
-    ><br />
-    <MenuShortModPeriodic v-show="isOpen.shortmodperiodic" ref="shortmodperiodic" />
+    </div>
 
-    <a @click="changePinStatus">
-      <img
-        id="pin"
-        class="material-icons filter-orange"
-        src="images/push_pin_black_24dp-filled.svg"
-      />
+    <!-- Equation section -->
+    <div id="equation">
+      <h1>
+        Equation definition
+      </h1>
+
+      <h2>
+        Form :
+        <select name="forme" id="forme" @change="formeChange()">
+          <option value="Undefined" selected>Undefined</option>
+          <option value="Short_Weierstrass">Short Weierstrass</option>
+          <option value="Weierstrass">Weierstrass</option>
+          <option value="Montgomery">Montgomery</option>
+          <option value="Edwards">Edwards</option>
+        </select>
+      </h2>
+
+      <p id="avertissementForme">Please choose a form.</p>
+
+      <MenuShortMod v-show="isOpen.Short_Weierstrass" ref="Short_Weierstrass" :controleur='controleurObject' />
+      <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurObject' />
+      <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurObject' />
+      <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurObject' />
+      <MenuShortModPeriodic v-show="isOpen.shortmodperiodic" ref="shortmodperiodic" />
+
+    </div>
+
+    <!-- Vues section -->
+    <div id="vues_disponibles">
+      <h1>
+        Available views
+      </h1>
+      <p id="avertissementVue">Please choose a view.</p>
+
+      <div class="flexbox">
+        <div id="vue2D" @click="setVue('vue2D')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>2D view</span>
+        </div>
+
+        <div id="vue3D" @click="setVue('vue3D')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>3D view</span>
+        </div>
+
+        <div id="vueFinie" @click="setVue('vueFinie')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Finite view</span>
+        </div>
+
+        <div id="vuePeriodique" @click="setVue('vuePeriodique')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Periodic view</span>
+        </div>
+
+        <div id="vuePerspective" @click="setVue('vuePerspective')">
+          <!-- <span>...</span> -->
+          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
+          <span>Perspective view</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- About section -->
+    <a @click="openAbout()">
+      <img class="material-icons filter-orange" src="images/info_black_24dp.svg" />
+      <span class="icon-text">About EE</span>
     </a>
 
-    <img
-      id="graph-settings-icon"
-      class="material-icons filter-orange"
-      src="images/settings_black_24dp.svg"
-      style="display: none"
-      @click="changeGraphParamDisplay()"
-    />
   </div>
 </template>
 
 
 <script>
+import { graphStore } from "@/stores/graph.js";
 import MenuShortMod from "./menu/MenuShortMod";
 import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
-import { graphStore } from "@/stores/graph.js";
 import MenuShortModPeriodic from "./menu/MenuShortModPeriodic";
+import Controleur from "@/data/Controleur.js";
+
+let controleur = new Controleur();
 
 export default {
   name: "MyMenu",
@@ -129,21 +148,23 @@ export default {
     MenuMontgomery,
     MenuEdwards,
     MenuShortModPeriodic
-},
+  },
   setup() {
     const graphS = graphStore();
-
     return { graphS };
+  },
+  mounted() {
+    this.setCorps('R');
   },
   data() {
     return {
-      // list of the of the submenus in the sidebar
-      isOpen: {
+      controleurObject: controleur, // the controleur object's reference
+      isOpen: { // state list of the submenus (open or not) 
         about: false,
-        shortmod: false,
-        weierstrass: false,
-        montgomery: false,
-        edwards: false,
+        Short_Weierstrass: false,
+        Weierstrass: false,
+        Montgomery: false,
+        Edwards: false,
         shortmodperiodic: false,
       },
       // the menu is fixed and not minized by default
@@ -166,43 +187,124 @@ export default {
     };
   },
   methods: {
-    /** Open the selected menu, close the others. */
-    open(selectedMenu) {
-      // special case for the "about" submenu, as it's not a curve.
-      if (selectedMenu == "about") {
-        // hide graph; display "about-div" id
-        document.getElementById("graph-div").style.display = "none";
-        document.getElementById("about-div").style.display = "inline";
-        // hide graph optionnal settings
-        document.getElementById("graph-settings").style.display = "none";
-        document.getElementById("graph-settings-icon").style.display = "none";
-      } else {
-        // display a curve
-        // hide "about div"; displays graph and graph param in menu
+    setCorps(value) { // set the corps in the controleur object and display the available vues
+      // hide the warning if the user selects a corps
+      document.getElementById('avertissementCorps').style.display = "none";
+      if (controleur.getCorps() == "Undefined") {
+        document.getElementById('vues_disponibles').children[2].style.display = "block";
+      }
+      controleur.setCorps(value);
+      controleur.setVue("Undefined");
+
+      // remove the selected class from all the menu items and add it to the selected one
+      // also display the available vues for the selected corps
+      document.getElementById("corps").children[1].childNodes.forEach((child) => {
+        child.classList.remove("selected");
+      });
+
+      let availableVues = [];
+
+      switch (value) {
+        case "R":
+          document.getElementById("p_span").style.display = "none";
+          document.getElementById("corps_reels").classList.add("selected");
+          availableVues = ["vue2D", "vue3D", "vuePerspective"];
+          break;
+        case "P":
+          document.getElementById("p_span").style.display = "block";
+          document.getElementById("corps_modulo").classList.add("selected");
+          availableVues = ["vueFinie", "vuePeriodique"];
+          break;
+      }
+
+      document.getElementById('vues_disponibles').children[2].childNodes.forEach((child) => {
+        child.classList.remove("selected");
+        if (availableVues.includes(child.id)) {
+          child.style.display = "flex";
+        } else {
+          child.style.display = "none";
+        }
+      });
+
+      document.getElementById('forme').value = "Undefined";
+      this.formeChange();
+    },
+    formeChange() {
+      let forme = document.getElementById('forme').value;
+      let oldForme = controleur.getForme();
+
+      if (controleur.getCorps() != "Undefined") {
+        controleur.setForme(forme);
+
+        if (forme == "Undefined") {
+          document.getElementById('avertissementForme').style.display = "block";
+        } else {
+          document.getElementById('avertissementForme').style.display = "none";
+        }
+        this.isOpen[oldForme] = false;
+        this.isOpen[forme] = true;
+      }
+    },
+    setVue(value) {
+      if (controleur.getForme() != "Undefined") {
+        document.getElementById('avertissementVue').style.display = "none";
+        controleur.setVue(value);
+
+        // remove the selected class from all the menu items and add it to the selected one
+        document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
+          child.classList.remove("selected");
+        });
+
+        document.getElementById("calculator").textContent = "";
+
+        switch (value) {
+          case "vue2D":
+            document.getElementById("vue2D").classList.add("selected");
+            this.graphS.displayWeierstrass(
+              controleur.coefficients.a1,
+              controleur.coefficients.a3,
+              controleur.coefficients.a2,
+              controleur.coefficients.a4,
+              controleur.coefficients.a6,
+            );
+            break;
+          case "vue3D":
+            document.getElementById("vue3D").classList.add("selected");
+            document.getElementById("calculator").textContent = "This view is not yet available.";
+            break;
+          case "vueFinie":
+            this.graphS.displayShort(
+              controleur.coefficients.a,
+              controleur.coefficients.b,
+              controleur.coefficients.p
+            );
+            document.getElementById("vueFinie").classList.add("selected");
+            break;
+          case "vuePerspective":
+            document.getElementById("vuePerspective").classList.add("selected");
+            document.getElementById("calculator").textContent = "This view is not yet available.";
+            break;
+          case "vuePeriodique":
+            document.getElementById("vuePeriodique").classList.add("selected");
+            document.getElementById("calculator").textContent = "This view is not yet available.";
+            break;
+          default:
+            console.log("Erreur : vue non reconnue");
+            break;
+        }
+
+        // display the graph
         document.getElementById("about-div").style.display = "none";
         document.getElementById("graph-div").style.display = "inline";
-        // display gear icon for optionnal settings
-        document.getElementById("graph-settings-icon").style.display = "inline";
-      }
-      // get the curves names
-      let keysOfIsOpen = Object.keys(this.isOpen);
-      // remove "about" from keys (it's the 1st elem of the list)
-      keysOfIsOpen.shift();
 
-      for (const curvename of keysOfIsOpen) {
-        if (curvename == selectedMenu) {
-          this.isOpen[curvename] = true;
-          this.$refs[curvename].displayDefaultCurve();
-          // show expand arrow
-          document.getElementById(`menu-${curvename}`).src =
-            "images/expand_more_black_24dp.svg";
-        } else {
-          this.isOpen[curvename] = false;
-          // show chevron right arrow
-          document.getElementById(`menu-${curvename}`).src =
-            "images/chevron_right_black_24dp.svg";
-        }
+        // display the graph curve
+        //this.graphS.displayShort()
       }
+    },
+    openAbout() {
+      // hide graph and display "about-div"
+      document.getElementById("graph-div").style.display = "none";
+      document.getElementById("about-div").style.display = "inline";
     },
     toggleSidebar() {
       if (!this.isPinned) {
@@ -245,7 +347,7 @@ export default {
     getCheckBoxValue(htmlID) {
       return document.getElementById(htmlID).checked;
     },
-  },
+  }
 };
 </script>
 

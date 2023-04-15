@@ -33,14 +33,15 @@ export class ShortWeierstrass extends ModCurveGraph {
 
     showCurve() {
         this.calculator.setExpressions([
-          {id: 'courbe', latex: `\\operatorname{mod}\\left(y^{2},${this.p}\\right)=\\operatorname{mod}\\left(x^{3}+${this.param.a}*x+${this.param.b},${this.p}\\right) \\left\\{-${this.p/2}<x<${this.p/2}\\right\\} \\left\\{-${this.p/2}<y<${this.p/2}\\right\\}`, color:Graphic.Colors.point}
+            { id: 'courbe', latex: `\\operatorname{mod}\\left(y^{2},${this.p}\\right)=\\operatorname{mod}\\left(x^{3}+${this.param.a}*x+${this.param.b},${this.p}\\right) \\left\\{-${this.p / 2}<x<${this.p / 2}\\right\\} \\left\\{-${this.p / 2}<y<${this.p / 2}\\right\\}`, color: Graphic.Colors.point }
         ])
         this.saveGraphicState();
-      }
-    
-      hideCurve() {
-        this.calculator.removeExpression({id: 'courbe'});
-      }
+    }
+
+    hideCurve() {
+        this.calculator.removeExpression({ id: 'courbe' });
+        this.restoreGraphicState();
+    }
 
 
     /**
@@ -70,9 +71,9 @@ export class ShortWeierstrass extends ModCurveGraph {
      */
     getCoord(point) {
         if (point.inf) //if the point is the point at infinity
-            return [0, 1.5*this.p/2 + 0.5];
+            return [0, 1.5 * this.p / 2 + 0.5];
         if (point.inf) //if the point is the point at infinity
-            return [0, 1.5*this.p/2 + 0.5];
+            return [0, 1.5 * this.p / 2 + 0.5];
         return [point.getX().toNumber(), point.getY().toNumber()];
     }
 
@@ -104,17 +105,17 @@ export class ShortWeierstrass extends ModCurveGraph {
      */
     addPoints(P, Q) {
         var resPoint = P.add(Q);
-        let resCoordPoint = this.getCoord(resPoint);        
-        while (resCoordPoint[0] > this.p/2) {
+        let resCoordPoint = this.getCoord(resPoint);
+        while (resCoordPoint[0] > this.p / 2) {
             resCoordPoint[0] -= this.p;
         }
-        while (resCoordPoint[0] < -this.p/2) {
+        while (resCoordPoint[0] < -this.p / 2) {
             resCoordPoint[0] += this.p;
         }
-        while (resCoordPoint[1] > this.p/2) {
+        while (resCoordPoint[1] > this.p / 2) {
             resCoordPoint[1] -= this.p;
         }
-        while (resCoordPoint[1] < -this.p/2) {
+        while (resCoordPoint[1] < -this.p / 2) {
             resCoordPoint[1] += this.p;
         }
         return resCoordPoint;
@@ -191,21 +192,21 @@ export class ShortWeierstrass extends ModCurveGraph {
         let listPoints = this.listPoints;
         var calculx;
         var calculy;
-        let screenSizeX = Math.floor(this.p/2);
-        let screenSizeY = Math.floor(this.p/2);
+        let screenSizeX = Math.floor(this.p / 2);
+        let screenSizeY = Math.floor(this.p / 2);
 
         for (var y = -screenSizeY; y <= screenSizeY; y++) {
             calculy = (Math.pow(y, 2));
             for (var x = -screenSizeX; x <= screenSizeX; x++) {
                 calculx = (Math.pow(x, 3) + (a * x) + b);
-                if ((calculy - calculx)%p == 0) {
+                if ((calculy - calculx) % p == 0) {
                     listCoordPoints.push([x, y]);
                     listPoints.push(this.newPoint(x, y));
                 }
             }
         }
         console.log(listCoordPoints.length);
-        listCoordPoints.push([0, 1.5*this.p/2 + 0.5]);
+        listCoordPoints.push([0, 1.5 * this.p / 2 + 0.5]);
         listPoints.push(this.newPoint(null, null));
     }
 
@@ -239,8 +240,8 @@ export class ShortWeierstrass extends ModCurveGraph {
                 { id: `L_{2}`, latex: `L_{2}=[\\frac{m}{2}i\\operatorname{for}i=[-lm...lm]]` },
                 { id: `a`, latex: `a=(y_{${this.idSelectedPoints[1]}}-y_{${this.idSelectedPoints[0]}})` },
                 { id: `b`, latex: `b=(x_{${this.idSelectedPoints[0]}}-x_{${this.idSelectedPoints[1]}})` },
-                { id: `c`, latex: `c=\\left\\{\\left|a\\right|>\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{1})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{1})y_{${this.idSelectedPoints[0]}},\\left|a\\right|\\le\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{2})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{2})y_{${this.idSelectedPoints[0]}}\\right\\}` },          
-                { id: `f`, latex: `(ax+by)=c \\left\\{-${this.p/2}<x<${this.p/2}\\right\\} \\left\\{-${this.p/2}<y<${this.p/2}\\right\\}`, color: Graphic.Colors.curve }, //Here to choose the centering of the square for the lines of the modulo
+                { id: `c`, latex: `c=\\left\\{\\left|a\\right|>\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{1})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{1})y_{${this.idSelectedPoints[0]}},\\left|a\\right|\\le\\left|b\\right|:(x_{${this.idSelectedPoints[0]}}+L_{2})y_{${this.idSelectedPoints[1]}}-(x_{${this.idSelectedPoints[1]}}+L_{2})y_{${this.idSelectedPoints[0]}}\\right\\}` },
+                { id: `f`, latex: `(ax+by)=c \\left\\{-${this.p / 2}<x<${this.p / 2}\\right\\} \\left\\{-${this.p / 2}<y<${this.p / 2}\\right\\}`, color: Graphic.Colors.curve }, //Here to choose the centering of the square for the lines of the modulo
             ]);
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
@@ -264,17 +265,17 @@ export class ShortWeierstrass extends ModCurveGraph {
             var c = this.getValueOfParameter(`c`);
             //To know if the user clicked twice on the same point
             var isExactlyTheSamePoint = false;
-            if(this.selectedPoints[0][0] == this.selectedPoints[1][0] && this.selectedPoints[0][1] == this.selectedPoints[1][1]){
+            if (this.selectedPoints[0][0] == this.selectedPoints[1][0] && this.selectedPoints[0][1] == this.selectedPoints[1][1]) {
                 isExactlyTheSamePoint = true;
             }
-            for (i = 1; i < listPoints.length+1; i++) {
+            for (i = 1; i < listPoints.length + 1; i++) {
                 // If the values of the additionnal point are in the listCoordPoints, we display the point in red
                 if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint });
                     var idAdd = i;
                 }
                 // Else if values in listCoordPoints solves the equation of a*x+b*y=c, we display the points in green
-                else if(c.includes(a * this.getValueOfParameter(`x_{${i}}`) + b * this.getValueOfParameter(`y_{${i}}`)) && i != listPoints.length && !isExactlyTheSamePoint && !isInfinityAPointOnCurve){
+                else if (c.includes(a * this.getValueOfParameter(`x_{${i}}`) + b * this.getValueOfParameter(`y_{${i}}`)) && i != listPoints.length && !isExactlyTheSamePoint && !isInfinityAPointOnCurve) {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.pointOnCurve });
                 }
                 else {
@@ -282,16 +283,16 @@ export class ShortWeierstrass extends ModCurveGraph {
                 }
             }
             //If the user clicked twice on the same point (but not infinity), we display it in green
-            if(isExactlyTheSamePoint && this.idSelectedPoints[0] != this.listPoints.length){
+            if (isExactlyTheSamePoint && this.idSelectedPoints[0] != this.listPoints.length) {
                 this.setExpressionParameters(`p_{${this.idSelectedPoints[0]}}`, { color: Graphic.Colors.pointOnCurve });
             }
             //If only one of the point is infinity, we display it in green
-            if(isInfinityAPointOnCurve){
+            if (isInfinityAPointOnCurve) {
                 this.setExpressionParameters(`p_{${listPoints.length}}`, { color: Graphic.Colors.pointOnCurve });
             }
             //Remove the previous segment in any case
             this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
-            if(!isTheSamePoint){
+            if (!isTheSamePoint) {
                 //Add the segment if the point is not the same as the initial point
                 for (j = 1; j < listPoints.length; j++) {
                     if ((addPoint[0] == this.getValueOfParameter(`x_{${j}}`)) && (-addPoint[1] == this.getValueOfParameter(`y_{${j}}`))) {
@@ -302,7 +303,7 @@ export class ShortWeierstrass extends ModCurveGraph {
         });
     }
 
-    displayInfinity(){
+    displayInfinity() {
         this.calculator.removeExpressions([
             { id: `f` },
             { id: `s_{${this.segmentId}}` },
@@ -334,19 +335,19 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
             a: new BN(a),
             b: new BN(b),
             p: new BN(p),
-          });
+        });
         this.listPoints = [];
     }
 
     showCurvePeriodic() {
         this.calculator.setExpressions([
-          {id: 'courbePeriodic', latex: `\\operatorname{mod}\\left(y^{2},${this.p}\\right)=\\operatorname{mod}\\left(x^{3}+${this.param.a}*x+${this.param.b},${this.p}\\right)`, color:Graphic.Colors.point}
+            { id: 'courbePeriodic', latex: `\\operatorname{mod}\\left(y^{2},${this.p}\\right)=\\operatorname{mod}\\left(x^{3}+${this.param.a}*x+${this.param.b},${this.p}\\right)`, color: Graphic.Colors.point }
         ])
         this.saveGraphicState();
     }
 
     hideCurve() {
-        this.calculator.removeExpression({id: 'courbePeriodic'});
+        this.calculator.removeExpression({ id: 'courbePeriodic' });
     }
 
     /**
@@ -487,7 +488,7 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
         this.width = mathCoordinates.right - mathCoordinates.left;
         //let screenSizeX = Math.floor(this.width / 2) - 1;
         //let screenSizeY = Math.floor(this.height / 2) - 1;
-        
+
         let left = Math.floor(mathCoordinates.left);
         let right = Math.floor(mathCoordinates.right);
         let top = Math.floor(mathCoordinates.top);
@@ -497,7 +498,7 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
             calculy = (Math.pow(y, 2));
             for (var x = left; x <= right; x++) {
                 calculx = (Math.pow(x, 3) + (a * x) + b);
-                if ((calculy - calculx)%p == 0) {
+                if ((calculy - calculx) % p == 0) {
                     listCoordPoints.push([x, y]);
                     listPoints.push(this.newPoint(x, y));
                 }
@@ -530,9 +531,9 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
         try {
             var a = (this.selectedPoints[1][1] - this.selectedPoints[0][1]) / (this.selectedPoints[1][0] - this.selectedPoints[0][0]);
             var b = this.selectedPoints[0][1] - a * this.selectedPoints[0][0];
-            this.calculator.setExpressions([        
-                { id: `a`, latex: `a=${a}`},
-                { id: `b`, latex: `b=${b}`},
+            this.calculator.setExpressions([
+                { id: `a`, latex: `a=${a}` },
+                { id: `b`, latex: `b=${b}` },
                 { id: `f`, latex: `y=ax+b`, color: Graphic.Colors.curve }, //f(x) = ax+b
             ]);
         } catch (error) {
@@ -559,10 +560,10 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
 
             //To know if the user clicked twice on the same point
             var isExactlyTheSamePoint = false;
-            if(this.selectedPoints[0][0] == this.selectedPoints[1][0] && this.selectedPoints[0][1] == this.selectedPoints[1][1]){
+            if (this.selectedPoints[0][0] == this.selectedPoints[1][0] && this.selectedPoints[0][1] == this.selectedPoints[1][1]) {
                 isExactlyTheSamePoint = true;
             }
-            for (i = 1; i < listPoints.length+1; i++) {
+            for (i = 1; i < listPoints.length + 1; i++) {
                 // If the values of the additionnal point are in the listCoordPoints, we display the point in red
                 console.log('ici');
                 if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
@@ -570,7 +571,7 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
                     var idAdd = i;
                 }
                 // Else if values in listCoordPoints solves the equation of a*x+b*y=c, we display the points in green
-                else if((this.getValueOfParameter(`y_{${i}}`) == (a * this.getValueOfParameter(`x_{${i}}`) + b)) && i != listPoints.length && !isExactlyTheSamePoint && !isInfinityAPointOnCurve){
+                else if ((this.getValueOfParameter(`y_{${i}}`) == (a * this.getValueOfParameter(`x_{${i}}`) + b)) && i != listPoints.length && !isExactlyTheSamePoint && !isInfinityAPointOnCurve) {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.pointOnCurve });
                 }
                 else {
@@ -578,16 +579,16 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
                 }
             }
             //If the user clicked twice on the same point (but not infinity), we display it in green
-            if(isExactlyTheSamePoint && this.idSelectedPoints[0] != this.listPoints.length){
+            if (isExactlyTheSamePoint && this.idSelectedPoints[0] != this.listPoints.length) {
                 this.setExpressionParameters(`p_{${this.idSelectedPoints[0]}}`, { color: Graphic.Colors.pointOnCurve });
             }
             //If only one of the point is infinity, we display it in green
-            if(isInfinityAPointOnCurve){
+            if (isInfinityAPointOnCurve) {
                 this.setExpressionParameters(`p_{${listPoints.length}}`, { color: Graphic.Colors.pointOnCurve });
             }
             //Remove the previous segment in any case
             this.calculator.removeExpression({ id: `s_{${this.segmentId}}` });
-            if(!isTheSamePoint){
+            if (!isTheSamePoint) {
                 //Add the segment if the point is not the same as the initial point
                 for (j = 1; j < listPoints.length; j++) {
                     if ((addPoint[0] == this.getValueOfParameter(`x_{${j}}`)) && (-addPoint[1] == this.getValueOfParameter(`y_{${j}}`))) {
@@ -598,7 +599,7 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
         });
     }
 
-    displayInfinity(){
+    displayInfinity() {
         // No lines when infinity is selected
         this.calculator.removeExpressions([
             { id: `f` },

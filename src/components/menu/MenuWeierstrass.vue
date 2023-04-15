@@ -1,92 +1,61 @@
 <template>
   <div class="submenu">
-    <h3 class="section">General Curve Equation</h3>
-    
-    <div id="general-weierstrass-eq"></div>
 
     <h3 class="section">Curve Equation</h3>
-    
+
     <div id="weierstrass-eq"></div>
 
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
       <label>a1</label>
-      <input
-        id="a1"
-        @input="menuS.setValueOnGraphFromUserInput('a_{1}', 'a1');updateLatex();"
-        type="number"
-      /><br />
+      <input id="a1" value="0" @input="menuS.setValueOnGraphFromUserInput('a_{1}', 'a1')"
+        @change="setCoefficient('a1')" /><br />
     </span>
 
     <span class="parameter">
       <label>a3</label>
-      <input
-        id="a3"
-        @input="menuS.setValueOnGraphFromUserInput('a_{3}', 'a3');updateLatex();"
-        type="number"
-      /><br />
+      <input id="a3" value="0" @input="menuS.setValueOnGraphFromUserInput('a_{3}', 'a3')"
+        @change="setCoefficient('a3')" /><br />
     </span>
 
     <span class="parameter">
       <label>a2</label>
-      <input
-        id="a2"
-        type="number"
-        @input="menuS.setValueOnGraphFromUserInput('a_{2}', 'a2');updateLatex();"
-      /><br />
+      <input id="a2" value="4" @input="menuS.setValueOnGraphFromUserInput('a_{2}', 'a2')"
+        @change="setCoefficient('a2')" /><br />
     </span>
 
     <span class="parameter">
       <label>a4</label>
-      <input
-        id="a4"
-        type="number"
-        @input="menuS.setValueOnGraphFromUserInput('a_{4}', 'a4');updateLatex();"
-      /><br />
+      <input id="a4" value="2" @input="menuS.setValueOnGraphFromUserInput('a_{4}', 'a4')"
+        @change="setCoefficient('a4')" /><br />
     </span>
 
     <span class="parameter">
       <label>a6</label>
-      <input
-        id="a6"
-        type="number"
-        @input="menuS.setValueOnGraphFromUserInput('a_{6}', 'a6');updateLatex();"
-      /><br />
+      <input id="a6" value="1" @input="menuS.setValueOnGraphFromUserInput('a_{6}', 'a6')"
+        @change="setCoefficient('a6')" /><br />
     </span>
 
     <h3 class="section">Operations</h3>
 
     <span class="parameter">
-      <select
-        id="choix-op-weierstrass"
-        @change="displayCurveWithSelectedOperation"
-      >
+      <select id="choix-op-weierstrass" @change="displayCurveWithSelectedOperation">
         <option selected="yes">Addition</option>
-        <option>Multiplication</option></select
-      ><br />
+        <option>Multiplication</option>
+      </select><br />
     </span>
 
     <span class="parameter">
       <label>x1</label>
-      <input
-        id="x1"
-        class="coord"
-        type="number"
-        @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1')"
-      />
+      <input id="x1" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition">
       <span class="parameter">
         <label>x2</label>
-        <input
-          id="x2"
-          type="number"
-          class="coord"
-          @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2')"
-        />
+        <input id="x2" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
@@ -94,11 +63,7 @@
     <div id="multiplication" style="display: none">
       <span class="parameter">
         <label>Factor</label>
-        <input
-          type="number"
-          id="factor"
-          value="2"
-          style="width: 40px" />
+        <input type="number" id="factor" value="2" style="width: 40px" />
         <button @click="computeMul">Compute</button><br />
       </span>
     </div>
@@ -116,6 +81,12 @@ import { menuStore } from "@/stores/menu.js";
 
 export default {
   name: "MenuWeierstrass",
+  props: {
+    controleur: {
+      type: Object,
+      required: true
+    }
+  },
   setup() {
     const graphS = graphStore();
     const menuS = menuStore();
@@ -126,9 +97,13 @@ export default {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
     // display curve equation
-    this.menuS.displayLaTeX('general-weierstrass-eq', "y^2 + a_1 xy + a_3y = \\newline x^3 + a_2 x^2 + a_4 x + a_6");
+    this.menuS.displayLaTeX('weierstrass-eq', "y^2 + a_1 xy + a_3y = \\newline x^3 + a_2 x^2 + a_4 x + a_6");
   },
   methods: {
+    setCoefficient(coef) {
+      this.controleur.coefficients.setCoef(coef, parseInt(document.getElementById(coef).value));
+      console.log(this.controleur.coefficients.showCoefficients())
+    },
     displayDefaultCurve() {
       let a1 = 0;
       let a3 = 0;
@@ -138,9 +113,6 @@ export default {
 
       let xP = -2;
       let xQ = 1;
-
-      // Display latex
-      this.menuS.displayLaTeX('weierstrass-eq', "y^2 + "+a1+" xy + "+a3+"y = \\newline x^3 + "+a2+" x^2 + "+a4+" x + "+a6);
 
       this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
       this.graphS.showAddition(xP, xQ);
@@ -156,19 +128,7 @@ export default {
       let a2 = this.menuS.getFloatFromInputId("a2");
       let a4 = this.menuS.getFloatFromInputId("a4");
       let a6 = this.menuS.getFloatFromInputId("a6");
-      // Display latex
-      this.menuS.displayLaTeX('weierstrass-eq', "y^2 + "+a1+" xy + "+a3+"y = \\newline x^3 + "+a2+" x^2 + "+a4+" x + "+a6);
-
       this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
-    },
-    updateLatex(){
-      let a1 = this.menuS.getFloatFromInputId("a1");
-      let a3 = this.menuS.getFloatFromInputId("a3");
-      let a2 = this.menuS.getFloatFromInputId("a2");
-      let a4 = this.menuS.getFloatFromInputId("a4");
-      let a6 = this.menuS.getFloatFromInputId("a6");
-      // Display latex
-      this.menuS.displayLaTeX('weierstrass-eq', "y^2 + "+a1+" xy + "+a3+"y = \\newline x^3 + "+a2+" x^2 + "+a4+" x + "+a6);
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();
@@ -231,7 +191,5 @@ export default {
 };
 </script>
 
-<style lang="css" scoped >
-  @import "@/css/submenu.css";
-  @import "../../../node_modules/katex/dist/katex.min.css";
-</style>
+<style lang="css" scoped >@import "@/css/submenu.css";
+@import "../../../node_modules/katex/dist/katex.min.css";</style>

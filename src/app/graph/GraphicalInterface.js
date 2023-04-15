@@ -407,8 +407,35 @@ export class ModCurveGraph extends Graphic {
     let width = mathCoordinates.right-mathCoordinates.left;
     this.height = height;
     this.width = width;
+<<<<<<< HEAD
 
       // Set the border of the screen
+=======
+    //The function when the user move the screen
+    const debounce = () => {
+      if(document.querySelector(".switch input").checked){
+        this.calculator.unobserve('graphpaperBounds'); //To avoid too many events
+        let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
+        let height = mathCoordinates.top-mathCoordinates.bottom;
+        let width = mathCoordinates.right-mathCoordinates.left;
+        this.height = height;
+        this.width = width;
+        for(let i = 1; i <= this.listPoints.length; i++) { //Remove all the previous points
+          this.calculator.removeExpression({id:`x_{${i}}`});
+          this.calculator.removeExpression({id:`y_{${i}}`});
+          this.calculator.removeExpression({id:`p_{${i}}`});
+        }
+        this.pointId = 0;
+        this.findAllPoints();
+        this.displayPoints();
+        this.addClickPoints();
+        this.calculator.observe('graphpaperBounds', debounce); //To reactivate the event after calculations
+      }
+    };
+    document.querySelector(".switch input").addEventListener("click", debounce); //Load new points when the user clicks on the switch
+    this.calculator.observe('graphpaperBounds', debounce); //When the user move the graph
+    // Set the border of the screen
+>>>>>>> main
     this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(-${this.p/2},-${this.p/2}),(${this.p/2},-${this.p/2}),(${this.p/2},${this.p/2}),(-${this.p/2},${this.p/2})])`,fill:0,color:Graphic.Colors.line});
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];

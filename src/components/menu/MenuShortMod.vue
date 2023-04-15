@@ -1,28 +1,26 @@
 <template>
   <div class="submenu">
-    <h3 class="section">General Curve Equation</h3>
-
-    <div id="general-short-eq" ></div>
-
     <h3 class="section">Curve Equation</h3>
-    
-    <div id="short-eq" ></div>
+
+    <div id="short-eq"></div>
 
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
       <label>a</label>
-      <input type="number" id="a" /><br />
+      <input id="a" @change="setCoefficient('a')" value="3" />
+      <br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b" type="number" /><br />
+      <input id="b" @change="setCoefficient('b')" value="2" />
+      <br />
     </span>
 
-    <span class="parameter">
+    <span class="parameter" id="p_span">
       <label>p</label>
-      <input type="number" id="p" placeholder="prime number"/><br />
+      <input id="p" placeholder="prime number" value="5" @change="setCoefficient('p')" /><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
 
@@ -44,38 +42,29 @@
     <span class="parameter">
       <select id="choix-op-short" @change="displayCurveWithSelectedOperation">
         <option selected="yes">Addition</option>
-        <option disabled>Multiplication</option></select
-      ><br />
+        <option disabled>Multiplication</option>
+      </select><br />
     </span>
 
     <span class="parameter">
       <label>(x1, y1)</label>
-      <input id="x1-y1-short" value="" readonly/>
+      <input id="x1-y1-short" value="" readonly />
     </span>
 
     <div id="addition-short">
       <span class="parameter">
         <label>(x2, y2)</label>
-        <input id="x2-y2-short" readonly/>
+        <input id="x2-y2-short" readonly />
       </span>
     </div>
 
     <div id="multiplication-short" style="display: none">
       <span class="parameter">
         <label>Factor</label>
-        <input
-          type="number"
-          id="factor-short" 
-          value="2"
-          style="width: 40px" />
+        <input type="number" id="factor-short" value="2" style="width: 40px" />
         <button>Compute</button><br />
       </span>
     </div>
-
-    <h3 class="section">Result</h3>
-    <span class="parameter">
-      <span id="result-x-y-shortmod" class="result"></span><br />
-    </span>
 
   </div>
 </template>
@@ -85,6 +74,12 @@ import { graphStore } from "@/stores/graph.js";
 import { menuStore } from "@/stores/menu.js";
 export default {
   name: "MenuShort",
+  props: {
+    controleur: {
+      type: Object,
+      required: true
+    }
+  },
   setup() {
     const graphS = graphStore();
     const menuS = menuStore();
@@ -98,11 +93,24 @@ export default {
     this.menuS.displayLaTeX('discriminant-short', 'Δ = -16 * (4a^3 + 27b^2)');
   },
   methods: {
+    setCoefficient(coef) {
+      this.controleur.coefficients.setCoef(coef, parseInt(document.getElementById(coef).value));
+      console.log(this.controleur.coefficients.getShortWeierstrassCoefficients())
+    },
     displayDefaultCurve() {
+      //dataManager.getEquivalentEquation();
+      let parameters = dataManager.getParameters();
+      this.graphS.displayShort(parameters.a, parameters.b, parameters.p);
+      this.menuS.setValueById("a", parameters.a);
+      this.menuS.setValueById("b", parameters.b);
+      this.menuS.setValueById("p", parameters.p);
+
+      /*
       this.graphS.displayShort(2, 1, 5);
       this.menuS.setValueById("a", 2);
       this.menuS.setValueById("b", 1);
       this.menuS.setValueById("p", 5);
+      */
       // Display Latex
       this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
       this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= -944`);
@@ -114,13 +122,13 @@ export default {
       let a = this.menuS.getIntFromInputId("a");
       let b = this.menuS.getIntFromInputId("b");
       let p = this.menuS.getIntFromInputId("p");
-      if(this.menuS.isPrime(p)){
-        this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{'+p+'}\\equiv  x^3 + '+a+'x + '+b);
+      if (this.menuS.isPrime(p)) {
+        this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
         this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
         this.graphS.displayShort(a, b, p);
         this.graphS.getGraph.addClickPoints();
       }
-      else{
+      else {
         alert("p must be a prime number");
       }
     },
