@@ -403,27 +403,23 @@ export class ModCurveGraph extends Graphic {
     // Set the center point of the screen (only for the user, not for the graph)
     //this.calculator.setMathBounds({ bottom: -0.5-this.p/2, top: 1.5*this.p/2 + 0.5, left: -0.5-this.p/2, right: 0.5+this.p/2});
     let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
-    let height = mathCoordinates.top-mathCoordinates.bottom;
-    let width = mathCoordinates.right-mathCoordinates.left;
+    let height = mathCoordinates.top - mathCoordinates.bottom;
+    let width = mathCoordinates.right - mathCoordinates.left;
     this.height = height;
     this.width = width;
-<<<<<<< HEAD
-
-      // Set the border of the screen
-=======
     //The function when the user move the screen
     const debounce = () => {
-      if(document.querySelector(".switch input").checked){
+      if (document.querySelector(".switch input").checked) {
         this.calculator.unobserve('graphpaperBounds'); //To avoid too many events
         let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
-        let height = mathCoordinates.top-mathCoordinates.bottom;
-        let width = mathCoordinates.right-mathCoordinates.left;
+        let height = mathCoordinates.top - mathCoordinates.bottom;
+        let width = mathCoordinates.right - mathCoordinates.left;
         this.height = height;
         this.width = width;
-        for(let i = 1; i <= this.listPoints.length; i++) { //Remove all the previous points
-          this.calculator.removeExpression({id:`x_{${i}}`});
-          this.calculator.removeExpression({id:`y_{${i}}`});
-          this.calculator.removeExpression({id:`p_{${i}}`});
+        for (let i = 1; i <= this.listPoints.length; i++) { //Remove all the previous points
+          this.calculator.removeExpression({ id: `x_{${i}}` });
+          this.calculator.removeExpression({ id: `y_{${i}}` });
+          this.calculator.removeExpression({ id: `p_{${i}}` });
         }
         this.pointId = 0;
         this.findAllPoints();
@@ -435,8 +431,7 @@ export class ModCurveGraph extends Graphic {
     document.querySelector(".switch input").addEventListener("click", debounce); //Load new points when the user clicks on the switch
     this.calculator.observe('graphpaperBounds', debounce); //When the user move the graph
     // Set the border of the screen
->>>>>>> main
-    this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(-${this.p/2},-${this.p/2}),(${this.p/2},-${this.p/2}),(${this.p/2},${this.p/2}),(-${this.p/2},${this.p/2})])`,fill:0,color:Graphic.Colors.line});
+    this.calculator.setExpression({ id: 'border', latex: `\\operatorname{polygon}([(-${this.p / 2},-${this.p / 2}),(${this.p / 2},-${this.p / 2}),(${this.p / 2},${this.p / 2}),(-${this.p / 2},${this.p / 2})])`, fill: 0, color: Graphic.Colors.line });
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
@@ -452,20 +447,20 @@ export class ModCurveGraph extends Graphic {
       that.addStaticPoint(item);
     });
     that.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
-    var i=0;
+    var i = 0;
     try {
       this.calculator.setExpressions([
-          { id: `L_{3}`, latex: `L_{3}=\\left[-${Math.floor(this.p/2)}...${Math.floor(this.p/2)}\\right]` }, // Here to set the position of points on the x axis
+        { id: `L_{3}`, latex: `L_{3}=\\left[-${Math.floor(this.p / 2)}...${Math.floor(this.p / 2)}\\right]` }, // Here to set the position of points on the x axis
       ]);
     } catch (error) {
       throw new Error(`An error has occured adding modular lines : ${error}`);
     }
-    for(i=0; i<this.p; i++){
-      try{
+    for (i = 0; i < this.p; i++) {
+      try {
         this.calculator.setExpressions([
-          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i-Math.floor(this.p/2)})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point}, // Here to set the position of points on the y axis
-      ]);
-      }catch (error) {
+          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i - Math.floor(this.p / 2)})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point }, // Here to set the position of points on the y axis
+        ]);
+      } catch (error) {
         throw new Error(`An error has occured adding modular lines : ${error}`);
       }
     }
@@ -508,17 +503,17 @@ export class ModCurveGraph extends Graphic {
           }
         }
         // If the infinite point is selected
-        if (((that.getValueOfParameter(`x_{${listPoints.length}}`)-0.5) <= x_arrondi) && (x_arrondi <= (that.getValueOfParameter(`x_{${listPoints.length}}`)+0.5)) && ((that.getValueOfParameter(`y_{${listPoints.length}}`)-0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`)+0.5))) {
-          if(isSecondPoint){
+        if (((that.getValueOfParameter(`x_{${listPoints.length}}`) - 0.5) <= x_arrondi) && (x_arrondi <= (that.getValueOfParameter(`x_{${listPoints.length}}`) + 0.5)) && ((that.getValueOfParameter(`y_{${listPoints.length}}`) - 0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`) + 0.5))) {
+          if (isSecondPoint) {
             that.selectedPoints[1] = [undefined, undefined];
             that.idSelectedPoints[1] = listPoints.length;
-          }else{
+          } else {
             that.selectedPoints[0] = [undefined, undefined];
             that.idSelectedPoints[0] = listPoints.length;
           }
           isSecondPoint = !isSecondPoint;
           changed = true;
-        } 
+        }
 
         var point1 = that.newPoint(
           that.selectedPoints[0][0],
@@ -530,19 +525,19 @@ export class ModCurveGraph extends Graphic {
         );
 
         // If the user clicked on the infinity point, we set the point to infinity
-        if(that.idSelectedPoints[0] == listPoints.length){
+        if (that.idSelectedPoints[0] == listPoints.length) {
           point1.inf = true;
         }
-        if(that.idSelectedPoints[1] == listPoints.length){
+        if (that.idSelectedPoints[1] == listPoints.length) {
           point2.inf = true;
         }
-        
+
         // If the user didn't click on a point or it is his first clicked point, we do nothing
-        if ( ((that.selectedPoints[1][0] == undefined && that.selectedPoints[1][1] == undefined) && !point2.isInfinity()) || changed === false ){
+        if (((that.selectedPoints[1][0] == undefined && that.selectedPoints[1][1] == undefined) && !point2.isInfinity()) || changed === false) {
           return;
         }
 
-        isTheSamePoint=that.equalPoints(point1,point2);
+        isTheSamePoint = that.equalPoints(point1, point2);
         let addCoordPoint = that.addPoints(point1, point2);
 
         // Display the result of the addition in the menu
@@ -550,12 +545,12 @@ export class ModCurveGraph extends Graphic {
 
         that.displayModulo();
 
-        if(point1.inf || point2.inf){
+        if (point1.inf || point2.inf) {
           that.displayInfinity();
           isTheSamePoint = true;
         }
         //If the two points have the same absolute y-coordinate or it is the same point with a y-coordinate value equal to 0, the result is infinity
-        if ((((Math.abs(that.selectedPoints[0][1]) == Math.abs(that.selectedPoints[1][1])) && (that.selectedPoints[0][0] == that.selectedPoints[1][0])) && (!isTheSamePoint)) || (isTheSamePoint && that.selectedPoints[0][1] == 0 && that.selectedPoints[1][1] == 0) || (point1.inf && point2.inf)){
+        if ((((Math.abs(that.selectedPoints[0][1]) == Math.abs(that.selectedPoints[1][1])) && (that.selectedPoints[0][0] == that.selectedPoints[1][0])) && (!isTheSamePoint)) || (isTheSamePoint && that.selectedPoints[0][1] == 0 && that.selectedPoints[1][1] == 0) || (point1.inf && point2.inf)) {
           isTheSamePoint = true;
           addCoordPoint = that.newPoint(null, null);
           addCoordPoint.inf = true;
@@ -574,7 +569,7 @@ export class ModCurveGraph extends Graphic {
   }
 }
 
-export class PModCurveGraph extends Graphic{
+export class PModCurveGraph extends Graphic {
   /**
    * Represents a graphic calculator
    * @constructor
@@ -583,34 +578,34 @@ export class PModCurveGraph extends Graphic{
   constructor(element, p) {
     super(element);
     this.p = p;
-    
+
     let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
     this.height = mathCoordinates.top - mathCoordinates.bottom;
     this.width = mathCoordinates.right - mathCoordinates.left;
 
     const debounce = () => {
-        let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
-        this.height = mathCoordinates.top - mathCoordinates.bottom;
-        this.width = mathCoordinates.right - mathCoordinates.left;
+      let mathCoordinates = this.calculator.graphpaperBounds.mathCoordinates;
+      this.height = mathCoordinates.top - mathCoordinates.bottom;
+      this.width = mathCoordinates.right - mathCoordinates.left;
 
-        // if listPoints exist, we remove them
-        if(this.listPoints != undefined){
-          for(let i = 0; i < this.listPoints.length; i++){
-            this.calculator.removeExpression({id:`x_{${i}}`});
-            this.calculator.removeExpression({id:`y_{${i}}`});
-            this.calculator.removeExpression({id:`p_{${i}}`});
-          }
+      // if listPoints exist, we remove them
+      if (this.listPoints != undefined) {
+        for (let i = 0; i < this.listPoints.length; i++) {
+          this.calculator.removeExpression({ id: `x_{${i}}` });
+          this.calculator.removeExpression({ id: `y_{${i}}` });
+          this.calculator.removeExpression({ id: `p_{${i}}` });
         }
-        this.pointId = 0;
-        this.findAllPoints();
-        this.displayPoints();
-        this.addClickPoints();
+      }
+      this.pointId = 0;
+      this.findAllPoints();
+      this.displayPoints();
+      this.addClickPoints();
     };
     // event listener when button "update" is clicked
     document.querySelector('#update').addEventListener('click', debounce);
 
-      // Set the border of the screen
-    this.calculator.setExpression({id:'border',latex:`\\operatorname{polygon}([(-${this.p/2},-${this.p/2}),(${this.p/2},-${this.p/2}),(${this.p/2},${this.p/2}),(-${this.p/2},${this.p/2})])`,fill:0,color:Graphic.Colors.line, lineOpacity: 0.2});
+    // Set the border of the screen
+    this.calculator.setExpression({ id: 'border', latex: `\\operatorname{polygon}([(-${this.p / 2},-${this.p / 2}),(${this.p / 2},-${this.p / 2}),(${this.p / 2},${this.p / 2}),(-${this.p / 2},${this.p / 2})])`, fill: 0, color: Graphic.Colors.line, lineOpacity: 0.2 });
     this.listCoordPoints = [];
     this.selectedPoints = [[undefined, undefined], [undefined, undefined]];
     this.idSelectedPoints = [0, 0];
@@ -619,160 +614,160 @@ export class PModCurveGraph extends Graphic{
     this.calculator.observe('graphpaperBounds', this.updateInfinityPosition.bind(this));
   }
 
-    /**
-   * Display all static points of the modular curve from the list of points
-   */
-    displayPoints() {
-      var that = this;
-      let listPoints = this.listCoordPoints;
-      listPoints.forEach(function (item) {
-        that.addStaticPoint(item);
-      });
-      that.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
-      var i=0;
+  /**
+ * Display all static points of the modular curve from the list of points
+ */
+  displayPoints() {
+    var that = this;
+    let listPoints = this.listCoordPoints;
+    listPoints.forEach(function (item) {
+      that.addStaticPoint(item);
+    });
+    that.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
+    var i = 0;
+    try {
+      this.calculator.setExpressions([
+        { id: `L_{3}`, latex: `L_{3}=\\left[-${Math.floor(this.width / 2)}...${Math.floor(this.width / 2)}\\right]` }, // Here to set the position of points on the x axis
+      ]);
+    } catch (error) {
+      throw new Error(`An error has occured adding modular lines : ${error}`);
+    }
+    for (i = 0; i < this.height; i++) {
       try {
         this.calculator.setExpressions([
-            { id: `L_{3}`, latex: `L_{3}=\\left[-${Math.floor(this.width/2)}...${Math.floor(this.width/2)}\\right]` }, // Here to set the position of points on the x axis
+          { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i - Math.floor(this.height / 2)})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point }, // Here to set the position of points on the y axis
         ]);
       } catch (error) {
         throw new Error(`An error has occured adding modular lines : ${error}`);
       }
-      for(i=0; i<this.height; i++){
-        try{
-          this.calculator.setExpressions([
-            { id: `q_{${i}}`, latex: `q_{${i}}=(L_{3},${i-Math.floor(this.height/2)})`, pointOpacity: 0.4, pointSize: 6, color: Graphic.Colors.point}, // Here to set the position of points on the y axis
-        ]);
-        }catch (error) {
-          throw new Error(`An error has occured adding modular lines : ${error}`);
-        }
-      }
     }
-    /**
-     * Recover the coordinates of two points and display modulo and the result of addition
-     */
-    addClickPoints() {
-      let listPoints = this.listCoordPoints;
-      var isSecondPoint = false;
-      var isTheSamePoint = false;
-      var that = this;
-      var i = 1;
-      // Find the pixel coordinates of the graphpaper origin:
-      // that.calculator.mathToPixels({ x: 0, y: 0 });
-      // Find the math coordinates of the mouse
-      var calculatorRect = that.element.getBoundingClientRect();
-      this.element.addEventListener('click', function click(evt) {
-        // when user click on the screen, we go into this function
-        try {
-          var coordonnees_souris = that.calculator.pixelsToMath({
-            x: evt.clientX - calculatorRect.left,
-            y: evt.clientY - calculatorRect.top
-          })
-          var x = coordonnees_souris.x;
-          var y = coordonnees_souris.y;
-          // We round the coordinates to have the same coordinates as the points
-          var x_arrondi = Math.round(x);
-          var y_arrondi = Math.round(y);
-          // This variable is used at the end to know if the user clicked on a point to know if we have to do something
-          var changed = false;
-          for (i = 1; i < listPoints.length; i++) {
-            // Checking if the user clicked on a point
-            if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
-              // isSecondPoint alternate between True and False
-              isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
-              isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
-              isSecondPoint = !isSecondPoint;
-              changed = true;
-            }
-          }
-          // If the infinite point is selected
-          if (((that.getValueOfParameter(`x_{${listPoints.length}}`)-0.5) <= x_arrondi) && (x_arrondi <= (that.getValueOfParameter(`x_{${listPoints.length}}`)+0.5)) && ((that.getValueOfParameter(`y_{${listPoints.length}}`)-0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`)+0.5))) {
-            if(isSecondPoint){
-              that.selectedPoints[1] = [undefined, undefined];
-              that.idSelectedPoints[1] = listPoints.length;
-            }else{
-              that.selectedPoints[0] = [undefined, undefined];
-              that.idSelectedPoints[0] = listPoints.length;
-            }
+  }
+  /**
+   * Recover the coordinates of two points and display modulo and the result of addition
+   */
+  addClickPoints() {
+    let listPoints = this.listCoordPoints;
+    var isSecondPoint = false;
+    var isTheSamePoint = false;
+    var that = this;
+    var i = 1;
+    // Find the pixel coordinates of the graphpaper origin:
+    // that.calculator.mathToPixels({ x: 0, y: 0 });
+    // Find the math coordinates of the mouse
+    var calculatorRect = that.element.getBoundingClientRect();
+    this.element.addEventListener('click', function click(evt) {
+      // when user click on the screen, we go into this function
+      try {
+        var coordonnees_souris = that.calculator.pixelsToMath({
+          x: evt.clientX - calculatorRect.left,
+          y: evt.clientY - calculatorRect.top
+        })
+        var x = coordonnees_souris.x;
+        var y = coordonnees_souris.y;
+        // We round the coordinates to have the same coordinates as the points
+        var x_arrondi = Math.round(x);
+        var y_arrondi = Math.round(y);
+        // This variable is used at the end to know if the user clicked on a point to know if we have to do something
+        var changed = false;
+        for (i = 1; i < listPoints.length; i++) {
+          // Checking if the user clicked on a point
+          if ((x_arrondi == that.getValueOfParameter(`x_{${i}}`)) && (y_arrondi == that.getValueOfParameter(`y_{${i}}`))) {
+            // isSecondPoint alternate between True and False
+            isSecondPoint ? that.selectedPoints[1] = [x_arrondi, y_arrondi] : that.selectedPoints[0] = [x_arrondi, y_arrondi];
+            isSecondPoint ? that.idSelectedPoints[1] = i : that.idSelectedPoints[0] = i;
             isSecondPoint = !isSecondPoint;
             changed = true;
-          } 
-  
-          var point1 = that.newPoint(
-            that.selectedPoints[0][0],
-            that.selectedPoints[0][1],
-          );
-          var point2 = that.newPoint(
-            that.selectedPoints[1][0],
-            that.selectedPoints[1][1],
-          );
-
-          console.log(that.selectedPoints[0][0], that.selectedPoints[0][1], that.selectedPoints[1][0], that.selectedPoints[1][1]);
-  
-          // If the user clicked on the infinity point, we set the point to infinity
-          if(that.idSelectedPoints[0] == listPoints.length){
-            point1.inf = true;
           }
-          if(that.idSelectedPoints[1] == listPoints.length){
-            point2.inf = true;
-          }
-          console.log(point1.inf, point2.inf);
-          
-          // If the user didn't click on a point or it is his first clicked point, we do nothing
-          if ( ((that.selectedPoints[1][0] == undefined && that.selectedPoints[1][1] == undefined) && !point2.isInfinity()) || changed === false ){
-            return;
-          }
-  
-          isTheSamePoint=that.equalPoints(point1,point2);
-          let addCoordPoint = that.addPoints(point1, point2);
-  
-          // Display the result of the addition in the menu
-          document.getElementById("result-x-y-shortmod").innerHTML = `(${addCoordPoint[0]},   ${addCoordPoint[1]})`;
-  
-          that.displayModulo();
-  
-          if(point1.inf || point2.inf){
-            that.displayInfinity();
-            isTheSamePoint = true;
-          }
-          //If the two points have the same absolute y-coordinate or it is the same point with a y-coordinate value equal to 0, the result is infinity
-          if ((((Math.abs(that.selectedPoints[0][1]) == Math.abs(that.selectedPoints[1][1])) && (that.selectedPoints[0][0] == that.selectedPoints[1][0])) && (!isTheSamePoint)) || (isTheSamePoint && that.selectedPoints[0][1] == 0 && that.selectedPoints[1][1] == 0) || (point1.inf && point2.inf)){
-            isTheSamePoint = true;
-            addCoordPoint = that.newPoint(null, null);
-            addCoordPoint.inf = true;
-            addCoordPoint = that.getCoord(addCoordPoint);
-            document.getElementById("result-x-y-shortmod").innerHTML = `(Infinity, Infinity)`;
-          }
-  
-          // To know is infinity is one of the clicked points (and only one !)
-          let isInfinityAPointOnCurve = point1.inf ^ point2.inf;
-
-          that.displayAddPoint(addCoordPoint, isTheSamePoint, isInfinityAPointOnCurve);
-        } catch (error) {
-          //console.warn("error : " + error);
         }
-      });
-    }
+        // If the infinite point is selected
+        if (((that.getValueOfParameter(`x_{${listPoints.length}}`) - 0.5) <= x_arrondi) && (x_arrondi <= (that.getValueOfParameter(`x_{${listPoints.length}}`) + 0.5)) && ((that.getValueOfParameter(`y_{${listPoints.length}}`) - 0.5) <= y_arrondi) && (y_arrondi <= (that.getValueOfParameter(`y_{${listPoints.length}}`) + 0.5))) {
+          if (isSecondPoint) {
+            that.selectedPoints[1] = [undefined, undefined];
+            that.idSelectedPoints[1] = listPoints.length;
+          } else {
+            that.selectedPoints[0] = [undefined, undefined];
+            that.idSelectedPoints[0] = listPoints.length;
+          }
+          isSecondPoint = !isSecondPoint;
+          changed = true;
+        }
 
-    updateInfinityPosition(){
-      let listPoints = this.listPoints;
-      let listCoordPoints = this.listCoordPoints;
-  
-      // remove the last point
-      this.calculator.removeExpression({id:`x_{${listPoints.length}}`});
-      this.calculator.removeExpression({id:`y_{${listPoints.length}}`});
-      this.calculator.removeExpression({id:`p_{${listPoints.length}}`});
-  
-      // remove the last point from the list
-      listPoints.pop();
-      listCoordPoints.pop();
-  
-      // add the new infinity point
-      listCoordPoints.push([0, this.calculator.graphpaperBounds.mathCoordinates.top - 0.5]);
-      listPoints.push(this.newPoint(null, null));
-  
-      // add the new point to the calculator
-      this.pointId--;
-      this.addStaticPoint(listCoordPoints[listCoordPoints.length - 1]);
-      this.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
-    }
+        var point1 = that.newPoint(
+          that.selectedPoints[0][0],
+          that.selectedPoints[0][1],
+        );
+        var point2 = that.newPoint(
+          that.selectedPoints[1][0],
+          that.selectedPoints[1][1],
+        );
+
+        console.log(that.selectedPoints[0][0], that.selectedPoints[0][1], that.selectedPoints[1][0], that.selectedPoints[1][1]);
+
+        // If the user clicked on the infinity point, we set the point to infinity
+        if (that.idSelectedPoints[0] == listPoints.length) {
+          point1.inf = true;
+        }
+        if (that.idSelectedPoints[1] == listPoints.length) {
+          point2.inf = true;
+        }
+        console.log(point1.inf, point2.inf);
+
+        // If the user didn't click on a point or it is his first clicked point, we do nothing
+        if (((that.selectedPoints[1][0] == undefined && that.selectedPoints[1][1] == undefined) && !point2.isInfinity()) || changed === false) {
+          return;
+        }
+
+        isTheSamePoint = that.equalPoints(point1, point2);
+        let addCoordPoint = that.addPoints(point1, point2);
+
+        // Display the result of the addition in the menu
+        document.getElementById("result-x-y-shortmod").innerHTML = `(${addCoordPoint[0]},   ${addCoordPoint[1]})`;
+
+        that.displayModulo();
+
+        if (point1.inf || point2.inf) {
+          that.displayInfinity();
+          isTheSamePoint = true;
+        }
+        //If the two points have the same absolute y-coordinate or it is the same point with a y-coordinate value equal to 0, the result is infinity
+        if ((((Math.abs(that.selectedPoints[0][1]) == Math.abs(that.selectedPoints[1][1])) && (that.selectedPoints[0][0] == that.selectedPoints[1][0])) && (!isTheSamePoint)) || (isTheSamePoint && that.selectedPoints[0][1] == 0 && that.selectedPoints[1][1] == 0) || (point1.inf && point2.inf)) {
+          isTheSamePoint = true;
+          addCoordPoint = that.newPoint(null, null);
+          addCoordPoint.inf = true;
+          addCoordPoint = that.getCoord(addCoordPoint);
+          document.getElementById("result-x-y-shortmod").innerHTML = `(Infinity, Infinity)`;
+        }
+
+        // To know is infinity is one of the clicked points (and only one !)
+        let isInfinityAPointOnCurve = point1.inf ^ point2.inf;
+
+        that.displayAddPoint(addCoordPoint, isTheSamePoint, isInfinityAPointOnCurve);
+      } catch (error) {
+        //console.warn("error : " + error);
+      }
+    });
+  }
+
+  updateInfinityPosition() {
+    let listPoints = this.listPoints;
+    let listCoordPoints = this.listCoordPoints;
+
+    // remove the last point
+    this.calculator.removeExpression({ id: `x_{${listPoints.length}}` });
+    this.calculator.removeExpression({ id: `y_{${listPoints.length}}` });
+    this.calculator.removeExpression({ id: `p_{${listPoints.length}}` });
+
+    // remove the last point from the list
+    listPoints.pop();
+    listCoordPoints.pop();
+
+    // add the new infinity point
+    listCoordPoints.push([0, this.calculator.graphpaperBounds.mathCoordinates.top - 0.5]);
+    listPoints.push(this.newPoint(null, null));
+
+    // add the new point to the calculator
+    this.pointId--;
+    this.addStaticPoint(listCoordPoints[listCoordPoints.length - 1]);
+    this.setExpressionParameters(`p_{${listPoints.length}}`, { label: 'Infinity' });
+  }
 }

@@ -98,12 +98,16 @@ export default {
       console.log(this.controleur.coefficients.getShortWeierstrassCoefficients())
     },
     displayDefaultCurve() {
-      //dataManager.getEquivalentEquation();
-      let parameters = dataManager.getParameters();
-      this.graphS.displayShort(parameters.a, parameters.b, parameters.p);
-      this.menuS.setValueById("a", parameters.a);
-      this.menuS.setValueById("b", parameters.b);
-      this.menuS.setValueById("p", parameters.p);
+      /*
+      a = this.controleur.coefficients.a;
+      b = this.controleur.coefficients.b;
+      p = this.controleur.coefficients.p;
+
+      this.graphS.displayShort(a, b, p);
+      this.menuS.setValueById("a", a);
+      this.menuS.setValueById("b", b);
+      this.menuS.setValueById("p", p);
+      */
 
       /*
       this.graphS.displayShort(2, 1, 5);

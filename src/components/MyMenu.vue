@@ -65,6 +65,7 @@
           <option value="Weierstrass">Weierstrass</option>
           <option value="Montgomery">Montgomery</option>
           <option value="Edwards">Edwards</option>
+          <option value="shortmodperiodic">Short Mod Periodic... a changer</option>
         </select>
       </h2>
 
@@ -74,7 +75,7 @@
       <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurObject' />
       <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurObject' />
       <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurObject' />
-      <MenuShortModPeriodic v-show="isOpen.shortmodperiodic" ref="shortmodperiodic" />
+      <MenuShortModPeriodic v-show="isOpen.shortmodperiodic" ref="shortmodperiodic" :controleur='controleurObject' />
 
     </div>
 
