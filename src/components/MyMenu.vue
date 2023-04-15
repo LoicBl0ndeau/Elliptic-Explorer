@@ -65,7 +65,7 @@
           <option value="Weierstrass">Weierstrass</option>
           <option value="Montgomery">Montgomery</option>
           <option value="Edwards">Edwards</option>
-          <option value="shortmodperiodic">Short Mod Periodic... a changer</option>
+          <option value="Short_Weierstrass_Periodique">Periodique</option>
         </select>
       </h2>
 
@@ -75,7 +75,8 @@
       <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurObject' />
       <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurObject' />
       <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurObject' />
-      <MenuShortModPeriodic v-show="isOpen.shortmodperiodic" ref="shortmodperiodic" :controleur='controleurObject' />
+      <MenuShortModPeriodic v-show="isOpen.Short_Weierstrass_Periodique" ref="Short_Weierstrass_Periodique"
+        :controleur='controleurObject' />
 
     </div>
 
@@ -166,7 +167,7 @@ export default {
         Weierstrass: false,
         Montgomery: false,
         Edwards: false,
-        shortmodperiodic: false,
+        Short_Weierstrass_Periodique: false,
       },
       // the menu is fixed and not minized by default
       isPinned: true,
@@ -244,6 +245,9 @@ export default {
         }
         this.isOpen[oldForme] = false;
         this.isOpen[forme] = true;
+
+        console.log("oldForme from controleur : " + oldForme + "\n new forme from select input : " + forme);
+        console.log(JSON.parse(JSON.stringify(this.isOpen)));
       }
     },
     setVue(value) {

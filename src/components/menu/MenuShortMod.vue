@@ -2,6 +2,8 @@
   <div class="submenu">
     <h3 class="section">Curve Equation</h3>
 
+    <div id="general-short-eq"></div>
+
     <div id="short-eq"></div>
 
     <h3 class="section">Parameters</h3>
@@ -89,6 +91,8 @@ export default {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
     // Display latex  
+    this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
+
     this.menuS.displayLaTeX('general-short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
     this.menuS.displayLaTeX('discriminant-short', 'Δ = -16 * (4a^3 + 27b^2)');
   },
@@ -115,9 +119,14 @@ export default {
       this.menuS.setValueById("b", 1);
       this.menuS.setValueById("p", 5);
       */
+
+      // TODO : Peut etre le laisser pour actualiser
+
       // Display Latex
       this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
       this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= -944`);
+
+
       // enables add on click
       this.graphS.getGraph.addClickPoints();
       window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
