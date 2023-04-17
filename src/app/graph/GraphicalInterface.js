@@ -478,15 +478,17 @@ export class ModCurveGraph extends Graphic {
     // that.calculator.mathToPixels({ x: 0, y: 0 });
     // Find the math coordinates of the mouse
     var calculatorRect = that.element.getBoundingClientRect();
+    console.log(calculatorRect);
     this.element.addEventListener('click', function click(evt) {
       // when user click on the screen, we go into this function
       try {
         var coordonnees_souris = that.calculator.pixelsToMath({
           x: evt.clientX - calculatorRect.left,
-          y: evt.clientY - calculatorRect.top
+          y: evt.clientY
         })
         var x = coordonnees_souris.x;
         var y = coordonnees_souris.y;
+        console.log('x: ' + x + ' y: ' + y);
         // We round the coordinates to have the same coordinates as the points
         var x_arrondi = Math.round(x);
         var y_arrondi = Math.round(y);
@@ -563,7 +565,7 @@ export class ModCurveGraph extends Graphic {
 
         that.displayAddPoint(addCoordPoint, isTheSamePoint, isInfinityAPointOnCurve);
       } catch (error) {
-        //console.warn("error : " + error);
+        console.warn(error);
       }
     });
   }
@@ -660,7 +662,7 @@ export class PModCurveGraph extends Graphic {
       try {
         var coordonnees_souris = that.calculator.pixelsToMath({
           x: evt.clientX - calculatorRect.left,
-          y: evt.clientY - calculatorRect.top
+          y: evt.clientY
         })
         var x = coordonnees_souris.x;
         var y = coordonnees_souris.y;
@@ -701,8 +703,6 @@ export class PModCurveGraph extends Graphic {
           that.selectedPoints[1][1],
         );
 
-        console.log(that.selectedPoints[0][0], that.selectedPoints[0][1], that.selectedPoints[1][0], that.selectedPoints[1][1]);
-
         // If the user clicked on the infinity point, we set the point to infinity
         if (that.idSelectedPoints[0] == listPoints.length) {
           point1.inf = true;
@@ -710,7 +710,6 @@ export class PModCurveGraph extends Graphic {
         if (that.idSelectedPoints[1] == listPoints.length) {
           point2.inf = true;
         }
-        console.log(point1.inf, point2.inf);
 
         // If the user didn't click on a point or it is his first clicked point, we do nothing
         if (((that.selectedPoints[1][0] == undefined && that.selectedPoints[1][1] == undefined) && !point2.isInfinity()) || changed === false) {
@@ -743,7 +742,7 @@ export class PModCurveGraph extends Graphic {
 
         that.displayAddPoint(addCoordPoint, isTheSamePoint, isInfinityAPointOnCurve);
       } catch (error) {
-        //console.warn("error : " + error);
+        console.warn(error);
       }
     });
   }

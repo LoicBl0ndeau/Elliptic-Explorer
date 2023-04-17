@@ -283,6 +283,8 @@ export default {
               controleur.coefficients.b,
               controleur.coefficients.p
             );
+            //Required to add clickable points
+            this.graphS.getGraph.addClickPoints();
             document.getElementById("vueFinie").classList.add("selected");
             break;
           case "vuePerspective":
