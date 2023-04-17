@@ -183,36 +183,53 @@ export default {
     };
   },
   methods: {
-    setCorps(value) { // set the corps in the controleur object and display the available vues
-      // hide the warning if the user selects a corps
-      document.getElementById('avertissementCorps').style.display = "none";
+    // set the corps in the controleur object and display the available forms and vues
+    setCorps(newCorps) {
+      // if the previous corps was undefined, display the available forms flebox
       if (controleur.getCorps() == "Undefined") {
-        document.getElementById('vues_disponibles').children[2].style.display = "block";
+        document.querySelector('#vues_disponibles .flexbox').style.display = 'block';
+        //document.getElementById('vues_disponibles').children[2].style.display = "block";
       }
-      controleur.setCorps(value);
+
+      document.getElementById('avertissementCorps').style.display = "none";
+
+      controleur.setCorps(newCorps);
       controleur.setVue("Undefined");
 
-      // remove the selected class from all the menu items and add it to the selected one
-      // also display the available vues for the selected corps
+      // remove the selected class from all the corps items 
       document.getElementById("corps").children[1].childNodes.forEach((child) => {
         child.classList.remove("selected");
       });
 
+      // display the available vues for the selected corps
       let availableVues = [];
+      let availableFormes = [];
 
-      switch (value) {
+      switch (newCorps) {
         case "R":
           document.getElementById("p_span").style.display = "none";
           document.getElementById("corps_reels").classList.add("selected");
+          availableFormes = ["Undefined", "Short_Weierstrass", "Weierstrass", "Montgomery", "Edwards"];
           availableVues = ["vue2D", "vue3D", "vuePerspective"];
           break;
         case "P":
           document.getElementById("p_span").style.display = "block";
           document.getElementById("corps_modulo").classList.add("selected");
+          availableFormes = ["Undefined", "Short_Weierstrass"];
           availableVues = ["vueFinie", "vuePeriodique"];
           break;
       }
 
+      // display the available forms regarding the corps
+      document.getElementById('forme').childNodes.forEach((child) => {
+        if (availableFormes.includes(child.value)) {
+          child.style.display = "block";
+        } else {
+          child.style.display = "none";
+        }
+      });
+
+      // display the available vues
       document.getElementById('vues_disponibles').children[2].childNodes.forEach((child) => {
         child.classList.remove("selected");
         if (availableVues.includes(child.id)) {
