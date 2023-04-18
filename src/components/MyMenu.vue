@@ -201,6 +201,7 @@ export default {
       }
       controleur.setCorps(value);
       controleur.setVue("Undefined");
+      this.setVue("Undefined");
 
       // remove the selected class from all the menu items and add it to the selected one
       // also display the available vues for the selected corps
@@ -282,99 +283,109 @@ export default {
       }
     },
     setVue(value) {
-      if (controleur.getForme() != "Undefined") {
-        document.getElementById('avertissementVue').style.display = "none";
-        controleur.setVue(value);
+      if(value != "Undefined"){
+        if (controleur.getForme() != "Undefined") {
+          document.getElementById('avertissementVue').style.display = "none";
+          controleur.setVue(value);
 
-        // remove the selected class from all the menu items and add it to the selected one
-        document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
-          child.classList.remove("selected");
-        });
+          // remove the selected class from all the menu items and add it to the selected one
+          document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
+            child.classList.remove("selected");
+          });
 
-        document.getElementById("calculator").textContent = "";
+          document.getElementById("calculator").textContent = "";
 
-        switch (value) {
-          case "vue2D":
-            document.getElementById("vue2D").classList.add("selected");
-            switch (controleur.getForme()){
-              case "Weierstrass":
-                this.graphS.displayWeierstrass(
-                  controleur.coefficients.a1,
-                  controleur.coefficients.a3,
-                  controleur.coefficients.a2,
-                  controleur.coefficients.a4,
-                  controleur.coefficients.a6,
-                );
-                this.graphS.showAddition(-2, 1);
-                break;
-              case "Montgomery":
-                this.graphS.displayMontgomery(
-                  controleur.coefficients.a,
-                  controleur.coefficients.b,
-                  controleur.coefficients.c,
-                  controleur.coefficients.d,
-                );
-                this.graphS.showAddition(-2, 1);
-                break;
-              case "Edwards":
-                this.graphS.displayEdwards(
-                  controleur.coefficients.a,
-                  controleur.coefficients.d,
-                );
-                this.graphS.showAddition(-2, 1);
-                break;
-              case "Short_Weierstrass":                
-                this.graphS.displayWeierstrass(
-                  0,
-                  0,
-                  0,
-                  controleur.coefficients.a,
-                  controleur.coefficients.b
-                );
-                this.graphS.showAddition(2, 0);
-                break;
-            }           
-            break;
-          case "vue3D":
-            document.getElementById("vue3D").classList.add("selected");
-            document.getElementById("calculator").textContent = "This view is not yet available.";
-            break;
-          case "vueFinie":
-            this.graphS.displayShort(
-              controleur.coefficients.a,
-              controleur.coefficients.b,
-              controleur.coefficients.p
-            );
-            //Required to add clickable points
-            this.graphS.getGraph.addClickPoints();
-            document.getElementById("vueFinie").classList.add("selected");
-            break;
-          case "vuePerspective":
-            document.getElementById("vuePerspective").classList.add("selected");
-            document.getElementById("calculator").textContent = "This view is not yet available.";
-            break;
-          case "vuePeriodique":
-            document.getElementById("vuePeriodique").classList.add("selected");
-            this.isOpen[controleur.getForme()] = false;
-            this.isOpen.Short_Weierstrass_Periodique = true;
-            this.graphS.displayShortPeriodic(
-              controleur.coefficients.a,
-              controleur.coefficients.b,
-              controleur.coefficients.p
-            );
-            this.graphS.getGraph.addClickPoints();
-            break;
-          default:
-            console.log("Erreur : vue non reconnue");
-            break;
+          switch (value) {
+            case "vue2D":
+              document.getElementById("vue2D").classList.add("selected");
+              switch (controleur.getForme()){
+                case "Weierstrass":
+                  this.graphS.displayWeierstrass(
+                    controleur.coefficients.a1,
+                    controleur.coefficients.a3,
+                    controleur.coefficients.a2,
+                    controleur.coefficients.a4,
+                    controleur.coefficients.a6,
+                  );
+                  this.graphS.showAddition(-2, 1);
+                  break;
+                case "Montgomery":
+                  this.graphS.displayMontgomery(
+                    controleur.coefficients.a,
+                    controleur.coefficients.b,
+                    controleur.coefficients.c,
+                    controleur.coefficients.d,
+                  );
+                  this.graphS.showAddition(-2, 1);
+                  break;
+                case "Edwards":
+                  this.graphS.displayEdwards(
+                    controleur.coefficients.a,
+                    controleur.coefficients.d,
+                  );
+                  this.graphS.showAddition(-2, 1);
+                  break;
+                case "Short_Weierstrass":                
+                  this.graphS.displayWeierstrass(
+                    0,
+                    0,
+                    0,
+                    controleur.coefficients.a,
+                    controleur.coefficients.b
+                  );
+                  this.graphS.showAddition(2, 0);
+                  break;
+              }           
+              break;
+            case "vue3D":
+              document.getElementById("vue3D").classList.add("selected");
+              document.getElementById("calculator").textContent = "This view is not yet available.";
+              break;
+            case "vueFinie":
+              this.graphS.displayShort(
+                controleur.coefficients.a,
+                controleur.coefficients.b,
+                controleur.coefficients.p
+              );
+              //Required to add clickable points
+              this.graphS.getGraph.addClickPoints();
+              document.getElementById("vueFinie").classList.add("selected");
+              break;
+            case "vuePerspective":
+              document.getElementById("vuePerspective").classList.add("selected");
+              document.getElementById("calculator").textContent = "This view is not yet available.";
+              break;
+            case "vuePeriodique":
+              document.getElementById("vuePeriodique").classList.add("selected");
+              this.isOpen[controleur.getForme()] = false;
+              this.isOpen.Short_Weierstrass_Periodique = true;
+              this.graphS.displayShortPeriodic(
+                controleur.coefficients.a,
+                controleur.coefficients.b,
+                controleur.coefficients.p
+              );
+              this.graphS.getGraph.addClickPoints();
+              break;
+            default:
+              console.log("Erreur : vue non reconnue");
+              break;
+          }
+
+          // display the graph
+          document.getElementById("about-div").style.display = "none";
+          document.getElementById("graph-div").style.display = "inline";
+
+          // display the graph curve
+          //this.graphS.displayShort()
         }
-
-        // display the graph
-        document.getElementById("about-div").style.display = "none";
-        document.getElementById("graph-div").style.display = "inline";
-
-        // display the graph curve
-        //this.graphS.displayShort()
+      }
+      else{
+        //set all parameters of isOpen to false
+        for (var key in this.isOpen) {
+          this.isOpen[key] = false;
+        }
+        document.getElementById('avertissementForme').style.display = "block";
+        document.getElementById('avertissementVue').style.display = "block";
       }
     },
     openAbout() {
