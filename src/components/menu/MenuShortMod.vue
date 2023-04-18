@@ -22,7 +22,7 @@
 
     <span class="parameter" id="p_span">
       <label>p</label>
-      <input id="p" placeholder="prime number" value="5" /><br />
+      <input id="p" type="number" placeholder="prime number" value="5" /><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
 
@@ -107,9 +107,9 @@ export default {
         this.setCoefficient('a');
         this.setCoefficient('b');
         this.setCoefficient('p');
-        let a = this.controleur.coefficients.getCoef('a');
-        let b = this.controleur.coefficients.getCoef('b');
-        let p = this.controleur.coefficients.getCoef('p');
+        let a = this.controleur.coefficients.a;
+        let b = this.controleur.coefficients.b;
+        let p = this.controleur.coefficients.p;
         if(this.controleur.getCorps() == "Modulo"){
           this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
         }
