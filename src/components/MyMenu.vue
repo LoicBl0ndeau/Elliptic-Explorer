@@ -193,6 +193,7 @@ export default {
     setCorps(value) { // set the corps in the controleur object and display the available vues
       this.graphS.destroy();
       this.openAbout();
+
       // hide the warning if the user selects a corps
       document.getElementById('avertissementCorps').style.display = "none";
       if (controleur.getCorps() == "Undefined") {
@@ -213,11 +214,19 @@ export default {
         case "R":
           document.getElementById("p_span").style.display = "none";
           document.getElementById("corps_reels").classList.add("selected");
+          // undisable implemented vues on the select tag
+          document.querySelector("#forme option[value='Weierstrass']").disabled = false;
+          document.querySelector("#forme option[value='Montgomery']").disabled = false;
+          document.querySelector("#forme option[value='Edwards']").disabled = false;
           availableVues = ["vue2D", "vue3D", "vuePerspective"];
           break;
         case "P":
           document.getElementById("p_span").style.display = "block";
           document.getElementById("corps_modulo").classList.add("selected");
+          // disable unimplemented vues on the select tag
+          document.querySelector("#forme option[value='Weierstrass']").disabled = true;
+          document.querySelector("#forme option[value='Montgomery']").disabled = true;
+          document.querySelector("#forme option[value='Edwards']").disabled = true;
           availableVues = ["vueFinie", "vuePeriodique"];
           break;
       }
