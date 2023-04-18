@@ -11,12 +11,12 @@
 
     <span class="parameter">
       <label>c</label>
-      <input id="c" value="2" @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();" /><br />
+      <input id="c" value="2" type="number" @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();" /><br />
     </span>
 
     <span class="parameter">
       <label>d</label>
-      <input id="d" value="1" @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();" /><br />
+      <input id="d" value="1" type="number" @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();" /><br />
     </span>
 
     <h3 class="section">Operations</h3>
@@ -30,14 +30,14 @@
 
     <span class="parameter">
       <label>x1</label>
-      <input id="x1-edwards" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')" />
+      <input id="x1-edwards" type="number" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition-edwards">
       <span class="parameter">
         <label>x2</label>
-        <input id="x2-edwards" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')" />
+        <input id="x2-edwards" type="number" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
@@ -76,21 +76,6 @@ export default {
     this.menuS.displayLaTeX('edwards-eq', "x^2 + y^2 = c^2(1 +dx^2y^2)");
   },
   methods: {
-    displayDefaultCurve() {
-      let c = 2;
-      let d = -1;
-
-      let xP = -0.84;
-      let xQ = 1.5;
-
-      this.graphS.displayEdwards(c, d);
-      this.graphS.showAddition(xP, xQ);
-
-      // display default operation (Addition)
-      this.menuS.setValueById("choix-op-edwards", "Addition");
-      this.menuS.hideElementById("multiplication-edwards");
-      this.menuS.displayElementById("addition-edwards");
-    },
     displayNewCurve() {
       let c = this.menuS.getFloatFromInputId("c");
       let d = this.menuS.getFloatFromInputId("d");

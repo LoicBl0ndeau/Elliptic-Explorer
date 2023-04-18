@@ -2,27 +2,33 @@
   <div class="submenu">
     <h3 class="section">Curve Equation</h3>
 
+    <div id="general-short-eq"></div>
+
     <div id="short-eq"></div>
 
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
       <label>a</label>
-      <input id="a" @change="setCoefficient('a')" value="3" />
+      <input id="a" value="3" type="number" />
       <br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b" @change="setCoefficient('b')" value="2" />
+      <input id="b" value="2" type="number" />
       <br />
     </span>
 
     <span class="parameter" id="p_span">
       <label>p</label>
-      <input id="p" placeholder="prime number" value="5" @change="setCoefficient('p')" /><br />
+      <input id="p" type="number" placeholder="prime number" value="5" /><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
+
+    <h3 class="section">Discriminant</h3>
+    <div id="discriminant-short"></div>
+    <div id="discriminant-short-res"></div>
 
     <h3 class="section">
       Curve view
@@ -62,16 +68,17 @@
       </span>
     </div>
 
+    <h3 class="section">Result</h3>
+    <span class="parameter">
+      <span id="result-x-y-shortmod" class="result"></span><br />
+    </span>
+
   </div>
 </template>
 
 <script>
 import { graphStore } from "@/stores/graph.js";
 import { menuStore } from "@/stores/menu.js";
-import WeierstrassManager from "@/data/WeierstrassManager.js";
-
-let dataManager = new WeierstrassManager();
-
 export default {
   name: "MenuShort",
   props: {
@@ -83,49 +90,44 @@ export default {
   setup() {
     const graphS = graphStore();
     const menuS = menuStore();
-
     return { graphS, menuS };
   },
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
-    // display latex
-    this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
+    // Display latex
+    this.menuS.displayLaTeX('discriminant-short', 'Δ = -16 * (4a^3 + 27b^2)');
   },
   methods: {
     setCoefficient(coef) {
       this.controleur.coefficients.setCoef(coef, parseInt(document.getElementById(coef).value));
-      console.log(this.controleur.coefficients.getShortWeierstrassCoefficients())
-    },
-    displayDefaultCurve() {
-      //dataManager.getEquivalentEquation();
-      let parameters = dataManager.getParameters();
-      this.graphS.displayShort(parameters.a, parameters.b, parameters.p);
-      this.menuS.setValueById("a", parameters.a);
-      this.menuS.setValueById("b", parameters.b);
-      this.menuS.setValueById("p", parameters.p);
-
-      /*
-      this.graphS.displayShort(2, 1, 5);
-      this.menuS.setValueById("a", 2);
-      this.menuS.setValueById("b", 1);
-      this.menuS.setValueById("p", 5);
-      */
-
-      // enables add on click
-      this.graphS.getGraph.addClickPoints();
-      window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
-      let a = this.menuS.getIntFromInputId("a");
-      let b = this.menuS.getIntFromInputId("b");
-      let p = this.menuS.getIntFromInputId("p");
-      this.graphS.displayShort(a, b, p);
-      this.graphS.getGraph.addClickPoints();
+      if (this.menuS.isPrime(document.getElementById('p').value)) {
+        this.setCoefficient('a');
+        this.setCoefficient('b');
+        this.setCoefficient('p');
+        let a = this.controleur.coefficients.a;
+        let b = this.controleur.coefficients.b;
+        let p = this.controleur.coefficients.p;
+        if(this.controleur.getCorps() == "Modulo"){
+          this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
+        }
+        else{
+          this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${a}x + ${b}`);
+        }
+        this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
+        console.log(this.controleur.coefficients);
+        this.graphS.displayShort(a, b, p);
+        this.graphS.getGraph.addClickPoints();
+      }
+      else {
+        alert("p must be a prime number");
+        document.getElementById('p').value = this.controleur.coefficients.p;
+      }
     },
     enableAdditionOnClick() {
       try {
-
         this.menuS.setValueById(
           "x1-y1-short",
           `(${this.graphS.getGraph.selectedPoints[0][0]}, ${this.graphS.getGraph.selectedPoints[0][1]})`

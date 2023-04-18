@@ -9,31 +9,31 @@
 
     <span class="parameter">
       <label>a1</label>
-      <input id="a1" value="0" @input="menuS.setValueOnGraphFromUserInput('a_{1}', 'a1')"
+      <input id="a1" value="0" type="number" @input="menuS.setValueOnGraphFromUserInput('a_{1}', 'a1')"
         @change="setCoefficient('a1')" /><br />
     </span>
 
     <span class="parameter">
       <label>a3</label>
-      <input id="a3" value="0" @input="menuS.setValueOnGraphFromUserInput('a_{3}', 'a3')"
+      <input id="a3" value="0" type="number" @input="menuS.setValueOnGraphFromUserInput('a_{3}', 'a3')"
         @change="setCoefficient('a3')" /><br />
     </span>
 
     <span class="parameter">
       <label>a2</label>
-      <input id="a2" value="4" @input="menuS.setValueOnGraphFromUserInput('a_{2}', 'a2')"
+      <input id="a2" value="4" type="number" @input="menuS.setValueOnGraphFromUserInput('a_{2}', 'a2')"
         @change="setCoefficient('a2')" /><br />
     </span>
 
     <span class="parameter">
       <label>a4</label>
-      <input id="a4" value="2" @input="menuS.setValueOnGraphFromUserInput('a_{4}', 'a4')"
+      <input id="a4" value="2" type="number" @input="menuS.setValueOnGraphFromUserInput('a_{4}', 'a4')"
         @change="setCoefficient('a4')" /><br />
     </span>
 
     <span class="parameter">
       <label>a6</label>
-      <input id="a6" value="1" @input="menuS.setValueOnGraphFromUserInput('a_{6}', 'a6')"
+      <input id="a6" value="1" type="number" @input="menuS.setValueOnGraphFromUserInput('a_{6}', 'a6')"
         @change="setCoefficient('a6')" /><br />
     </span>
 
@@ -48,14 +48,14 @@
 
     <span class="parameter">
       <label>x1</label>
-      <input id="x1" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1')" />
+      <input id="x1" class="coord" type="number" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition">
       <span class="parameter">
         <label>x2</label>
-        <input id="x2" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2')" />
+        <input id="x2" class="coord" type="number" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
@@ -103,24 +103,6 @@ export default {
     setCoefficient(coef) {
       this.controleur.coefficients.setCoef(coef, parseInt(document.getElementById(coef).value));
       console.log(this.controleur.coefficients.showCoefficients())
-    },
-    displayDefaultCurve() {
-      let a1 = 0;
-      let a3 = 0;
-      let a2 = 4;
-      let a4 = 2;
-      let a6 = 1;
-
-      let xP = -2;
-      let xQ = 1;
-
-      this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
-      this.graphS.showAddition(xP, xQ);
-
-      // display default operation (Addition)
-      this.menuS.setValueById("choix-op-weierstrass", "Addition");
-      this.menuS.hideElementById("multiplication");
-      this.menuS.displayElementById("addition");
     },
     displayNewCurve() {
       let a1 = this.menuS.getFloatFromInputId("a1");

@@ -5,7 +5,6 @@
 <script>
 import { ShortWeierstrass } from "@/app/math/ShortWeierstrass.js";
 //import { getCoord } from "@/app/math/ShortWeierstrass.js";
-
 export default {
   name: "ModularWeierstrass",
   mounted() {
@@ -16,7 +15,6 @@ export default {
 
     graphMod.displayPoints();
     graphMod.addClickPoints();
-
     /* window.setInterval(function () {
       console.log(JSON.stringify(graphMod.selectedPoints));
       let point1 = graphMod.newPoint(
