@@ -10,19 +10,19 @@
 
     <span class="parameter">
       <label>a</label>
-      <input id="a" @change="setCoefficient('a')" value="3" />
+      <input id="a" value="3" />
       <br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b" @change="setCoefficient('b')" value="2" />
+      <input id="b" value="2" />
       <br />
     </span>
 
     <span class="parameter" id="p_span">
       <label>p</label>
-      <input id="p" placeholder="prime number" value="5" @change="setCoefficient('p')" /><br />
+      <input id="p" placeholder="prime number" value="5" /><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
 
@@ -95,59 +95,35 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
-    // Display latex  
-    this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
-
-    this.menuS.displayLaTeX('general-short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
+    // Display latex
     this.menuS.displayLaTeX('discriminant-short', 'Δ = -16 * (4a^3 + 27b^2)');
   },
   methods: {
     setCoefficient(coef) {
       this.controleur.coefficients.setCoef(coef, parseInt(document.getElementById(coef).value));
-      console.log(this.controleur.coefficients.getShortWeierstrassCoefficients())
-    },
-    displayDefaultCurve() {
-      /*
-      a = this.controleur.coefficients.a;
-      b = this.controleur.coefficients.b;
-      p = this.controleur.coefficients.p;
-
-      this.graphS.displayShort(a, b, p);
-      this.menuS.setValueById("a", a);
-      this.menuS.setValueById("b", b);
-      this.menuS.setValueById("p", p);
-      */
-
-      /*
-      this.graphS.displayShort(2, 1, 5);
-      this.menuS.setValueById("a", 2);
-      this.menuS.setValueById("b", 1);
-      this.menuS.setValueById("p", 5);
-      */
-
-      // TODO : Peut etre le laisser pour actualiser
-
-      // Display Latex
-      this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
-      this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= -944`);
-
-
-      // enables add on click
-      this.graphS.getGraph.addClickPoints();
-      window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
-      let a = this.menuS.getIntFromInputId("a");
-      let b = this.menuS.getIntFromInputId("b");
-      let p = this.menuS.getIntFromInputId("p");
-      if (this.menuS.isPrime(p)) {
-        this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
+      if (this.menuS.isPrime(document.getElementById('p').value)) {
+        this.setCoefficient('a');
+        this.setCoefficient('b');
+        this.setCoefficient('p');
+        let a = this.controleur.coefficients.getCoef('a');
+        let b = this.controleur.coefficients.getCoef('b');
+        let p = this.controleur.coefficients.getCoef('p');
+        if(this.controleur.getCorps() == "Modulo"){
+          this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
+        }
+        else{
+          this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${a}x + ${b}`);
+        }
         this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
+        console.log(this.controleur.coefficients);
         this.graphS.displayShort(a, b, p);
         this.graphS.getGraph.addClickPoints();
       }
       else {
         alert("p must be a prime number");
+        document.getElementById('p').value = this.controleur.coefficients.p;
       }
     },
     enableAdditionOnClick() {

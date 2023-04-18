@@ -65,7 +65,6 @@
           <option value="Weierstrass">Weierstrass</option>
           <option value="Montgomery">Montgomery</option>
           <option value="Edwards">Edwards</option>
-          <option value="Short_Weierstrass_Periodique">Periodique</option>
         </select>
       </h2>
 
@@ -138,6 +137,7 @@ import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
 import MenuShortModPeriodic from "./menu/MenuShortModPeriodic";
+import { menuStore } from "@/stores/menu.js";
 import Controleur from "@/data/Controleur.js";
 
 let controleur = new Controleur();
@@ -153,7 +153,8 @@ export default {
   },
   setup() {
     const graphS = graphStore();
-    return { graphS };
+    const menuS = menuStore();
+    return { graphS , menuS};
   },
   mounted() {
     this.setCorps('R');
@@ -190,6 +191,8 @@ export default {
   },
   methods: {
     setCorps(value) { // set the corps in the controleur object and display the available vues
+      this.graphS.destroy();
+      this.openAbout();
       // hide the warning if the user selects a corps
       document.getElementById('avertissementCorps').style.display = "none";
       if (controleur.getCorps() == "Undefined") {
@@ -232,6 +235,13 @@ export default {
       this.formeChange();
     },
     formeChange() {
+      this.graphS.destroy();
+      this.openAbout();
+      // remove the selected class from all the menu items and add it to the selected one
+      document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
+          child.classList.remove("selected");
+        });
+
       let forme = document.getElementById('forme').value;
       let oldForme = controleur.getForme();
 
@@ -245,9 +255,17 @@ export default {
         }
         this.isOpen[oldForme] = false;
         this.isOpen[forme] = true;
-
-        console.log("oldForme from controleur : " + oldForme + "\n new forme from select input : " + forme);
-        console.log(JSON.parse(JSON.stringify(this.isOpen)));
+        if(controleur.getForme() == "Short_Weierstrass"){
+          console.log(controleur.getCorps());
+          if(controleur.getCorps() == "Modulo"){
+            this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
+            this.menuS.displayLaTeX('general-short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
+          }else{
+            this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${controleur.coefficients.a}x + ${controleur.coefficients.b}`);
+            this.menuS.displayLaTeX('general-short-eq', 'y^2 = x^3 + ax + b');
+          }
+          this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * controleur.coefficients.a ** 3 + 27 * controleur.coefficients.b ** 2)}`);
+        }
       }
     },
     setVue(value) {
@@ -265,13 +283,44 @@ export default {
         switch (value) {
           case "vue2D":
             document.getElementById("vue2D").classList.add("selected");
-            this.graphS.displayWeierstrass(
-              controleur.coefficients.a1,
-              controleur.coefficients.a3,
-              controleur.coefficients.a2,
-              controleur.coefficients.a4,
-              controleur.coefficients.a6,
-            );
+            switch (controleur.getForme()){
+              case "Weierstrass":
+                this.graphS.displayWeierstrass(
+                  controleur.coefficients.a1,
+                  controleur.coefficients.a3,
+                  controleur.coefficients.a2,
+                  controleur.coefficients.a4,
+                  controleur.coefficients.a6,
+                );
+                this.graphS.showAddition(-2, 1);
+                break;
+              case "Montgomery":
+                this.graphS.displayMontgomery(
+                  controleur.coefficients.a,
+                  controleur.coefficients.b,
+                  controleur.coefficients.c,
+                  controleur.coefficients.d,
+                );
+                this.graphS.showAddition(-2, 1);
+                break;
+              case "Edwards":
+                this.graphS.displayEdwards(
+                  controleur.coefficients.a,
+                  controleur.coefficients.d,
+                );
+                this.graphS.showAddition(-2, 1);
+                break;
+              case "Short_Weierstrass":                
+                this.graphS.displayWeierstrass(
+                  0,
+                  0,
+                  0,
+                  controleur.coefficients.a,
+                  controleur.coefficients.b
+                );
+                this.graphS.showAddition(2, 0);
+                break;
+            }           
             break;
           case "vue3D":
             document.getElementById("vue3D").classList.add("selected");
