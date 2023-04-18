@@ -10,14 +10,14 @@
     <span class="parameter">
       <span id="a-error-mess-montgomery"></span>
       <label>a</label>
-      <input id="a-montgomery" value="3"
+      <input id="a-montgomery" value="3" type="number"
         @input="menuS.setValueOnGraphFromUserInput('A', 'a-montgomery'); verifyA();" /><br />
     </span>
 
     <span class="parameter">
       <span id="b-error-mess-montgomery"> </span>
       <label>b</label>
-      <input id="b-montgomery" value="2"
+      <input id="b-montgomery" value="2" type="number"
         @input="menuS.setValueOnGraphFromUserInput('B', 'b-montgomery'); verifyB();" /><br />
     </span>
 
@@ -32,14 +32,14 @@
 
     <span class="parameter">
       <label>x1</label>
-      <input id="x1-montgomery" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')" />
+      <input id="x1-montgomery" type="number" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition-montgomery">
       <span class="parameter">
         <label>x2</label>
-        <input id="x2-montgomery" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')" />
+        <input id="x2-montgomery" type="number" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
@@ -78,21 +78,6 @@ export default {
     this.menuS.displayLaTeX('montgomery-eq', "ay^2 = x^3 + bx +x");
   },
   methods: {
-    displayDefaultCurve() {
-      let a = 6;
-      let b = 2;
-
-      let xP = -3;
-      let xQ = 2;
-
-      this.graphS.displayMontgomery(a, b);
-      this.graphS.showAddition(xP, xQ);
-
-      // display default operation (Addition)
-      this.menuS.setValueById("choix-op-montgomery", "Addition");
-      this.menuS.hideElementById("multiplication-montgomery");
-      this.menuS.displayElementById("addition-montgomery");
-    },
     displayNewCurve() {
       let a = this.menuS.getFloatFromInputId("a-montgomery");
       let b = this.menuS.getFloatFromInputId("b-montgomery");

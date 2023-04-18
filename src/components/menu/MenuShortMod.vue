@@ -10,13 +10,13 @@
 
     <span class="parameter">
       <label>a</label>
-      <input id="a" value="3" />
+      <input id="a" value="3" type="number" />
       <br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b" value="2" />
+      <input id="b" value="2" type="number" />
       <br />
     </span>
 
