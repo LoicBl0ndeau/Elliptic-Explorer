@@ -74,7 +74,7 @@ class Controleur {
 
     setForme(value) {
         switch (value) {
-            case 'Short_Weierstrass':
+            case 'ShortWeierstrass':
                 this.forme = Forme.SHORT_WEIERSTRASS;
                 break;
             case 'Weierstrass':
