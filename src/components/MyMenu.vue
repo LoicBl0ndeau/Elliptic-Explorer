@@ -74,8 +74,6 @@
       <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurObject' />
       <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurObject' />
       <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurObject' />
-      <MenuShortModPeriodic v-show="isOpen.Short_Weierstrass_Periodique" ref="Short_Weierstrass_Periodique"
-        :controleur='controleurObject' />
 
     </div>
 
@@ -136,7 +134,6 @@ import MenuShortMod from "./menu/MenuShortMod";
 import MenuWeierstrass from "./menu/MenuWeierstrass";
 import MenuMontgomery from "./menu/MenuMont";
 import MenuEdwards from "./menu/MenuEdwards";
-import MenuShortModPeriodic from "./menu/MenuShortModPeriodic";
 import { menuStore } from "@/stores/menu.js";
 import Controleur from "@/data/Controleur.js";
 
@@ -149,7 +146,6 @@ export default {
     MenuWeierstrass,
     MenuMontgomery,
     MenuEdwards,
-    MenuShortModPeriodic
   },
   setup() {
     const graphS = graphStore();
@@ -168,7 +164,6 @@ export default {
         Weierstrass: false,
         Montgomery: false,
         Edwards: false,
-        Short_Weierstrass_Periodique: false,
       },
       // the menu is fixed and not minized by default
       isPinned: true,
@@ -342,6 +337,7 @@ export default {
               document.getElementById("calculator").textContent = "This view is not yet available.";
               break;
             case "vueFinie":
+            document.getElementById("update_for_periodic").style.display = "none";
               this.graphS.displayShort(
                 controleur.coefficients.a,
                 controleur.coefficients.b,
@@ -357,8 +353,7 @@ export default {
               break;
             case "vuePeriodique":
               document.getElementById("vuePeriodique").classList.add("selected");
-              this.isOpen[controleur.getForme()] = false;
-              this.isOpen.Short_Weierstrass_Periodique = true;
+              document.getElementById("update_for_periodic").style.display = "block";
               this.graphS.displayShortPeriodic(
                 controleur.coefficients.a,
                 controleur.coefficients.b,

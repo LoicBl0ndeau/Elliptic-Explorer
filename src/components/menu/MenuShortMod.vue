@@ -26,6 +26,10 @@
     </span>
     <button @click="displayNewCurve">List Points</button>
 
+    <span id="update_for_periodic" style="display: none;">
+      <button id="update">Update</button>
+    </span>
+
     <h3 class="section">Discriminant</h3>
     <div id="discriminant-short"></div>
     <div id="discriminant-short-res"></div>
@@ -118,7 +122,12 @@ export default {
             this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${a}x + ${b}`);
           }
           this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
-          this.graphS.displayShort(a, b, p);
+          if(this.controleur.getVue() == "Finie"){
+            this.graphS.displayShort(a, b, p);
+          }
+          else{
+            this.graphS.displayShortPeriodic(a, b, p);
+          }
           this.graphS.getGraph.addClickPoints();
         }
         else {
