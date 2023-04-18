@@ -231,8 +231,8 @@ export default {
           break;
       }
 
+      // display the available vues for the selected corps
       document.getElementById('vues_disponibles').children[2].childNodes.forEach((child) => {
-        child.classList.remove("selected");
         if (availableVues.includes(child.id)) {
           child.style.display = "flex";
         } else {
@@ -241,7 +241,6 @@ export default {
       });
 
       document.getElementById('forme').value = "Undefined";
-      this.formeChange();
     },
     formeChange() {
       this.graphS.destroy();
@@ -264,16 +263,22 @@ export default {
         }
         this.isOpen[oldForme] = false;
         this.isOpen[forme] = true;
+        console.log(controleur.getCorps());
         if(controleur.getForme() == "Short_Weierstrass"){
-          console.log(controleur.getCorps());
           if(controleur.getCorps() == "Modulo"){
             this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
             this.menuS.displayLaTeX('general-short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
+            // The finite view is preselected
+            this.setVue('vueFinie');
           }else{
             this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${controleur.coefficients.a}x + ${controleur.coefficients.b}`);
             this.menuS.displayLaTeX('general-short-eq', 'y^2 = x^3 + ax + b');
           }
           this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * controleur.coefficients.a ** 3 + 27 * controleur.coefficients.b ** 2)}`);
+        }
+        if(controleur.getCorps() == "Reels"){
+          // The 2D view is preselected
+          this.setVue('vue2D');
         }
       }
     },
