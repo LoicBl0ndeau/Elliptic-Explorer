@@ -263,7 +263,6 @@ export default {
         }
         this.isOpen[oldForme] = false;
         this.isOpen[forme] = true;
-        console.log(controleur.getCorps());
         if(controleur.getForme() == "Short_Weierstrass"){
           if(controleur.getCorps() == "Modulo"){
             this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
@@ -356,7 +355,14 @@ export default {
             break;
           case "vuePeriodique":
             document.getElementById("vuePeriodique").classList.add("selected");
-            document.getElementById("calculator").textContent = "This view is not yet available.";
+            this.isOpen[controleur.getForme()] = false;
+            this.isOpen.Short_Weierstrass_Periodique = true;
+            this.graphS.displayShortPeriodic(
+              controleur.coefficients.a,
+              controleur.coefficients.b,
+              controleur.coefficients.p
+            );
+            this.graphS.getGraph.addClickPoints();
             break;
           default:
             console.log("Erreur : vue non reconnue");
