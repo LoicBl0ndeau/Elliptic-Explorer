@@ -208,6 +208,7 @@ export default {
 
       switch (value) {
         case "R":
+          document.getElementById('container_curve-toggle').style.display = "none";
           document.getElementById("p_span").style.display = "none";
           document.getElementById("corps_reels").classList.add("selected");
           // undisable implemented vues on the select tag
@@ -217,6 +218,7 @@ export default {
           availableVues = ["vue2D", "vue3D", "vuePerspective"];
           break;
         case "P":
+          document.getElementById('container_curve-toggle').style.display = "block";
           document.getElementById("p_span").style.display = "block";
           document.getElementById("corps_modulo").classList.add("selected");
           // disable unimplemented vues on the select tag
@@ -320,7 +322,7 @@ export default {
                   );
                   this.graphS.showAddition(-2, 1);
                   break;
-                case "Short_Weierstrass":                
+                case "Short_Weierstrass":
                   this.graphS.displayWeierstrass(
                     0,
                     0,

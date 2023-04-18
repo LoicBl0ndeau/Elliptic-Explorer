@@ -34,7 +34,7 @@
     <div id="discriminant-short"></div>
     <div id="discriminant-short-res"></div>
 
-    <h3 class="section">
+    <h3 class="section" id="container_curve-toggle">
       Curve view
       <!-- Rounded switch -->
       <label class="switch">
