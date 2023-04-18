@@ -103,27 +103,45 @@ export default {
       this.controleur.coefficients.setCoef(coef, parseInt(document.getElementById(coef).value));
     },
     displayNewCurve() {
-      if (this.menuS.isPrime(document.getElementById('p').value)) {
+      if(this.controleur.getCorps() == "Modulo"){
+        if (this.menuS.isPrime(document.getElementById('p').value)) {
+          this.setCoefficient('a');
+          this.setCoefficient('b');
+          this.setCoefficient('p');
+          let a = this.controleur.coefficients.a;
+          let b = this.controleur.coefficients.b;
+          let p = this.controleur.coefficients.p;
+          if(this.controleur.getCorps() == "Modulo"){
+            this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
+          }
+          else{
+            this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${a}x + ${b}`);
+          }
+          this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
+          this.graphS.displayShort(a, b, p);
+          this.graphS.getGraph.addClickPoints();
+        }
+        else {
+          alert("p must be a prime number");
+          document.getElementById('p').value = this.controleur.coefficients.p;
+        }
+      }
+      else{
         this.setCoefficient('a');
         this.setCoefficient('b');
-        this.setCoefficient('p');
         let a = this.controleur.coefficients.a;
         let b = this.controleur.coefficients.b;
-        let p = this.controleur.coefficients.p;
-        if(this.controleur.getCorps() == "Modulo"){
-          this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
-        }
-        else{
-          this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${a}x + ${b}`);
-        }
+
+        this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${a}x + ${b}`);
         this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
-        console.log(this.controleur.coefficients);
-        this.graphS.displayShort(a, b, p);
-        this.graphS.getGraph.addClickPoints();
-      }
-      else {
-        alert("p must be a prime number");
-        document.getElementById('p').value = this.controleur.coefficients.p;
+        this.graphS.displayWeierstrass(
+          0,
+          0,
+          0,
+          a,
+          b
+        );
+        this.graphS.showAddition(2, 0);
       }
     },
     enableAdditionOnClick() {
