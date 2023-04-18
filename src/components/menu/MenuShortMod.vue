@@ -1,11 +1,13 @@
 <template>
   <div class="submenu">
+
     <h3 class="section">Curve Equation</h3>
+    <div id="Short_Weierstrass-general-equation"></div>
+    <div id="Short_Weierstrass-actual-equation"></div>
 
-    <div id="general-short-eq"></div>
-
-    <div id="short-eq"></div>
-
+    <h3 class="section">Discriminant</h3>
+    <div id="Short_Weierstrass-general-discriminant"></div>
+    <div id="Short_Weierstrass-actual-discriminant"></div>
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
@@ -25,10 +27,6 @@
       <input id="p" type="number" placeholder="prime number" value="5" /><br />
     </span>
     <button @click="displayNewCurve">List Points</button>
-
-    <h3 class="section">Discriminant</h3>
-    <div id="discriminant-short"></div>
-    <div id="discriminant-short-res"></div>
 
     <h3 class="section">
       Curve view
@@ -95,12 +93,66 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
-    // Display latex
-    this.menuS.displayLaTeX('discriminant-short', 'Δ = -16 * (4a^3 + 27b^2)');
+    this.setInputValue();
+    this.updateLatexDisplay();
+
+    //console.log(JSON.parse(JSON.stringify(this.method)))
+    //this.methods.updateLatexDisplay();
   },
   methods: {
+    test() {
+      console.log("tu m'as appellé papa");
+    },
+    setInputValue() {
+      let a = this.controleur.coefficients.a;
+      let b = this.controleur.coefficients.b;
+
+      document.getElementById('a').value = a;
+      document.getElementById('b').value = b;
+    },
+    updateLatexDisplay() {
+      console.log("updateLatex Short_Weierstrass")
+      let a = this.controleur.coefficients.a
+      let b = this.controleur.coefficients.b
+      let discriminantResult = (-16) * (4 * Math.pow(a, 3) + 27 * Math.pow(b, 2));
+
+      // Display latex  
+      this.menuS.displayLaTeX('Short_Weierstrass-general-equation', 'y^2 =  x^3 + ax + b');
+      this.menuS.displayLaTeX('Short_Weierstrass-actual-equation', 'y^2 =  x^3 + ' + a + 'x + ' + b);
+
+      this.menuS.displayLaTeX('Short_Weierstrass-general-discriminant', 'Δ = -16 * (4a^3 + 27b^2)');
+      this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', 'Δ = ' + discriminantResult);
+
+    },
     setCoefficient(coef) {
       this.controleur.coefficients.setCoef(coef, parseInt(document.getElementById(coef).value));
+      console.log(this.controleur.coefficients.getShortWeierstrassCoefficients())
+    },
+    displayDefaultCurve() {
+      /*
+      a = this.controleur.coefficients.a;
+      b = this.controleur.coefficients.b;
+      p = this.controleur.coefficients.p;
+
+      this.graphS.displayShort(a, b, p);
+      this.menuS.setValueById("a", a);
+      this.menuS.setValueById("b", b);
+      this.menuS.setValueById("p", p);
+      */
+
+      /*
+      this.graphS.displayShort(2, 1, 5);
+      this.menuS.setValueById("a", 2);
+      this.menuS.setValueById("b", 1);
+      this.menuS.setValueById("p", 5);
+      */
+
+      // TODO : Peut etre le laisser pour actualiser
+
+
+      // enables add on click
+      this.graphS.getGraph.addClickPoints();
+      window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
       if (this.menuS.isPrime(document.getElementById('p').value)) {
@@ -110,10 +162,10 @@ export default {
         let a = this.controleur.coefficients.a;
         let b = this.controleur.coefficients.b;
         let p = this.controleur.coefficients.p;
-        if(this.controleur.getCorps() == "Modulo"){
+        if (this.controleur.getCorps() == "Modulo") {
           this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
         }
-        else{
+        else {
           this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${a}x + ${b}`);
         }
         this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);

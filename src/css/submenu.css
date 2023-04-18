@@ -1,12 +1,20 @@
 .submenu {
-    margin: 10px 10px 20px 40px;
+    margin-left: 20px;
 }
 
 .submenu * {
     color: white;
 }
 
-.parameter input, select {
+
+.submenu .section {
+    font-size: 1.4rem;
+    margin: 10px 0px;
+    font-weight: 600;
+}
+
+.parameter input,
+select {
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
@@ -21,12 +29,12 @@
 .result {
     font-size: 20px;
 }
-input, select, option, button {
-    color: black !important;
-}
 
-h3.section {
-    margin: 10px;
+input,
+select,
+option,
+button {
+    color: black !important;
 }
 
 

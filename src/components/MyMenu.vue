@@ -61,7 +61,7 @@
         Form :
         <select name="forme" id="forme" @change="formeChange()">
           <option value="Undefined" selected>Undefined</option>
-          <option value="Short_Weierstrass">Short Weierstrass</option>
+          <option value="ShortWeierstrass">Short Weierstrass</option>
           <option value="Weierstrass">Weierstrass</option>
           <option value="Montgomery">Montgomery</option>
           <option value="Edwards">Edwards</option>
@@ -70,12 +70,13 @@
 
       <p id="avertissementForme">Please choose a form.</p>
 
-      <MenuShortMod v-show="isOpen.Short_Weierstrass" ref="Short_Weierstrass" :controleur='controleurObject' />
+
+      <MenuShortWeierstrass v-show="isOpen.ShortWeierstrass" ref="ShortWeierstrass" :controleur='controleurObject' />
       <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurObject' />
       <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurObject' />
       <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurObject' />
-      <MenuShortModPeriodic v-show="isOpen.Short_Weierstrass_Periodique" ref="Short_Weierstrass_Periodique"
-        :controleur='controleurObject' />
+      <!-- <MenuShortModPeriodic v-show="isOpen.Short_Weierstrass_Periodique" ref="Short_Weierstrass_Periodique"
+        :controleur='controleurObject' /> -->
 
     </div>
 
@@ -132,12 +133,11 @@
 
 <script>
 import { graphStore } from "@/stores/graph.js";
-import MenuShortMod from "./menu/MenuShortMod";
-import MenuWeierstrass from "./menu/MenuWeierstrass";
-import MenuMontgomery from "./menu/MenuMont";
-import MenuEdwards from "./menu/MenuEdwards";
-import MenuShortModPeriodic from "./menu/MenuShortModPeriodic";
 import { menuStore } from "@/stores/menu.js";
+import MenuShortWeierstrass from "./menu/MenuShortWeierstrass.vue";
+import MenuWeierstrass from "./menu/MenuWeierstrass";
+import MenuMontgomery from "./menu/MenuMontgomery";
+import MenuEdwards from "./menu/MenuEdwards";
 import Controleur from "@/data/Controleur.js";
 
 let controleur = new Controleur();
@@ -145,16 +145,15 @@ let controleur = new Controleur();
 export default {
   name: "MyMenu",
   components: {
-    MenuShortMod,
+    MenuShortWeierstrass,
     MenuWeierstrass,
     MenuMontgomery,
-    MenuEdwards,
-    MenuShortModPeriodic
+    MenuEdwards
   },
   setup() {
     const graphS = graphStore();
     const menuS = menuStore();
-    return { graphS , menuS};
+    return { graphS, menuS };
   },
   mounted() {
     this.setCorps('R');
@@ -164,11 +163,10 @@ export default {
       controleurObject: controleur, // the controleur object's reference
       isOpen: { // state list of the submenus (open or not) 
         about: false,
-        Short_Weierstrass: false,
+        ShortWeierstrass: false,
         Weierstrass: false,
         Montgomery: false,
         Edwards: false,
-        Short_Weierstrass_Periodique: false,
       },
       // the menu is fixed and not minized by default
       isPinned: true,
@@ -190,29 +188,39 @@ export default {
     };
   },
   methods: {
-    setCorps(value) { // set the corps in the controleur object and display the available vues
+    setCorps(newCorps) { // set the corps in the controleur object and display the available vues
+      let actualCorps = controleur.getCorps();
+      let actualForm = controleur.getForme();
+
       this.graphS.destroy();
       this.openAbout();
 
-      // hide the warning if the user selects a corps
-      document.getElementById('avertissementCorps').style.display = "none";
-      if (controleur.getCorps() == "Undefined") {
+      // if the user selects a corps for the first time, hide the warning and display the available vues flexbox
+      if (actualCorps == "Undefined" && actualCorps != newCorps) {
+        document.getElementById('avertissementCorps').style.display = "none";
         document.getElementById('vues_disponibles').children[2].style.display = "block";
       }
-      controleur.setCorps(value);
+
+      // close the actual form menu if it was open
+      if (actualForm != "Undefined") {
+        this.isOpen[actualForm] = false;
+      }
+
+      // set the new corps and vue in the controleur object
+      controleur.setCorps(newCorps);
+      controleur.setForme("Undefined");
       controleur.setVue("Undefined");
 
-      // remove the selected class from all the menu items and add it to the selected one
-      // also display the available vues for the selected corps
+
+      // to highlight the right corps in the menu, remove the selected one and add the selected one depending the parameter 'newCorps'
       document.getElementById("corps").children[1].childNodes.forEach((child) => {
         child.classList.remove("selected");
       });
 
       let availableVues = [];
 
-      switch (value) {
+      switch (newCorps) {
         case "R":
-          document.getElementById("p_span").style.display = "none";
           document.getElementById("corps_reels").classList.add("selected");
           // undisable implemented vues on the select tag
           document.querySelector("#forme option[value='Weierstrass']").disabled = false;
@@ -221,7 +229,6 @@ export default {
           availableVues = ["vue2D", "vue3D", "vuePerspective"];
           break;
         case "P":
-          document.getElementById("p_span").style.display = "block";
           document.getElementById("corps_modulo").classList.add("selected");
           // disable unimplemented vues on the select tag
           document.querySelector("#forme option[value='Weierstrass']").disabled = true;
@@ -231,7 +238,7 @@ export default {
           break;
       }
 
-      // display the available vues for the selected corps
+      // display the right vues in the menu depending the variable 'availableVues'
       document.getElementById('vues_disponibles').children[2].childNodes.forEach((child) => {
         if (availableVues.includes(child.id)) {
           child.style.display = "flex";
@@ -240,64 +247,48 @@ export default {
         }
       });
 
+      // The form input is by default set to "Undefined"
       document.getElementById('forme').value = "Undefined";
     },
     formeChange() {
       this.graphS.destroy();
       this.openAbout();
-      // remove the selected class from all the menu items and add it to the selected one
-      document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
-          child.classList.remove("selected");
-        });
 
-      let forme = document.getElementById('forme').value;
-      let oldForme = controleur.getForme();
+      let actualForm = document.getElementById('forme').value;
+      let oldForm = controleur.getForme();
 
-      if (controleur.getCorps() != "Undefined") {
-        controleur.setForme(forme);
+      controleur.setForme(actualForm);
 
-        if (forme == "Undefined") {
-          document.getElementById('avertissementForme').style.display = "block";
-        } else {
-          document.getElementById('avertissementForme').style.display = "none";
-        }
-        this.isOpen[oldForme] = false;
-        this.isOpen[forme] = true;
-        console.log(controleur.getCorps());
-        if(controleur.getForme() == "Short_Weierstrass"){
-          if(controleur.getCorps() == "Modulo"){
-            this.menuS.displayLaTeX('short-eq', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
-            this.menuS.displayLaTeX('general-short-eq', 'y^2 \\underset{p}\\equiv  x^3 + ax + b');
-            // The finite view is preselected
-            this.setVue('vueFinie');
-          }else{
-            this.menuS.displayLaTeX('short-eq', `y^2 = x^3 + ${controleur.coefficients.a}x + ${controleur.coefficients.b}`);
-            this.menuS.displayLaTeX('general-short-eq', 'y^2 = x^3 + ax + b');
-          }
-          this.menuS.displayLaTeX('discriminant-short-res', `~~~~~= ${-16 * (4 * controleur.coefficients.a ** 3 + 27 * controleur.coefficients.b ** 2)}`);
-        }
-        if(controleur.getCorps() == "Reels"){
-          // The 2D view is preselected
-          this.setVue('vue2D');
-        }
-      }
+      //if the form selected is not "Undefined", hide the warning
+      document.getElementById('avertissementForme').style.display = actualForm == "Undefined" ? "block" : "none";
+
+      // close the old form menu and open the new one
+      this.isOpen[oldForm] = false;
+      this.isOpen[actualForm] = true;
+
+      // Update the new form menu inputs value and latex display : TODO
+      this.$refs[actualForm].updateAll() // Update the new menu inputs value and latex display
     },
-    setVue(value) {
-      if (controleur.getForme() != "Undefined") {
-        document.getElementById('avertissementVue').style.display = "none";
-        controleur.setVue(value);
+    setVue(newVue) {
+      let actualForm = controleur.getForme();
 
-        // remove the selected class from all the menu items and add it to the selected one
+      if (actualForm != "Undefined") {
+        document.getElementById('avertissementVue').style.display = "none";
+        controleur.setVue(newVue);
+
+        // To highlight the selected vue, remove the 'selected' class from all and add it depending the parameter 'value'
         document.getElementById("vues_disponibles").children[2].childNodes.forEach((child) => {
           child.classList.remove("selected");
         });
 
+        // if the previous vue was not implemented and the error message was displayed, reset it
         document.getElementById("calculator").textContent = "";
 
-        switch (value) {
+        document.getElementById(newVue).classList.add("selected");
+
+        switch (newVue) {
           case "vue2D":
-            document.getElementById("vue2D").classList.add("selected");
-            switch (controleur.getForme()){
+            switch (actualForm) {
               case "Weierstrass":
                 this.graphS.displayWeierstrass(
                   controleur.coefficients.a1,
@@ -324,7 +315,7 @@ export default {
                 );
                 this.graphS.showAddition(-2, 1);
                 break;
-              case "Short_Weierstrass":                
+              case "ShortWeierstrass":
                 this.graphS.displayWeierstrass(
                   0,
                   0,
@@ -334,10 +325,9 @@ export default {
                 );
                 this.graphS.showAddition(2, 0);
                 break;
-            }           
+            }
             break;
           case "vue3D":
-            document.getElementById("vue3D").classList.add("selected");
             document.getElementById("calculator").textContent = "This view is not yet available.";
             break;
           case "vueFinie":
@@ -346,16 +336,13 @@ export default {
               controleur.coefficients.b,
               controleur.coefficients.p
             );
-            //Required to add clickable points
             this.graphS.getGraph.addClickPoints();
             document.getElementById("vueFinie").classList.add("selected");
             break;
           case "vuePerspective":
-            document.getElementById("vuePerspective").classList.add("selected");
             document.getElementById("calculator").textContent = "This view is not yet available.";
             break;
           case "vuePeriodique":
-            document.getElementById("vuePeriodique").classList.add("selected");
             document.getElementById("calculator").textContent = "This view is not yet available.";
             break;
           default:
