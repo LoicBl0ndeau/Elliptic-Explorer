@@ -33,13 +33,15 @@
     <button @click="displayNewCurve">List Points</button>
     <br>
 
-    <button id="update">Update the display</button>
+    <span id="update_for_periodic" style="display: none;">
+      <button id="update">Update</button>
+    </span>
 
-    <h3 class="section">
+    <h3 class="section" id="container_curve-toggle">
       Curve view
       <!-- Rounded switch -->
       <label class="switch">
-        <input type="checkbox" id="periodic-toggle">
+        <input type="checkbox" id="curve-toggle">
         <span class="slider round"></span>
       </label>
     </h3>

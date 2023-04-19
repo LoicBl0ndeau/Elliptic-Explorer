@@ -113,7 +113,7 @@ export const graphStore = defineStore('graph', {
     displayShortPeriodic(a, b, p) {
       this.destroy();
       this.graph = new PeriodicShortWeierstrass("calculator", a, b, p);
-      const curveToggle = document.getElementById('periodic-toggle');
+      const curveToggle = document.getElementById('curve-toggle');
 
       // Ajouter un gestionnaire d'événements pour le changement d'état du checkbox
       curveToggle.addEventListener('change', () => {

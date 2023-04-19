@@ -173,6 +173,11 @@ export default {
     };
   },
   methods: {
+    openAbout() {
+      // hide graph and display "about-div"
+      document.getElementById("graph-div").style.display = "none";
+      document.getElementById("about-div").style.display = "inline";
+    },
     setCorps(newCorps) { // set the corps in the controleur object and display the available vues
       let actualForm = controleur.getForme();
 
@@ -199,6 +204,7 @@ export default {
 
       switch (newCorps) {
         case "R":
+          document.getElementById('container_curve-toggle').style.display = "none"; // TODO : ca doit desactiver quoi ??
           document.getElementById("corps_reels").classList.add("selected");
           // undisable implemented vues on the select tag
           document.querySelector("#forme option[value='Weierstrass']").disabled = false;
@@ -207,6 +213,7 @@ export default {
           availableVues = ["vue2D", "vue3D", "vuePerspective"];
           break;
         case "P":
+          document.getElementById('container_curve-toggle').style.display = "block"; // TODO : ca doit desactiver quoi ??
           document.getElementById("corps_modulo").classList.add("selected");
           // disable unimplemented vues on the select tag
           document.querySelector("#forme option[value='Weierstrass']").disabled = true;
@@ -218,6 +225,7 @@ export default {
 
       // display the right vues in the menu depending the variable 'availableVues'
       document.getElementById('vues_disponibles').children[2].childNodes.forEach((child) => {
+        child.classList.remove("selected");
         if (availableVues.includes(child.id)) {
           child.style.display = "flex";
         } else {
@@ -261,12 +269,11 @@ export default {
 
         // if the previous vue was not implemented and the error message was displayed, reset it
         document.getElementById("calculator").textContent = "";
-
         document.getElementById(newVue).classList.add("selected");
 
         switch (newVue) {
           case "vue2D":
-            switch (actualForm) {
+            switch (controleur.getForme()) {
               case "Weierstrass":
                 this.graphS.displayWeierstrass(
                   controleur.coefficients.a1,
@@ -293,7 +300,7 @@ export default {
                 );
                 this.graphS.showAddition(-2, 1);
                 break;
-              case "ShortWeierstrass":
+              case "Short_Weierstrass":
                 this.graphS.displayWeierstrass(
                   0,
                   0,
@@ -309,19 +316,26 @@ export default {
             document.getElementById("calculator").textContent = "This view is not yet available.";
             break;
           case "vueFinie":
+            // document.getElementById("update_for_periodic").style.display = "none"; // TODO : ne trouve pas l'element de cet ID
             this.graphS.displayShort(
               controleur.coefficients.a,
               controleur.coefficients.b,
               controleur.coefficients.p
             );
+            //Required to add clickable points
             this.graphS.getGraph.addClickPoints();
-            document.getElementById("vueFinie").classList.add("selected");
             break;
           case "vuePerspective":
             document.getElementById("calculator").textContent = "This view is not yet available.";
             break;
           case "vuePeriodique":
-            document.getElementById("calculator").textContent = "This view is not yet available.";
+            document.getElementById("update_for_periodic").style.display = "block";
+            this.graphS.displayShortPeriodic(
+              controleur.coefficients.a,
+              controleur.coefficients.b,
+              controleur.coefficients.p
+            );
+            this.graphS.getGraph.addClickPoints();
             break;
           default:
             console.log("Erreur : vue non reconnue");
@@ -335,55 +349,50 @@ export default {
         // display the graph curve
         //this.graphS.displayShort()
       }
-    },
-    openAbout() {
-      // hide graph and display "about-div"
-      document.getElementById("graph-div").style.display = "none";
-      document.getElementById("about-div").style.display = "inline";
-    },
-    toggleSidebar() {
-      if (!this.isPinned) {
-        // hide sidebar on mouse over if menu not pinnned
-        if (this.isMinimized) {
-          // open sidebar menu
-          document.getElementById("mySidebar").style.width = this.width;
-          document.getElementById("main").style.marginLeft =
-            this.mainIDMarginLeft;
-        } else {
-          // close sidebar menu
-          document.getElementById("mySidebar").style.width = this.miniWidth;
-          document.getElementById("main").style.marginLeft =
-            this.mainIDMarginLeftMinimized;
-        }
-        this.isMinimized = !this.isMinimized;
-      }
-    },
-    changePinStatus() {
-      if (this.isPinned) {
-        // change pin icon to its outlined version
-        document.getElementById("pin").className =
-          "material-icons-outlined filter-orange";
-        document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
+    }
+  },
+  toggleSidebar() {
+    if (!this.isPinned) {
+      // hide sidebar on mouse over if menu not pinnned
+      if (this.isMinimized) {
+        // open sidebar menu
+        document.getElementById("mySidebar").style.width = this.width;
+        document.getElementById("main").style.marginLeft =
+          this.mainIDMarginLeft;
       } else {
-        // fill pin icon
-        document.getElementById("pin").className =
-          "material-icons filter-orange";
-        document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
+        // close sidebar menu
+        document.getElementById("mySidebar").style.width = this.miniWidth;
+        document.getElementById("main").style.marginLeft =
+          this.mainIDMarginLeftMinimized;
       }
-      this.isPinned = !this.isPinned;
-    },
-    changeGraphParamDisplay() {
-      let status = document.getElementById("graph-settings").style.display;
-      if (status == "block")
-        document.getElementById("graph-settings").style.display = "none";
-      else
-        document.getElementById("graph-settings").style.display = "block";
-    },
-    getCheckBoxValue(htmlID) {
-      return document.getElementById(htmlID).checked;
-    },
-  }
-};
+      this.isMinimized = !this.isMinimized;
+    }
+  },
+  changePinStatus() {
+    if (this.isPinned) {
+      // change pin icon to its outlined version
+      document.getElementById("pin").className =
+        "material-icons-outlined filter-orange";
+      document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
+    } else {
+      // fill pin icon
+      document.getElementById("pin").className =
+        "material-icons filter-orange";
+      document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
+    }
+    this.isPinned = !this.isPinned;
+  },
+  changeGraphParamDisplay() {
+    let status = document.getElementById("graph-settings").style.display;
+    if (status == "block")
+      document.getElementById("graph-settings").style.display = "none";
+    else
+      document.getElementById("graph-settings").style.display = "block";
+  },
+  getCheckBoxValue(htmlID) {
+    return document.getElementById(htmlID).checked;
+  },
+}
 </script>
 
 <style lang="css" scoped>

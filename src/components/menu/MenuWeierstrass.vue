@@ -172,9 +172,9 @@ export default {
       //this.menuS.displayLaTeX('Weierstrass-actual-discriminant', discriminantResult);
     },
     displayNewCurve() {
-      let a1 = this.menuS.getFloatFromInputId("a1");
-      let a3 = this.menuS.getFloatFromInputId("a3-Weierstrass");
+      let a1 = this.menuS.getFloatFromInputId("a1-Weierstrass");
       let a2 = this.menuS.getFloatFromInputId("a2-Weierstrass");
+      let a3 = this.menuS.getFloatFromInputId("a3-Weierstrass");
       let a4 = this.menuS.getFloatFromInputId("a4-Weierstrass");
       let a6 = this.menuS.getFloatFromInputId("a6-Weierstrass");
       this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
@@ -210,8 +210,8 @@ export default {
         if (this.graphS.getGraph == null) return;
 
         this.menuS.setInputValueFromGraphExpValue("a1-Weierstrass", "a_{1}");
-        this.menuS.setInputValueFromGraphExpValue("a3-Weierstrass", "a_{3}");
         this.menuS.setInputValueFromGraphExpValue("a2-Weierstrass", "a_{2}");
+        this.menuS.setInputValueFromGraphExpValue("a3-Weierstrass", "a_{3}");
         this.menuS.setInputValueFromGraphExpValue("a4-Weierstrass", "a_{4}");
         this.menuS.setInputValueFromGraphExpValue("a6-Weierstrass", "a_{6}");
 
