@@ -2,23 +2,35 @@
   <div class="submenu">
 
     <h3 class="section">Curve Equation</h3>
+    <div id="Montgomery-general-equation"></div>
+    <div id="Montgomery-actual-equation"></div>
 
-    <div id="montgomery-eq"></div>
+    <!-- <h3 class="section">Discriminant</h3> -->
+    <div id="Montgomery-general-discriminant"></div>
+    <div id="Montgomery-actual-discriminant"></div>
 
     <h3 class="section">Parameters</h3>
 
     <span class="parameter">
       <span id="a-error-mess-montgomery"></span>
       <label>a</label>
-      <input id="a-montgomery" value="3" type="number"
-        @input="menuS.setValueOnGraphFromUserInput('A', 'a-montgomery'); verifyA();" /><br />
+      <input id="a-Montgomery" type="number" @change="setCoefficient('a-Montgomery')" />
+      <!-- @input="menuS.setValueOnGraphFromUserInput('A', 'a-Montgomery'); verifyA();" -->
+      <br />
     </span>
 
     <span class="parameter">
       <span id="b-error-mess-montgomery"> </span>
       <label>b</label>
-      <input id="b-montgomery" value="2" type="number"
-        @input="menuS.setValueOnGraphFromUserInput('B', 'b-montgomery'); verifyB();" /><br />
+      <input id="b-Montgomery" type="number" @change="setCoefficient('b-Montgomery')" />
+      <!-- @input="menuS.setValueOnGraphFromUserInput('B', 'b-Montgomery'); verifyB();" -->
+      <br />
+    </span>
+
+    <span class="parameter" id="p_container_Montgomery">
+      <label>p</label>
+      <input id="p-Montgomery" type="number" placeholder="Prime number" @change="setCoefficient('p-Montgomery')" />
+      <br />
     </span>
 
     <h3 class="section">Operations</h3>
@@ -32,14 +44,16 @@
 
     <span class="parameter">
       <label>x1</label>
-      <input id="x1-montgomery" type="number" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')" />
+      <input id="x1-montgomery" type="number" class="coord"
+        @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition-montgomery">
       <span class="parameter">
         <label>x2</label>
-        <input id="x2-montgomery" type="number" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')" />
+        <input id="x2-montgomery" type="number" class="coord"
+          @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
@@ -65,6 +79,12 @@ import { menuStore } from "@/stores/menu.js";
 
 export default {
   name: "MenuMontgomery",
+  props: {
+    controleur: {
+      type: Object,
+      required: true
+    }
+  },
   setup() {
     const graphS = graphStore();
     const menuS = menuStore();
@@ -74,13 +94,60 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
-    // display curve equation
-    this.menuS.displayLaTeX('montgomery-eq', "ay^2 = x^3 + bx +x");
   },
   methods: {
+    updateAll() {
+      this.setAndDisplayInputsValue();
+      this.updateLatexDisplay();
+    },
+    setCoefficient(inputId) {
+      let value = document.getElementById(inputId).value;
+      let coefName = inputId[0];
+      this.controleur.coefficients.setCoef(coefName, value);
+      this.updateLatexDisplay();
+    },
+    setAndDisplayInputsValue() {
+      let a = this.controleur.coefficients.a;
+      let b = this.controleur.coefficients.b;
+      let p = this.controleur.coefficients.p;
+
+      document.getElementById('a-Montgomery').value = a;
+      document.getElementById('b-Montgomery').value = b;
+      document.getElementById('p-Montgomery').value = p;
+
+      let displayValue = this.controleur.getCorps() == "Modulo" ? "block" : "none";
+      document.getElementById('p_container_Montgomery').style.display = displayValue;
+    },
+    updateLatexDisplay() {
+      let actualCorps = this.controleur.getCorps();
+
+      let a = this.controleur.coefficients.a
+      let b = this.controleur.coefficients.b
+      let p = this.controleur.coefficients.p
+
+      let highlightColor = 'cyan';
+      let generalEquationModulo = '{\\color{' + highlightColor + '}a}y^2 \\underset{p}\\equiv x^3 + {\\color{' + highlightColor + '}b}x + x';
+      let generalEquationReels = '{\\color{' + highlightColor + '}a}y^2 = x^3 + {\\color{' + highlightColor + '}b}x + x';
+      let actualEquationModulo = '{\\color{' + highlightColor + '}' + a + '}y^2 \\underset{' + p + '}\\equiv x^3 + {\\color{' + highlightColor + '}' + b + '}x + x';
+      let actualEquationReels = '{\\color{' + highlightColor + '}' + a + '}y^2 = x^3 + {\\color{' + highlightColor + '}' + b + '}x + x';
+
+
+      let generalEquation = actualCorps == "Modulo" ? generalEquationModulo : generalEquationReels;
+      let actualEquation = actualCorps == "Modulo" ? actualEquationModulo : actualEquationReels;
+
+      //let discriminantGeneralEquation = 'Δ = ?(1 + d(x^2)(y^2))';
+      //let discriminantResult = 'Δ = ' + String(?);
+
+      // Display latex  
+      this.menuS.displayLaTeX('Montgomery-general-equation', generalEquation);
+      this.menuS.displayLaTeX('Montgomery-actual-equation', actualEquation);
+
+      //this.menuS.displayLaTeX('Montgomery-general-discriminant', discriminantGeneralEquation);
+      //this.menuS.displayLaTeX('Montgomery-actual-discriminant', discriminantResult);
+    },
     displayNewCurve() {
-      let a = this.menuS.getFloatFromInputId("a-montgomery");
-      let b = this.menuS.getFloatFromInputId("b-montgomery");
+      let a = this.menuS.getFloatFromInputId("a-Montgomery");
+      let b = this.menuS.getFloatFromInputId("b-Montgomery");
 
       this.graphS.displayMontgomery(a, b);
     },
@@ -110,7 +177,7 @@ export default {
       this.graphS.showMul(currentPoint, k);
     },
     verifyA() {
-      let value = this.menuS.getFloatFromInputId('a-montgomery');
+      let value = this.menuS.getFloatFromInputId('a-Montgomery');
       if (value <= 2 && value >= -2)
         this.menuS.displayLaTeX(
           "a-error-mess-montgomery",
@@ -119,7 +186,7 @@ export default {
         this.menuS.displayLaTeX("a-error-mess-montgomery", "");
     },
     verifyB() {
-      let value = this.menuS.getFloatFromInputId('b-montgomery');
+      let value = this.menuS.getFloatFromInputId('b-Montgomery');
       if (value == 0)
         this.menuS.displayLaTeX(
           "b-error-mess-montgomery",
@@ -132,8 +199,8 @@ export default {
         // if graph not initialized yet
         if (this.graphS.getGraph == null) return;
 
-        this.menuS.setInputValueFromGraphExpValue("a-montgomery", "A");
-        this.menuS.setInputValueFromGraphExpValue("b-montgomery", "B");
+        this.menuS.setInputValueFromGraphExpValue("a-Montgomery", "A");
+        this.menuS.setInputValueFromGraphExpValue("b-Montgomery", "B");
 
         this.menuS.setInputValueFromGraphExpValue("x1-montgomery", "x_{1}");
 

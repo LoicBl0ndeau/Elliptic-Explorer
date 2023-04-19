@@ -5,7 +5,7 @@
     <div id="Edwards-general-equation"></div>
     <div id="Edwards-actual-equation"></div>
 
-    <h3 class="section">Discriminant</h3>
+    <!-- <h3 class="section">Discriminant</h3> -->
     <div id="Edwards-general-discriminant"></div>
     <div id="Edwards-actual-discriminant"></div>
 
@@ -15,29 +15,21 @@
 
     <span class="parameter">
       <label>c</label>
-      <input id="c" type="number" @change="setCoefficient('c')" />
-      <!-- A ajouter dans les paramètres de l'input : 
-        @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();" 
-      -->
-
+      <input id="c-Edwards" type="number" @change="setCoefficient('c-Edwards')" />
+      <!-- @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();" -->
       <br />
-
     </span>
-
 
     <span class="parameter">
       <label>d</label>
-      <input id="d" type="number" @change="setCoefficient('d')" />
+      <input id="d-Edwards" type="number" @change="setCoefficient('d-Edwards')" />
       <br />
-      <!-- A ajouter dans les paramètres de l'input : 
-      @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();" /> 
-      -->
-
+      <!-- @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();" /> -->
     </span>
 
-    <span class="parameter" id="p_container">
+    <span class="parameter" id="p_container_Edwards">
       <label>p</label>
-      <input id="p" type="number" placeholder="Prime number" @change="setCoefficient('p')" />
+      <input id="p-Edwards" type="number" placeholder="Prime number" @change="setCoefficient('p-Edwards')" />
       <br />
     </span>
 
@@ -105,29 +97,26 @@ export default {
   },
   methods: {
     updateAll() {
-      this.setAndDisplayInputsValue(); // Semble être ok pour le moment, à vérifier en changeant la valeur des inputs par une autre forme
+      this.setAndDisplayInputsValue();
       this.updateLatexDisplay();
-      console.log('j update all depuis menuEdwards')
     },
-    setCoefficient(coefName) {
-      let value = document.getElementById(coefName).value;
+    setCoefficient(inputId) {
+      let value = document.getElementById(inputId).value;
+      let coefName = inputId[0];
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
-      this.controleur.getInformations();
     },
     setAndDisplayInputsValue() {
       let c = this.controleur.coefficients.c;
       let d = this.controleur.coefficients.d;
       let p = this.controleur.coefficients.p;
 
-      document.getElementById('c').value = c;
-      document.getElementById('d').value = d;
-      document.getElementById('p').value = p;
+      document.getElementById('c-Edwards').value = c;
+      document.getElementById('d-Edwards').value = d;
+      document.getElementById('p-Edwards').value = p;
 
       let displayValue = this.controleur.getCorps() == "Modulo" ? "block" : "none";
-      console.log("displayValue : " + displayValue)
-      document.getElementById('p_container').style.display = displayValue;
-      console.log("document.getElementById('p_container')" + document.getElementById('p_container'))
+      document.getElementById('p_container_Edwards').style.display = displayValue;
     },
     updateLatexDisplay() {
       let actualCorps = this.controleur.getCorps();
@@ -136,11 +125,17 @@ export default {
       let d = this.controleur.coefficients.d
       let p = this.controleur.coefficients.p
 
-      let generalEquation = actualCorps == "Modulo" ? 'x^2 + y^2 \\underset{' + p + '}\\equiv c^2(1 +dx^2y^2)' : 'x^2 + y^2 = c^2(1 +dx^2y^2)';
-      let actualEquation = actualCorps == "Modulo" ? 'x^2 + y^2 \\underset{' + p + '}\\equiv ' + c + '^2(1 +' + d + 'x^2y^2)' : 'x^2 + y^2 = ' + c + '^2(1 +' + d + 'x^2y^2)';
+      let highlightColor = 'cyan';
+      let generalEquationModulo = 'x^2 + y^2 \\underset{' + p + '}\\equiv c^2(1 +dx^2y^2)';
+      let generalEquationReels = 'x^2 + y^2 = {\\color{' + highlightColor + '}c}^2(1 +{\\color{' + highlightColor + '}d}x^2y^2)';
+      let actualEquationModulo = 'x^2 + y^2 \\underset{' + p + '}\\equiv ' + c + '^2(1 +' + d + 'x^2y^2)';
+      let actualEquationReels = 'x^2 + y^2 = {\\color{' + highlightColor + '}' + c + '}^2(1 +{\\color{' + highlightColor + '}' + d + '}x^2y^2)';
 
-      //let discriminantGeneralEquation = 'Δ = -16 * (4a^3 + 27b^2)';
-      //let discriminantResult = 'Δ = ' + String((-16) * (4 * Math.pow(a, 3) + 27 * Math.pow(b, 2)));
+      let generalEquation = actualCorps == "Modulo" ? generalEquationModulo : generalEquationReels;
+      let actualEquation = actualCorps == "Modulo" ? actualEquationModulo : actualEquationReels;
+
+      //let discriminantGeneralEquation = 'Δ = ?';
+      //let discriminantResult = 'Δ = ' + String(?);
 
       // Display latex  
       this.menuS.displayLaTeX('Edwards-general-equation', generalEquation);
@@ -245,4 +240,6 @@ export default {
 };
 </script>
 
-<style lang="css" scoped >@import "@/css/submenu.css";</style>
+<style lang="css" scoped >
+@import "@/css/submenu.css";
+</style>

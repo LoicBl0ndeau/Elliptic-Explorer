@@ -35,20 +35,15 @@
       <div class="flexbox">
         <div id="corps_reels" @click="setCorps('R')">
           <span>R</span>
-          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
           <span>Real numbers</span>
         </div>
 
         <div id="corps_modulo" @click="setCorps('P')">
           <span>%</span>
-          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
           <span>Prime field of order p</span>
         </div>
 
       </div>
-
-      <p id="avertissementCorps">Please choose a form.</p>
-
     </div>
 
     <!-- Equation section -->
@@ -70,14 +65,10 @@
 
       <p id="avertissementForme">Please choose a form.</p>
 
-
-      <MenuShortWeierstrass v-show="isOpen.ShortWeierstrass" ref="ShortWeierstrass" :controleur='controleurObject' />
-      <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurObject' />
-      <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurObject' />
-      <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurObject' />
-      <!-- <MenuShortModPeriodic v-show="isOpen.Short_Weierstrass_Periodique" ref="Short_Weierstrass_Periodique"
-        :controleur='controleurObject' /> -->
-
+      <MenuShortWeierstrass v-show="isOpen.ShortWeierstrass" ref="ShortWeierstrass" :controleur='controleurReference' />
+      <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurReference' />
+      <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurReference' />
+      <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurReference' />
     </div>
 
     <!-- Vues section -->
@@ -85,46 +76,38 @@
       <h1>
         Available views
       </h1>
+
       <p id="avertissementVue">Please choose a view.</p>
 
       <div class="flexbox">
         <div id="vue2D" @click="setVue('vue2D')">
-          <!-- <span>...</span> -->
-          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
           <span>2D view</span>
         </div>
 
         <div id="vue3D" @click="setVue('vue3D')">
-          <!-- <span>...</span> -->
-          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
           <span>3D view</span>
         </div>
 
         <div id="vueFinie" @click="setVue('vueFinie')">
-          <!-- <span>...</span> -->
-          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
           <span>Finite view</span>
         </div>
 
         <div id="vuePeriodique" @click="setVue('vuePeriodique')">
-          <!-- <span>...</span> -->
-          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
           <span>Periodic view</span>
         </div>
 
         <div id="vuePerspective" @click="setVue('vuePerspective')">
-          <!-- <span>...</span> -->
-          <!-- <img class="material-icons filter-orange" src="images/chevron_right_black_24dp.svg" /> -->
           <span>Perspective view</span>
         </div>
 
       </div>
     </div>
 
+    <br>
     <!-- About section -->
     <a @click="openAbout()">
       <img class="material-icons filter-orange" src="images/info_black_24dp.svg" />
-      <span class="icon-text">About EE</span>
+      <span class="icon-text">About Eliptic Explorer</span>
     </a>
 
   </div>
@@ -160,8 +143,10 @@ export default {
   },
   data() {
     return {
-      controleurObject: controleur, // the controleur object's reference
-      isOpen: { // state list of the submenus (open or not) 
+      // the controleur object's reference
+      controleurReference: controleur,
+      // state list of the submenus (open or not) 
+      isOpen: {
         about: false,
         ShortWeierstrass: false,
         Weierstrass: false,
@@ -189,17 +174,10 @@ export default {
   },
   methods: {
     setCorps(newCorps) { // set the corps in the controleur object and display the available vues
-      let actualCorps = controleur.getCorps();
       let actualForm = controleur.getForme();
 
       this.graphS.destroy();
       this.openAbout();
-
-      // if the user selects a corps for the first time, hide the warning and display the available vues flexbox
-      if (actualCorps == "Undefined" && actualCorps != newCorps) {
-        document.getElementById('avertissementCorps').style.display = "none";
-        document.getElementById('vues_disponibles').children[2].style.display = "block";
-      }
 
       // close the actual form menu if it was open
       if (actualForm != "Undefined") {

@@ -13,27 +13,26 @@
 
     <span class="parameter">
       <label>a</label>
-      <input id="a" type="number" @change="setCoefficient('a')" />
+      <input id="a-ShortWeierstrass" type="number" @change="setCoefficient('a-ShortWeierstrass')" />
       <br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b" type="number" @change="setCoefficient('b')" />
+      <input id="b-ShortWeierstrass" type="number" @change="setCoefficient('b-ShortWeierstrass')" />
       <br />
     </span>
 
-    <span class="parameter" id="p_container">
+    <span class="parameter" id="p_container_ShortWeierstrass">
       <label>p</label>
-      <input id="p" type="number" placeholder="Prime number" @change="setCoefficient('p')" />
+      <input id="p-ShortWeierstrass" type="number" placeholder="Prime number"
+        @change="setCoefficient('p-ShortWeierstrass')" />
       <br />
     </span>
 
-    <!-- Qu'est ce que ce bouton fait ? -->
     <button @click="displayNewCurve">List Points</button>
     <br>
 
-    <!-- Qu'est ce que ce bouton fait ? -->
     <button id="update">Update the display</button>
 
     <h3 class="section">
@@ -123,26 +122,30 @@ export default {
   },
   methods: {
     updateAll() {
-      this.setAndDisplayInputsValue(); // Semble être ok pour le moment, à vérifier en changeant la valeur des inputs par une autre forme
+      this.setAndDisplayInputsValue();
       this.updateLatexDisplay();
     },
-    setCoefficient(coefName) {
-      let value = document.getElementById(coefName).value;
+    setCoefficient(inputId) {
+      let value = document.getElementById(inputId).value;
+      let coefName = inputId[0];
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
-      this.controleur.getInformations();
     },
+    // Display the right inputs depending on the selected corps
     setAndDisplayInputsValue() {
       let a = this.controleur.coefficients.a;
       let b = this.controleur.coefficients.b;
       let p = this.controleur.coefficients.p;
 
-      document.getElementById('a').value = a;
-      document.getElementById('b').value = b;
-      document.getElementById('p').value = p;
+      document.getElementById('a-ShortWeierstrass').value = a;
+      document.getElementById('b-ShortWeierstrass').value = b;
+      document.getElementById('p-ShortWeierstrass').value = p;
 
       let displayValue = this.controleur.getCorps() == "Modulo" ? "block" : "none";
-      document.getElementById('p_container').style.display = displayValue;
+
+      document.getElementById('p_container_ShortWeierstrass').style.display = displayValue;
+      // gerer le modulo et periodic toggle
+
     },
     updateLatexDisplay() {
       let actualCorps = this.controleur.getCorps();
@@ -151,10 +154,16 @@ export default {
       let b = this.controleur.coefficients.b
       let p = this.controleur.coefficients.p
 
-      let generalEquation = actualCorps == "Modulo" ? 'y^2 \\underset{p}\\equiv  x^3 + ax + b' : 'y^2 =  x^3 + ax + b';
-      let actualEquation = actualCorps == "Modulo" ? 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b : 'y^2 =  x^3 + ' + a + 'x + ' + b;
+      let highlightColor = 'cyan';
+      let generalEquationModulo = 'y^2 \\underset{{\\color{' + highlightColor + '}p}}\\equiv  x^3 + {\\color{' + highlightColor + '}a}x + {\\color{' + highlightColor + '}b}';
+      let generalEquationReels = 'y^2 =  x^3 + {\\color{' + highlightColor + '}a}x + {\\color{' + highlightColor + '}b}';
+      let actualEquationModulo = 'y^2 \\underset{{\\color{' + highlightColor + '}' + p + '}}\\equiv  x^3 + {\\color{' + highlightColor + '}' + a + '}x + {\\color{' + highlightColor + '}' + b + '}';
+      let actualEquationReels = 'y^2 =  x^3 + {\\color{' + highlightColor + '}' + a + '}x + {\\color{' + highlightColor + '}' + b + '}';
 
-      let discriminantGeneralEquation = 'Δ = -16 * (4a^3 + 27b^2)';
+      let generalEquation = actualCorps == "Modulo" ? generalEquationModulo : generalEquationReels;
+      let actualEquation = actualCorps == "Modulo" ? actualEquationModulo : actualEquationReels;
+
+      let discriminantGeneralEquation = 'Δ = -16 * (4{\\color{' + highlightColor + '}a}^3 + 27{\\color{' + highlightColor + '}b}^2)';
       let discriminantResult = 'Δ = ' + String((-16) * (4 * Math.pow(a, 3) + 27 * Math.pow(b, 2)));
 
       // Display latex  
@@ -164,7 +173,7 @@ export default {
       this.menuS.displayLaTeX('Short_Weierstrass-general-discriminant', discriminantGeneralEquation);
       this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', discriminantResult);
     },
-    displayDefaultCurve() {
+    displayDefaultCurve() { // TODO : a enlever ???
       this.graphS.displayShortPeriodic(2, 1, 5);
       this.menuS.setValueById("ap", 2);
       this.menuS.setValueById("bp", 1);
