@@ -148,6 +148,7 @@ export default {
       // state list of the submenus (open or not) 
       isOpen: {
         about: false,
+        Undefined: false,
         ShortWeierstrass: false,
         Weierstrass: false,
         Montgomery: false,
@@ -178,6 +179,78 @@ export default {
       document.getElementById("graph-div").style.display = "none";
       document.getElementById("about-div").style.display = "inline";
     },
+    // display on the graph the curve corresponding to the form and vue selected
+    displayCurve(view, form) {
+      switch (view) {
+        case "vue2D":
+          switch (form) {
+            case "Weierstrass":
+              this.graphS.displayWeierstrass(
+                controleur.coefficients.a1,
+                controleur.coefficients.a3,
+                controleur.coefficients.a2,
+                controleur.coefficients.a4,
+                controleur.coefficients.a6,
+              );
+              this.graphS.showAddition(-2, 1); // show a random addition on the graph
+              break;
+            case "Montgomery":
+              this.graphS.displayMontgomery(
+                controleur.coefficients.a,
+                controleur.coefficients.b,
+                controleur.coefficients.c,
+                controleur.coefficients.d,
+              );
+              this.graphS.showAddition(-2, 1); // show a random addition on the graph
+              break;
+            case "Edwards":
+              this.graphS.displayEdwards(
+                controleur.coefficients.a,
+                controleur.coefficients.d,
+              );
+              this.graphS.showAddition(-2, 1); // show a random addition on the graph
+              break;
+            case "Short_Weierstrass":
+              this.graphS.displayWeierstrass(
+                0,
+                0,
+                0,
+                controleur.coefficients.a,
+                controleur.coefficients.b
+              );
+              this.graphS.showAddition(2, 0); // show a random addition on the graph
+              break;
+          }
+          break;
+        case "vue3D":
+          document.getElementById("calculator").textContent = "This view is not yet available.";
+          break;
+        case "vueFinie":
+          document.getElementById("update_for_periodic").style.display = "none";
+          this.graphS.displayShort(
+            controleur.coefficients.a,
+            controleur.coefficients.b,
+            controleur.coefficients.p
+          );
+          this.graphS.getGraph.addClickPoints(); // enable the click on the points
+          break;
+        case "vuePerspective":
+          document.getElementById("calculator").textContent = "This view is not yet available.";
+          break;
+        case "vuePeriodique":
+          document.getElementById("update_for_periodic").style.display = "block";
+          this.graphS.displayShortPeriodic(
+            controleur.coefficients.a,
+            controleur.coefficients.b,
+            controleur.coefficients.p
+          );
+          this.graphS.getGraph.addClickPoints(); // enable the click on the points
+          break;
+        default:
+          console.log("Error: the value (" + view + ") is not a recognized view");
+          break;
+      }
+    },
     setCorps(newCorps) { // set the corps in the controleur object and display the available vues
       let actualForm = controleur.getForme();
 
@@ -204,18 +277,18 @@ export default {
 
       switch (newCorps) {
         case "R":
-          document.getElementById('container_curve-toggle').style.display = "none"; // TODO : ca doit desactiver quoi ??
+          document.getElementById('container_curve-toggle').style.display = "none";
           document.getElementById("corps_reels").classList.add("selected");
-          // undisable implemented vues on the select tag
+          // enable implemented vues on the select tag
           document.querySelector("#forme option[value='Weierstrass']").disabled = false;
           document.querySelector("#forme option[value='Montgomery']").disabled = false;
           document.querySelector("#forme option[value='Edwards']").disabled = false;
           availableVues = ["vue2D", "vue3D", "vuePerspective"];
           break;
         case "P":
-          document.getElementById('container_curve-toggle').style.display = "block"; // TODO : ca doit desactiver quoi ??
+          document.getElementById('container_curve-toggle').style.display = "block";
           document.getElementById("corps_modulo").classList.add("selected");
-          // disable unimplemented vues on the select tag
+          // disable unimplemented vues from the select input
           document.querySelector("#forme option[value='Weierstrass']").disabled = true;
           document.querySelector("#forme option[value='Montgomery']").disabled = true;
           document.querySelector("#forme option[value='Edwards']").disabled = true;
@@ -223,25 +296,20 @@ export default {
           break;
       }
 
-      // display the right vues in the menu depending the variable 'availableVues'
+      // display the right vues in the menu depending the array 'availableVues'
       document.getElementById('vues_disponibles').children[2].childNodes.forEach((child) => {
         child.classList.remove("selected");
-        if (availableVues.includes(child.id)) {
-          child.style.display = "flex";
-        } else {
-          child.style.display = "none";
-        }
+        child.style.display = availableVues.includes(child.id) ? "flex" : "none";
       });
 
-      // The form input is by default set to "Undefined"
+      // The form input is by default set to "Undefined" when the corps is changed
       document.getElementById('forme').value = "Undefined";
     },
     formeChange() {
-      this.graphS.destroy();
-      this.openAbout();
-
+      let actualCorps = controleur.getCorps();
       let actualForm = document.getElementById('forme').value;
       let oldForm = controleur.getForme();
+      let actualVue = controleur.getVue();
 
       controleur.setForme(actualForm);
 
@@ -252,8 +320,15 @@ export default {
       this.isOpen[oldForm] = false;
       this.isOpen[actualForm] = true;
 
-      // Update the new form menu inputs value and latex display : TODO
-      this.$refs[actualForm].updateAll() // Update the new menu inputs value and latex display
+      if (actualForm == "Undefined") {
+        this.openAbout();
+      } else {
+        // update the new form menu inputs value and latex display of the curve
+        this.$refs[actualForm].updateAll()
+        // if the vue is "Undefined", set the vue to the default one depending the corps
+        if (actualVue == "Undefined") actualCorps == "Reels" ? this.setVue("vue2D") : this.setVue("vueFinie");
+        else this.displayCurve(actualVue, actualForm); // else, refresh curve display
+      }
     },
     setVue(newVue) {
       let actualForm = controleur.getForme();
@@ -271,83 +346,11 @@ export default {
         document.getElementById("calculator").textContent = "";
         document.getElementById(newVue).classList.add("selected");
 
-        switch (newVue) {
-          case "vue2D":
-            switch (controleur.getForme()) {
-              case "Weierstrass":
-                this.graphS.displayWeierstrass(
-                  controleur.coefficients.a1,
-                  controleur.coefficients.a3,
-                  controleur.coefficients.a2,
-                  controleur.coefficients.a4,
-                  controleur.coefficients.a6,
-                );
-                this.graphS.showAddition(-2, 1);
-                break;
-              case "Montgomery":
-                this.graphS.displayMontgomery(
-                  controleur.coefficients.a,
-                  controleur.coefficients.b,
-                  controleur.coefficients.c,
-                  controleur.coefficients.d,
-                );
-                this.graphS.showAddition(-2, 1);
-                break;
-              case "Edwards":
-                this.graphS.displayEdwards(
-                  controleur.coefficients.a,
-                  controleur.coefficients.d,
-                );
-                this.graphS.showAddition(-2, 1);
-                break;
-              case "Short_Weierstrass":
-                this.graphS.displayWeierstrass(
-                  0,
-                  0,
-                  0,
-                  controleur.coefficients.a,
-                  controleur.coefficients.b
-                );
-                this.graphS.showAddition(2, 0);
-                break;
-            }
-            break;
-          case "vue3D":
-            document.getElementById("calculator").textContent = "This view is not yet available.";
-            break;
-          case "vueFinie":
-            // document.getElementById("update_for_periodic").style.display = "none"; // TODO : ne trouve pas l'element de cet ID
-            this.graphS.displayShort(
-              controleur.coefficients.a,
-              controleur.coefficients.b,
-              controleur.coefficients.p
-            );
-            //Required to add clickable points
-            this.graphS.getGraph.addClickPoints();
-            break;
-          case "vuePerspective":
-            document.getElementById("calculator").textContent = "This view is not yet available.";
-            break;
-          case "vuePeriodique":
-            document.getElementById("update_for_periodic").style.display = "block";
-            this.graphS.displayShortPeriodic(
-              controleur.coefficients.a,
-              controleur.coefficients.b,
-              controleur.coefficients.p
-            );
-            this.graphS.getGraph.addClickPoints();
-            break;
-          default:
-            console.log("Erreur : vue non reconnue");
-            break;
-        }
-
         // display the graph
         document.getElementById("about-div").style.display = "none";
         document.getElementById("graph-div").style.display = "inline";
 
-        // display the graph curve
-        //this.graphS.displayShort()
+        this.displayCurve(newVue, actualForm);
       }
     }
   },

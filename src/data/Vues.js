@@ -1,10 +1,10 @@
 const Vues = Object.freeze({
     UNDEFINED: "Undefined",
-    VUE_2D: "2D",
-    VUE_3D: "3D",
-    VUE_FINIE: "Finie",
-    VUE_PERIODIQUE: "Periodique",
-    VUE_PERSPECTIVE: "Perspective",
+    VUE_2D: "vue2D",
+    VUE_3D: "vue3D",
+    VUE_FINIE: "vueFinie",
+    VUE_PERIODIQUE: "vuePeriodique",
+    VUE_PERSPECTIVE: "vuePerspective",
 });
 
 export default Vues;
