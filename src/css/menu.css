@@ -78,7 +78,7 @@ body {
   white-space: nowrap;
   font-size: var(--sidebar-font-size);
 
-  height: 90%;
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 }
