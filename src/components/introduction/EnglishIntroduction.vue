@@ -12,7 +12,8 @@
     </p>
     <p>
       Indeed, the first use of
-      <a href="https://fr.wikipedia.org/wiki/Cryptographie_sur_les_courbes_elliptiques" target="_blank">elliptic curves in cryptography</a>
+      <a href="https://fr.wikipedia.org/wiki/Cryptographie_sur_les_courbes_elliptiques" target="_blank">elliptic curves in
+        cryptography</a>
       goes back only to 1984, when Lenstra used it to factor
       integers. Then in 1985, Victor Miller and Neal Koblitz proposed
       cryptographic uses of elliptic curves. The main
@@ -28,7 +29,8 @@
     <p>
       Thus, many encryption systems have been developed, including
       for shared public key systems such as
-      <a href="https://fr.wikipedia.org/wiki/%C3%89change_de_cl%C3%A9s_Diffie-Hellman_bas%C3%A9_sur_les_courbes_elliptiques" target="_blank">ECDH</a>, 
+      <a href="https://fr.wikipedia.org/wiki/%C3%89change_de_cl%C3%A9s_Diffie-Hellman_bas%C3%A9_sur_les_courbes_elliptiques"
+        target="_blank">ECDH</a>,
       which is currently widely used in the SSL/TLS protocols for securing
       protocols for securing computer network exchanges. Moreover, the ECC is
       also generally used in order to carry out electronic signatures
@@ -45,44 +47,43 @@
       with the help of a graphical representation.
     </p>
     <p>
-        Before using these curves to encrypt our messages, we must understand them. 
-        Elliptic curves are defined in three common types of curves: 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_elliptique' target="_blank">Weierstrass</a>, 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_de_Montgomery' target="_blank">Montgomery</a>, 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_d%27Edwards' target="_blank">Edwards</a>. 
-        Here are the equations :
+      Before using these curves to encrypt our messages, we must understand them.
+      Elliptic curves are defined in three common types of curves:
+      <a href='https://fr.wikipedia.org/wiki/Courbe_elliptique' target="_blank">Weierstrass</a>,
+      <a href='https://fr.wikipedia.org/wiki/Courbe_de_Montgomery' target="_blank">Montgomery</a>,
+      <a href='https://fr.wikipedia.org/wiki/Courbe_d%27Edwards' target="_blank">Edwards</a>.
+      Here are the equations :
     </p>
     <p align='center'>
-        y<sup>2</sup> = x<sup>3</sup> + Ax + B 
+      y<sup>2</sup> = x<sup>3</sup> + Ax + B
     </p>
     <p align='center'>
-        By<sup>2</sup> = x<sup>3</sup> + Ax<sup>2</sup> + x
+      By<sup>2</sup> = x<sup>3</sup> + Ax<sup>2</sup> + x
     </p>
     <p align='center'>
-        x<sup>2</sup> + y<sup>2</sup> = c<sup>2</sup>(1 + dx<sup>2</sup>y<sup>2</sup>) 
+      x<sup>2</sup> + y<sup>2</sup> = c<sup>2</sup>(1 + dx<sup>2</sup>y<sup>2</sup>)
     </p>
     <p>
       We invite you to browse this intuitive and educational web application
-      to initiate you to simple calculations on elliptic curves. We put at your disposal 
-      the three types of usual curves. You can create your own curves in modular and continuous mode !   
+      to initiate you to simple calculations on elliptic curves. We put at your disposal
+      the three types of usual curves. You can create your own curves in modular and continuous mode !
     </p>
     <p align='center'>
-        Enjoy the experience !!!!
+      Enjoy the experience !!!!
     </p>
     <p align='center'>
-      <img src="images/bannierejunia.jpg" width="800" height="150"/>
+      <img src="images/bannierejunia.jpg" width="800" height="150" />
     </p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "AccueilSite",
+  name: "EnglishIntroduction",
 };
 </script>
 
 <style scoped>
-
 #titre {
   color: var(--sidebar-bg-color);
   font-family: "Raleway", sans-serif;
@@ -96,5 +97,4 @@ export default {
 a {
   color: #2D3142;
 }
-
 </style>

@@ -118,10 +118,10 @@
 <script>
 import { graphStore } from "@/stores/graph.js";
 import { menuStore } from "@/stores/menu.js";
-import MenuShortWeierstrass from "./menu/MenuShortWeierstrass";
-import MenuWeierstrass from "./menu/MenuWeierstrass";
-import MenuMontgomery from "./menu/MenuMontgomery";
-import MenuEdwards from "./menu/MenuEdwards";
+import MenuShortWeierstrass from "./MenuShortWeierstrass";
+import MenuWeierstrass from "./MenuWeierstrass";
+import MenuMontgomery from "./MenuMontgomery";
+import MenuEdwards from "./MenuEdwards";
 import Controleur from "@/controleur/Controleur.js";
 
 let controleur = new Controleur();

@@ -1,4 +1,4 @@
-# Elliptic Explorer
+# Projet Explorateur Elliptique
 
 ![Elliptic Explorer v1](https://i.imgur.com/vnKWUWQ.gif)
 
@@ -25,12 +25,29 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-## Brève description de l'architecture du projet
+ 
+# Description de l'architecture du projet
 
-### Architecture du projet
+## Technologies utilisées
 
 Ce projet utilise le framework [VueJs](https://vuejs.org/) pour la partie front-end et [NodeJs](https://nodejs.org/en/) pour la partie back-end.
-Les librairies utilisées sont documentées dans le fichier {\\color{'red'}package.json} .....
+
+Les librairies utilisées sont visibles dans le fichier **package.json**, mais sont notamment utilisées : 
+- desmosapi : 
+- elliptic : 
+- katex :
+
+## Fonctionnement du projet 
+
+Tout commence du fichier **Home.vue** où sont déclarés les templates HTML suivants : 
+- **MyMenu** : destiné à afficher le menu de configuration de la courbe elliptique et les différents sous-menus en fonction du corps, de la forme et de la vue choisis.
+- **AccueilAnglais** : destiné à afficher une introduction à l'application des courbes elliptiques et à en dégager une compréhension basique.
+-  **MyGraph** : destiné à afficher le graphique et la courbe elliptique configurée.
+
+#### MyMenu
+
+Il gère 
+
 
 ### Génération de graphiques
 
