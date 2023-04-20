@@ -26,18 +26,14 @@ class Coefficients {
         return this.p;
     }
 
-    getD() {
-        return this.d;
-    }
-
-    setCoef(name, value) {
+    setCoef(coefName, value) {
         let newValue;
         try {
             newValue = parseInt(value);
         } catch (error) {
             console.log('Le coefficient en paramètre n\'est pas un nombre.');
         }
-        switch (name) {
+        switch (coefName) {
             case 'a1':
                 this.a1 = newValue;
                 break;
@@ -105,12 +101,6 @@ class Coefficients {
             d: this.d
         }
     }
-
-    // Fonction qui fait la conversion des coefficients d'une forme à une autre
-    equivalentCoefficients() {
-
-    }
-
 }
 
 export default Coefficients;

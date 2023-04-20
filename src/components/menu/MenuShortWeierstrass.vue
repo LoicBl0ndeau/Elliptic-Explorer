@@ -30,7 +30,7 @@
       <br />
     </span>
 
-    <button @click="displayNewCurve">List Points</button>
+    <button id="updateCurveDisplay" @click="displayNewCurve">Update curve display</button>
     <br>
 
     <span id="update_for_periodic" style="display: none;">
@@ -130,9 +130,9 @@ export default {
     setCoefficient(inputId) {
       let value = document.getElementById(inputId).value; //The value of the input (coeff)
       let coefName = inputId[0];
-      console.log(coefName, inputId);
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
+      document.getElementById('updateCurveDisplay').style.backgroundColor = 'white';
     },
     // Display the right inputs depending on the selected corps
     setAndDisplayInputsValue() {
@@ -189,18 +189,12 @@ export default {
       window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
-      let a = this.menuS.getIntFromInputId("a-ShortWeierstrass");
-      let b = this.menuS.getIntFromInputId("b-ShortWeierstrass");
-      let p = this.menuS.getIntFromInputId("p-ShortWeierstrass");
+      let a = this.controleur.coefficients.a;
+      let b = this.controleur.coefficients.b;
+      let p = this.controleur.coefficients.p;
+
       if (this.menuS.isPrime(p)) {
-        if(this.controleur.getVue() == "vueFinie"){
-          this.graphS.displayShort(a, b, p);
-        }
-        else{
-          this.graphS.displayShortPeriodic(a, b, p);
-        }
-        this.menuS.displayLaTeX('Short_Weierstrass-actual-equation', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
-        this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
+        this.controleur.getView() == "FiniteView" ? this.graphS.displayShort(a, b, p) : this.graphS.displayShortPeriodic(a, b, p);
         this.graphS.getGraph.addClickPoints();
       }
       else {

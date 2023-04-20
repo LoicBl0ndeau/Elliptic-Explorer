@@ -137,7 +137,7 @@ body {
   color: black;
 }
 
-#vues_disponibles .flexbox>div {
+#availableViews .flexbox>div {
   display: flex;
   padding: 5px;
   margin-bottom: 5px;
