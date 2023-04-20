@@ -26,29 +26,40 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
  
-# Description de l'architecture du projet
+# Description du projet
 
 ## Technologies utilisées
 
 Ce projet utilise le framework [VueJs](https://vuejs.org/) pour la partie front-end et [NodeJs](https://nodejs.org/en/) pour la partie back-end.
 
 Les librairies utilisées sont visibles dans le fichier **package.json**, mais sont notamment utilisées : 
-- desmosapi : 
-- elliptic : 
-- katex :
+- desmosapi : librairie pour l'affichage des graphiques et des courbes
+- elliptic : librairie permettant de manipuler les courbes elliptiques
+- katex : librairie pour l'affichage des formules mathématiques en LaTeX
 
 ## Fonctionnement du projet 
 
 Tout commence du fichier **Home.vue** où sont déclarés les templates HTML suivants : 
+- **EnglishIntroduction** : destiné à afficher une introduction à l'application des courbes elliptiques et à en dégager une compréhension basique.
 - **MyMenu** : destiné à afficher le menu de configuration de la courbe elliptique et les différents sous-menus en fonction du corps, de la forme et de la vue choisis.
-- **AccueilAnglais** : destiné à afficher une introduction à l'application des courbes elliptiques et à en dégager une compréhension basique.
 -  **MyGraph** : destiné à afficher le graphique et la courbe elliptique configurée.
 
-#### MyMenu
+Un **controleur** issu du fichier **Controleur.js** et déclaré dans le fichier ***MyMenu.vue*** permet de gérer les interactions entre l'utilisateur (via les entrées des différents templates) et les propriétés de la courbe elliptique (le corps selectionné, ses différents coefficients, la vue actuellement choisie, etc...) et d'en avertir la librairie **desmos** pour actualiser le graphique situé à droite de l'écran.
 
-Il gère 
+Nous n'expliquerons que les templates ***MyMenu*** et ***MyGraph*** car le premier n'est que de l'affichage HTML statique.
 
+### ***MyMenu***
+ 
+Le menu est composé de 3 parties : 
+- la définition du corps de la courbe elliptique, les choix actuels sont 'Réels' ou 'Modulo P'
+- la définition de la forme de la courbe elliptique, déployant un template adapté à la forme choisie et permettant d'intéragir avec les coefficients en question et d'effectuer des opérations d'addition ou de multiplication sur les points de la courbe.
+- la définition de la vue de la courbe elliptique, actualisant l'affichage du graphique en fonction de la vue souhaitée.
 
+Le menu a été pensé pour permettre une grande flexibilité de modification à l'avenir, notamment pour l'ajout de nouveaux corps, formes ou vues.
+
+### ***MyGraph***
+
+Le graphique est composé de 2 parties :
 ### Génération de graphiques
 
 A l'heure actuelle, nous n'utilisons que la librairie [DesmosAPI](https://www.desmos.com/api/v1.7/docs/index.html) pour générer les graphiques.
