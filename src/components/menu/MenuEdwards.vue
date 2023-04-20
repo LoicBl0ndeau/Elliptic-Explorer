@@ -89,6 +89,10 @@ export default {
 
     return { graphS, menuS };
   },
+  mounted(){
+    // update des valeurs dans le menu toutes les 500ms
+    setInterval(this.updateMenuInputWithGraphValue, 500);
+  },
   methods: {
     updateAll() {
       this.setAndDisplayInputsValue();
@@ -200,6 +204,31 @@ export default {
       else
         this.menuS.displayLaTeX("error-mess-edwards", "");
       return true;
+    },
+    updateMenuInputWithGraphValue() {
+      try {
+        // if graph not initialized yet
+        if (this.graphS.getGraph == null) return;
+        let op = this.menuS.getValueById("choix-op-edwards");
+        let result_x = null;
+        let result_y = null;
+        if (op == "Addition") {
+          this.menuS.setInputValueFromGraphExpValue("x1-edwards", "x_{1}");
+          this.menuS.setInputValueFromGraphExpValue("x2-edwards", "x_{2}");
+          result_x = this.graphS.getExpValue(`x_{3}`);
+          result_y = this.graphS.getExpValue(`y_{3}`);
+        }
+        if (op == "Multiplication") {
+          this.menuS.setInputValueFromGraphExpValue("x1-edwards", "x_{1}");
+          let idResult = this.menuS.getIntFromInputId("factor-edwards");
+          result_x = this.graphS.getExpValue(`x_{${idResult}}`);
+          result_y = this.graphS.getExpValue(`y_{${idResult}}`);
+        }
+        document.getElementById("result-x-y-edwards").innerHTML = `(${result_x.toFixed(2)},   ${result_y.toFixed(2)})`;
+      } catch (err) {
+        console.warn(err);
+        return;
+      }
     },
   },
 };
