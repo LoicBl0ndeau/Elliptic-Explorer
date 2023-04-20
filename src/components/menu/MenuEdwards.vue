@@ -15,16 +15,14 @@
 
     <span class="parameter">
       <label>c</label>
-      <input id="c-Edwards" type="number" @change="setCoefficient('c-Edwards')" />
-      <!-- @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();" -->
+      <input id="c-Edwards" type="number" @change="setCoefficient('c-Edwards');" />
       <br />
     </span>
 
     <span class="parameter">
       <label>d</label>
-      <input id="d-Edwards" type="number" @change="setCoefficient('d-Edwards')" />
+      <input id="d-Edwards" type="number" @change="setCoefficient('d-Edwards');" />
       <br />
-      <!-- @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();" /> -->
     </span>
 
     <span class="parameter" id="p_container_Edwards">
@@ -101,7 +99,9 @@ export default {
       let coefName = inputId[0];
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
-      this.displayNewCurve();
+      if(this.checkCoeffs()){
+        this.displayNewCurve();
+      }
     },
     setAndDisplayInputsValue() {
       let c = this.controleur.coefficients.c;
@@ -142,8 +142,8 @@ export default {
       //this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', discriminantResult);
     },
     displayNewCurve() {
-      let c = this.menuS.getFloatFromInputId("c");
-      let d = this.menuS.getFloatFromInputId("d");
+      let c = this.menuS.getFloatFromInputId("c-Edwards");
+      let d = this.menuS.getFloatFromInputId("d-Edwards");
 
       this.graphS.displayEdwards(c, d);
       this.graphS.showAddition(-2, 1); // show a random addition on the graph
@@ -173,22 +173,33 @@ export default {
       this.displayNewCurve();
       this.graphS.showMul(currentPoint, k);
     },
-    verifyCandD() {
-      let c = this.menuS.getFloatFromInputId('c');
-      let d = this.menuS.getFloatFromInputId('d');
-      if (c == 0 || d == 0)
+    checkCoeffs() {
+      let c = this.menuS.getFloatFromInputId('c-Edwards');
+      let d = this.menuS.getFloatFromInputId('d-Edwards');
+      if (c == 0 || d == 0 || d == 1){
         this.menuS.displayLaTeX(
           "error-mess-edwards",
-          "\\color{yellow} c \\text{ and } d \\text{ must be } \\newline \\text{defined such as : } \\newline c \\ne 0 \\text{ and } d \\ne 0 \\newline"
+          "\\color{yellow} c \\text{ and } d \\text{ must be } \\newline \\text{defined such as : } \\newline c \\ne 0 \\text{ and } d \\ne {0, 1} \\newline"
         );
+        return false;
+      }
+      else if (c*d*(1-(c**4)*d) == 0){
+        this.menuS.displayLaTeX(
+          "error-mess-edwards",
+          "\\color{yellow} c * d * (1 - c^4 * d) \\text{ must be } \\newline \\text{defined such as : } \\newline c * d * (1 - c^4 * d) \\ne 0 \\newline"
+        );
+        return false;
+      }
       else if (c != 0 && d == 1 / c ** 4) {
         this.menuS.displayLaTeX(
           "error-mess-edwards",
           "\\color{yellow} d \\text{ must be defined such as : }\\newline d \\ne \\frac{1}{c^4} \\newline"
         );
+        return false;
       }
       else
         this.menuS.displayLaTeX("error-mess-edwards", "");
+      return true;
     },
   },
 };
