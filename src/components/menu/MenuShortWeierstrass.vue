@@ -22,7 +22,9 @@
       <input id="b-ShortWeierstrass" type="number" @change="setCoefficient('b-ShortWeierstrass')" />
       <br />
     </span>
-
+    <div id="p_isNotPrime" style="display: none;">
+      <span style="color: red;">p is not prime</span>
+    </div>
     <span class="parameter" id="p_container_ShortWeierstrass">
       <label>p</label>
       <input id="p-ShortWeierstrass" type="number" placeholder="Prime number"
@@ -130,9 +132,20 @@ export default {
     setCoefficient(inputId) {
       let value = document.getElementById(inputId).value; //The value of the input (coeff)
       let coefName = inputId[0];
-      console.log(coefName, inputId);
-      this.controleur.coefficients.setCoef(coefName, value);
-      this.updateLatexDisplay();
+      if(coefName != 'p'){
+        this.controleur.coefficients.setCoef(coefName, value);
+        this.updateLatexDisplay();
+      }
+      else{
+        if(this.menuS.isPrime(value)){
+          document.getElementById("p_isNotPrime").style.display = "none";
+          this.controleur.coefficients.setCoef(coefName, value);
+          this.updateLatexDisplay();
+        }
+        else{
+          document.getElementById("p_isNotPrime").style.display = "block";
+        }
+      }
     },
     // Display the right inputs depending on the selected corps
     setAndDisplayInputsValue() {
@@ -206,6 +219,7 @@ export default {
       else {
         alert("p must be a prime number");
         document.getElementById('p-ShortWeierstrass').value = this.controleur.coefficients.p;
+        document.getElementById("p_isNotPrime").style.display = "none";
       }
     },
     enableAdditionOnClick() {
