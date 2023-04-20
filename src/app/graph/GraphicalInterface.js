@@ -691,10 +691,8 @@ export class PModCurveGraph extends Graphic {
 
         isTheSamePoint = that.equalPoints(point1, point2);
         let addCoordPoint = that.addPoints(point1, point2);
-
         // Display the result of the addition in the menu
         document.getElementById("result-x-y-shortmod").innerHTML = `(${addCoordPoint[0]},   ${addCoordPoint[1]})`;
-
         that.displayModulo();
 
         if (point1.inf || point2.inf) {

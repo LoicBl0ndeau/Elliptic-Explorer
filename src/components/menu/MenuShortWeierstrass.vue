@@ -105,7 +105,7 @@
 
     <h3 class="section">Result</h3>
     <span class="parameter">
-      <span id="result-x-y-shortmodp" class="result"></span><br />
+      <span id="result-x-y-shortmod" class="result"></span><br />
     </span>
 
   </div>
