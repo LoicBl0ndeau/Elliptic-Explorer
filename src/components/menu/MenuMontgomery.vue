@@ -91,10 +91,6 @@ export default {
 
     return { graphS, menuS };
   },
-  mounted() {
-    // update des valeurs dans le menu toutes les 500ms
-    setInterval(this.updateMenuInputWithGraphValue, 500);
-  },
   methods: {
     updateAll() {
       this.setAndDisplayInputsValue();
@@ -105,6 +101,7 @@ export default {
       let coefName = inputId[0];
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
+      this.displayNewCurve();
     },
     setAndDisplayInputsValue() {
       let a = this.controleur.coefficients.a;
@@ -150,6 +147,7 @@ export default {
       let b = this.menuS.getFloatFromInputId("b-Montgomery");
 
       this.graphS.displayMontgomery(a, b);
+      this.graphS.showAddition(-2, 1); // show a random addition on the graph
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();
@@ -193,35 +191,6 @@ export default {
           "\\color{yellow} b \\text{ must be non-null}\\newline");
       else
         this.menuS.displayLaTeX("b-error-mess-montgomery", "");
-    },
-    updateMenuInputWithGraphValue() {
-      try {
-        // if graph not initialized yet
-        if (this.graphS.getGraph == null) return;
-
-        this.menuS.setInputValueFromGraphExpValue("a-Montgomery", "A");
-        this.menuS.setInputValueFromGraphExpValue("b-Montgomery", "B");
-
-        this.menuS.setInputValueFromGraphExpValue("x1-montgomery", "x_{1}");
-
-        let op = this.menuS.getValueById("choix-op-montgomery");
-        let result_x = null;
-        let result_y = null;
-        if (op == "Addition") {
-          this.menuS.setInputValueFromGraphExpValue("x2-montgomery", "x_{2}");
-          result_x = this.graphS.getExpValue(`x_{3}`);
-          result_y = this.graphS.getExpValue(`y_{3}`);
-        }
-        if (op == "Multiplication") {
-          let idResult = this.menuS.getIntFromInputId("factor");
-          result_x = this.graphS.getExpValue(`x_{${idResult}}`);
-          result_y = this.graphS.getExpValue(`y_{${idResult}}`);
-        }
-        document.getElementById("result-x-y-montgomery").innerHTML = `(${result_x.toFixed(2)},   ${result_y.toFixed(2)})`;
-      } catch (err) {
-        // console.log(err);
-        return;
-      }
     },
   },
 };

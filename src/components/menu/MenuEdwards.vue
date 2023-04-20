@@ -91,10 +91,6 @@ export default {
 
     return { graphS, menuS };
   },
-  mounted() {
-    // update des valeurs dans le menu toutes les 500ms
-    setInterval(this.updateMenuInputWithGraphValue, 500);
-  },
   methods: {
     updateAll() {
       this.setAndDisplayInputsValue();
@@ -105,6 +101,7 @@ export default {
       let coefName = inputId[0];
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
+      this.displayNewCurve();
     },
     setAndDisplayInputsValue() {
       let c = this.controleur.coefficients.c;
@@ -144,26 +141,12 @@ export default {
       //this.menuS.displayLaTeX('Short_Weierstrass-general-discriminant', discriminantGeneralEquation);
       //this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', discriminantResult);
     },
-    displayDefaultCurve() {
-      let c = 2;
-      let d = -1;
-
-      let xP = -0.84;
-      let xQ = 1.5;
-
-      this.graphS.displayEdwards(c, d);
-      this.graphS.showAddition(xP, xQ);
-
-      // display default operation (Addition)
-      this.menuS.setValueById("choix-op-edwards", "Addition");
-      this.menuS.hideElementById("multiplication-edwards");
-      this.menuS.displayElementById("addition-edwards");
-    },
     displayNewCurve() {
       let c = this.menuS.getFloatFromInputId("c");
       let d = this.menuS.getFloatFromInputId("d");
 
       this.graphS.displayEdwards(c, d);
+      this.graphS.showAddition(-2, 1); // show a random addition on the graph
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();
@@ -206,35 +189,6 @@ export default {
       }
       else
         this.menuS.displayLaTeX("error-mess-edwards", "");
-    },
-    updateMenuInputWithGraphValue() {
-      try {
-        // if graph not initialized yet
-        if (this.graphS.getGraph == null) return;
-
-        this.menuS.setInputValueFromGraphExpValue("c", "C");
-        this.menuS.setInputValueFromGraphExpValue("d", "D");
-
-        this.menuS.setInputValueFromGraphExpValue("x1-edwards", "x_{1}");
-
-        let op = this.menuS.getValueById("choix-op-edwards");
-        let result_x = null;
-        let result_y = null;
-        if (op == "Addition") {
-          this.menuS.setInputValueFromGraphExpValue("x2-edwards", "x_{2}");
-          result_x = this.graphS.getExpValue(`x_{3}`);
-          result_y = this.graphS.getExpValue(`y_{3}`);
-        }
-        if (op == "Multiplication") {
-          let idResult = this.menuS.getIntFromInputId("factor-edwards");
-          result_x = this.graphS.getExpValue(`x_{${idResult}}`);
-          result_y = this.graphS.getExpValue(`y_{${idResult}}`);
-        }
-        document.getElementById("result-x-y-edwards").innerHTML = `(${result_x.toFixed(2)},   ${result_y.toFixed(2)})`;
-      } catch (err) {
-        // console.log(err);
-        return;
-      }
     },
   },
 };

@@ -109,10 +109,6 @@ export default {
 
     return { graphS, menuS };
   },
-  mounted() {
-    // update des valeurs dans le menu toutes les 500ms
-    setInterval(this.updateMenuInputWithGraphValue, 500);
-  },
   methods: {
     updateAll() {
       this.setAndDisplayInputsValue();
@@ -123,6 +119,7 @@ export default {
       let coefName = inputId[0] + inputId[1];
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
+      this.displayNewCurve();
     },
     setAndDisplayInputsValue() {
       let a1 = this.controleur.coefficients.a1;
@@ -178,6 +175,7 @@ export default {
       let a4 = this.menuS.getFloatFromInputId("a4-Weierstrass");
       let a6 = this.menuS.getFloatFromInputId("a6-Weierstrass");
       this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
+      this.graphS.showAddition(-2, 1); // show a random addition on the graph
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();
@@ -203,38 +201,6 @@ export default {
       this.graphS.destroy();
       this.displayNewCurve();
       this.graphS.showMul(currentPoint, k);
-    },
-    updateMenuInputWithGraphValue() {
-      try {
-        // if graph not initialized yet
-        if (this.graphS.getGraph == null) return;
-
-        this.menuS.setInputValueFromGraphExpValue("a1-Weierstrass", "a_{1}");
-        this.menuS.setInputValueFromGraphExpValue("a2-Weierstrass", "a_{2}");
-        this.menuS.setInputValueFromGraphExpValue("a3-Weierstrass", "a_{3}");
-        this.menuS.setInputValueFromGraphExpValue("a4-Weierstrass", "a_{4}");
-        this.menuS.setInputValueFromGraphExpValue("a6-Weierstrass", "a_{6}");
-
-        this.menuS.setInputValueFromGraphExpValue("x1", "x_{1}");
-
-        let op = this.menuS.getValueById("choix-op-weierstrass");
-        let result_x = null;
-        let result_y = null;
-        if (op == "Addition") {
-          this.menuS.setInputValueFromGraphExpValue("x2", "x_{2}");
-          result_x = this.graphS.getExpValue(`x_{3}`);
-          result_y = this.graphS.getExpValue(`y_{3}`);
-        }
-        if (op == "Multiplication") {
-          let idResult = this.menuS.getIntFromInputId("factor");
-          result_x = this.graphS.getExpValue(`x_{${idResult}}`);
-          result_y = this.graphS.getExpValue(`y_{${idResult}}`);
-        }
-        document.getElementById("result-x-y").innerHTML = `(${result_x.toFixed(2)},   ${result_y.toFixed(2)})`;
-      } catch (err) {
-        // console.log(err);
-        return;
-      }
     },
   },
 };

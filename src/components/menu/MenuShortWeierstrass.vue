@@ -128,10 +128,6 @@ export default {
 
     return { graphS, menuS };
   },
-  mounted() {
-    // update des valeurs dans le menu toutes les 500ms
-    setInterval(this.updateMenuInputWithGraphValue, 500);
-  },
   methods: {
     updateAll() {
       this.setAndDisplayInputsValue();
@@ -199,18 +195,6 @@ export default {
 
       this.menuS.displayLaTeX('Short_Weierstrass-general-discriminant', discriminantGeneralEquation);
       this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', discriminantResult);
-    },
-    displayDefaultCurve() { // TODO : a enlever ???
-      this.graphS.displayShortPeriodic(2, 1, 5);
-      this.menuS.setValueById("ap", 2);
-      this.menuS.setValueById("bp", 1);
-      this.menuS.setValueById("pp", 5);
-      // Display Latex
-      this.menuS.displayLaTeX('Short_Weierstrass-', 'y^2 \\underset{5}\\equiv  x^3 + 2x + 1');
-      this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', `~~~~~= -944`);
-      // enables add on click
-      this.graphS.getGraph.addClickPoints();
-      window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
       let corps = this.controleur.getCorps();
