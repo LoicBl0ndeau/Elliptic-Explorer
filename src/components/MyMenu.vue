@@ -275,7 +275,10 @@ export default {
 
       switch (newCorps) {
         case "R":
-          document.getElementById('container_curve-toggle').style.display = "none";
+          //set display none to all tags with the class "container_curve-toggle"
+          document.querySelectorAll(".container_curve-toggle").forEach((element) => {
+            element.style.display = "none";
+          });
           document.getElementById("realNumbers").classList.add("selected");
           // enable implemented views on the select tag
           document.querySelector("#form option[value='Weierstrass']").disabled = false;
@@ -284,7 +287,6 @@ export default {
           availableViews = ["2DView", "3DView", "PerspectiveView"];
           break;
         case "P":
-          document.getElementById('container_curve-toggle').style.display = "block";
           document.getElementById("moduloP").classList.add("selected");
           // disable unimplemented views from the select input
           document.querySelector("#form option[value='Weierstrass']").disabled = true;

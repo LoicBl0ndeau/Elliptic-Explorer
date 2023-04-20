@@ -87,8 +87,9 @@ export const graphStore = defineStore('graph', {
     displayShort(a, b, p) {
       this.destroy();
       this.graph = new ShortWeierstrass("calculator", a, b, p);
-      const curveToggle = document.getElementById('curve-toggle');
-
+      document.getElementById('container_curve-toggle-periodic').style.display = 'none';
+      document.getElementById('container_curve-toggle-finite').style.display = 'block';
+      const curveToggle = document.getElementById('curve-toggle-finite');
       // Ajouter un gestionnaire d'événements pour le changement d'état du checkbox
       curveToggle.addEventListener('change', () => {
         if (curveToggle.checked) {
@@ -97,6 +98,9 @@ export const graphStore = defineStore('graph', {
           this.graph.hideCurve();
         }
       });
+
+      curveToggle.checked = false;
+
       this.graph.findAllPoints();
       this.graph.displayPoints();
     },
@@ -104,7 +108,7 @@ export const graphStore = defineStore('graph', {
      * Construct the curve with equation y^2 = x^3 + ax + b mod p
      * 
      * The following HTML code must be in web page:
-     * \<div id="calculator">\</div>
+     * <div id="calculator"></div>
      * 
      * @param {integer ou string} a first parameter
      * @param {integer ou string} b second parameter
@@ -113,7 +117,9 @@ export const graphStore = defineStore('graph', {
     displayShortPeriodic(a, b, p) {
       this.destroy();
       this.graph = new PeriodicShortWeierstrass("calculator", a, b, p);
-      const curveToggle = document.getElementById('curve-toggle');
+      document.getElementById('container_curve-toggle-finite').style.display = 'none';
+      document.getElementById('container_curve-toggle-periodic').style.display = 'block';
+      const curveToggle = document.getElementById('curve-toggle-periodic');
 
       // Ajouter un gestionnaire d'événements pour le changement d'état du checkbox
       curveToggle.addEventListener('change', () => {
@@ -123,6 +129,9 @@ export const graphStore = defineStore('graph', {
           this.graph.hideCurve();
         }
       });
+
+      curveToggle.checked = false;
+
       this.graph.findAllPoints();
       this.graph.displayPoints();
     },

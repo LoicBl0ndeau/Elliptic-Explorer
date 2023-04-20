@@ -39,11 +39,19 @@
       <button id="update">Update</button>
     </span>
 
-    <h3 class="section" id="container_curve-toggle">
+    <h3 class="section container_curve-toggle" id="container_curve-toggle-finite">
       Curve view
       <!-- Rounded switch -->
       <label class="switch">
-        <input type="checkbox" id="curve-toggle">
+        <input type="checkbox" id="curve-toggle-finite">
+        <span class="slider round"></span>
+      </label>
+    </h3>
+    <h3 class="section container_curve-toggle" style="display: none;" id="container_curve-toggle-periodic">
+      Curve view
+      <!-- Rounded switch -->
+      <label class="switch">
+        <input type="checkbox" id="curve-toggle-periodic">
         <span class="slider round"></span>
       </label>
     </h3>
