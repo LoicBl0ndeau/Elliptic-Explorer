@@ -118,6 +118,7 @@ export class ShortWeierstrass extends ModCurveGraph {
         while (resCoordPoint[1] < -this.p / 2) {
             resCoordPoint[1] += this.p;
         }
+        console.log(resCoordPoint);
         return resCoordPoint;
     }
 
@@ -531,11 +532,21 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
         try {
             var a = (this.selectedPoints[1][1] - this.selectedPoints[0][1]) / (this.selectedPoints[1][0] - this.selectedPoints[0][0]);
             var b = this.selectedPoints[0][1] - a * this.selectedPoints[0][0];
-            this.calculator.setExpressions([
-                { id: `a`, latex: `a=${a}` },
-                { id: `b`, latex: `b=${b}` },
-                { id: `f`, latex: `y=ax+b`, color: Graphic.Colors.curve }, //f(x) = ax+b
-            ]);
+            //If a and b are equal to infinity
+            if(isFinite(a) && isFinite(b)){
+                this.calculator.setExpressions([
+                    { id: `a`, latex: `a=${a}` },
+                    { id: `b`, latex: `b=${b}` },
+                    { id: `f`, latex: `y=ax+b`, color: Graphic.Colors.curve }, //f(x) = ax+b
+                ]);
+            }
+            else{
+                this.calculator.setExpressions([
+                    { id: `a`, latex: `a=\\infty` },
+                    { id: `b`, latex: `b=\\infty` },
+                    { id: `f`, latex: `y=ax+b`, color: Graphic.Colors.curve }, //f(x) = ax+b
+                ]);
+            }
         } catch (error) {
             throw new Error(`An error has occured adding modular lines : ${error}`);
         }
@@ -565,7 +576,7 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
             }
             for (i = 1; i < listPoints.length + 1; i++) {
                 // If the values of the additionnal point are in the listCoordPoints, we display the point in red
-                console.log('ici');
+                console.log('Computing...'+i);
                 if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint });
                     var idAdd = i;
