@@ -68,13 +68,13 @@
 
     <!-- Opérations sur le corps "Réels"-->
     <span class="parameter">
-      <label>(x1, y1)</label>
+      <label id="pointPshort">(P.x, P.y)</label>
       <input id="x1-y1-shortp" value="" readonly />
     </span>
 
     <div id="addition-short">
       <span class="parameter">
-        <label>(x2, y2)</label>
+        <label>(Q.x, Q.y)</label>
         <input id="x2-y2-short" readonly />
       </span>
     </div>
@@ -90,7 +90,7 @@
     <!-- Opérations sur le corps "Modulo p" -->
     <div id="addition-shortp">
       <span class="parameter">
-        <label>(x2, y2)</label>
+        <label>(Q.x, Q.y)</label>
         <input id="x2-y2-shortp" readonly />
       </span>
     </div>
@@ -150,9 +150,10 @@ export default {
           document.getElementById("p_isNotPrime").style.display = "block";
         }
       }
-      // document.getElementById('updateCurveDisplay').style.backgroundColor = 'white';
-
-      this.displayNewCurve();
+      // actualize automatically the graph display in real numbers field, not in modulo
+      if (this.controleur.getCorps() != "Modulo") {
+        this.displayNewCurve();
+      }
     },
     // Display the right inputs depending on the selected corps
     setAndDisplayInputsValue() {

@@ -43,7 +43,7 @@
     </span>
 
     <span class="parameter">
-      <label>x1</label>
+      <label id="pointP">P.x</label>
       <input id="x1-montgomery" type="number" class="coord"
         @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-montgomery')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
@@ -51,7 +51,7 @@
 
     <div id="addition-montgomery">
       <span class="parameter">
-        <label>x2</label>
+        <label>Q.x</label>
         <input id="x2-montgomery" type="number" class="coord"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-montgomery')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />

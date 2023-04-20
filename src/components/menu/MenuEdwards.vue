@@ -41,7 +41,7 @@
     </span>
 
     <span class="parameter">
-      <label>x1</label>
+      <label id="pointP">P.x</label>
       <input id="x1-edwards" type="number" class="coord"
         @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
@@ -49,7 +49,7 @@
 
     <div id="addition-edwards">
       <span class="parameter">
-        <label>x2</label>
+        <label>Q.x</label>
         <input id="x2-edwards" type="number" class="coord"
           @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
@@ -89,7 +89,7 @@ export default {
 
     return { graphS, menuS };
   },
-  mounted(){
+  mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
   },
@@ -103,7 +103,7 @@ export default {
       let coefName = inputId[0];
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
-      if(this.checkCoeffs()){
+      if (this.checkCoeffs()) {
         this.displayNewCurve();
       }
     },
@@ -180,14 +180,14 @@ export default {
     checkCoeffs() {
       let c = this.menuS.getFloatFromInputId('c-Edwards');
       let d = this.menuS.getFloatFromInputId('d-Edwards');
-      if (c == 0 || d == 0 || d == 1){
+      if (c == 0 || d == 0 || d == 1) {
         this.menuS.displayLaTeX(
           "error-mess-edwards",
           "\\color{yellow} c \\text{ and } d \\text{ must be } \\newline \\text{defined such as : } \\newline c \\ne 0 \\text{ and } d \\ne {0, 1} \\newline"
         );
         return false;
       }
-      else if (c*d*(1-(c**4)*d) == 0){
+      else if (c * d * (1 - (c ** 4) * d) == 0) {
         this.menuS.displayLaTeX(
           "error-mess-edwards",
           "\\color{yellow} c * d * (1 - c^4 * d) \\text{ must be } \\newline \\text{defined such as : } \\newline c * d * (1 - c^4 * d) \\ne 0 \\newline"
