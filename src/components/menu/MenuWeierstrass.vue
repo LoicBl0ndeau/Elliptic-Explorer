@@ -109,6 +109,10 @@ export default {
 
     return { graphS, menuS };
   },
+  mounted() {
+    // update des valeurs dans le menu toutes les 500ms
+    setInterval(this.updateMenuInputWithGraphValue, 500);
+  },
   methods: {
     updateAll() {
       this.setAndDisplayInputsValue();
@@ -201,6 +205,31 @@ export default {
       this.graphS.destroy();
       this.displayNewCurve();
       this.graphS.showMul(currentPoint, k);
+    },
+    updateMenuInputWithGraphValue() {
+      try {
+        // if graph not initialized yet
+        if (this.graphS.getGraph == null) return;
+        let op = this.menuS.getValueById("choix-op-weierstrass");
+        let result_x = null;
+        let result_y = null;
+        if (op == "Addition") {
+          this.menuS.setInputValueFromGraphExpValue("x1", "x_{1}");
+          this.menuS.setInputValueFromGraphExpValue("x2", "x_{2}");
+          result_x = this.graphS.getExpValue(`x_{3}`);
+          result_y = this.graphS.getExpValue(`y_{3}`);
+        }
+        if (op == "Multiplication") {
+          this.menuS.setInputValueFromGraphExpValue("x1", "x_{1}");
+          let idResult = this.menuS.getIntFromInputId("factor");
+          result_x = this.graphS.getExpValue(`x_{${idResult}}`);
+          result_y = this.graphS.getExpValue(`y_{${idResult}}`);
+        }
+        document.getElementById("result-x-y").innerHTML = `(${result_x.toFixed(2)},   ${result_y.toFixed(2)})`;
+      } catch (err) {
+          console.warn(err);
+        return;
+      }
     },
   },
 };
