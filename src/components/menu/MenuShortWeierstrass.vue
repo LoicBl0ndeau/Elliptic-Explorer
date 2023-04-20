@@ -32,7 +32,7 @@
       <br />
     </span>
 
-    <button id="updateCurveDisplay" @click="displayNewCurve">Update curve display</button>
+    <!-- <button id="updateCurveDisplay" @click="displayNewCurve">Update curve display</button> -->
     <br>
 
     <span id="update_for_periodic" style="display: none;">
@@ -154,7 +154,9 @@ export default {
           document.getElementById("p_isNotPrime").style.display = "block";
         }
       }
-      document.getElementById('updateCurveDisplay').style.backgroundColor = 'white';
+      // document.getElementById('updateCurveDisplay').style.backgroundColor = 'white';
+
+      this.displayNewCurve();
     },
     // Display the right inputs depending on the selected corps
     setAndDisplayInputsValue() {
@@ -211,18 +213,30 @@ export default {
       window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
+      let corps = this.controleur.getCorps();
       let a = this.controleur.coefficients.a;
       let b = this.controleur.coefficients.b;
-      let p = this.controleur.coefficients.p;
 
-      if (this.menuS.isPrime(p)) {
-        this.controleur.getView() == "FiniteView" ? this.graphS.displayShort(a, b, p) : this.graphS.displayShortPeriodic(a, b, p);
-        this.graphS.getGraph.addClickPoints();
-      }
-      else {
-        alert("p must be a prime number");
-        document.getElementById('p-ShortWeierstrass').value = this.controleur.coefficients.p;
-        document.getElementById("p_isNotPrime").style.display = "none";
+      if (corps == "Reels") {
+        this.graphS.displayWeierstrass(
+          0,
+          0,
+          0,
+          this.controleur.coefficients.a,
+          this.controleur.coefficients.b
+        );
+        this.graphS.showAddition(2, 0); // show a random addition on the graph
+      } else {
+        let p = this.controleur.coefficients.p;
+
+        if (this.menuS.isPrime(p)) {
+          this.controleur.getView() == "FiniteView" ? this.graphS.displayShort(a, b, p) : this.graphS.displayShortPeriodic(a, b, p);
+          this.graphS.getGraph.addClickPoints();
+        } else {
+          alert("p must be a prime number");
+          document.getElementById('p-ShortWeierstrass').value = this.controleur.coefficients.p;
+          document.getElementById("p_isNotPrime").style.display = "none";
+        }
       }
     },
     enableAdditionOnClick() {
