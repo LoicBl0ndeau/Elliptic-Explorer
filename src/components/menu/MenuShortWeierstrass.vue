@@ -128,8 +128,9 @@ export default {
       this.updateLatexDisplay();
     },
     setCoefficient(inputId) {
-      let value = document.getElementById(inputId).value;
+      let value = document.getElementById(inputId).value; //The value of the input (coeff)
       let coefName = inputId[0];
+      console.log(coefName, inputId);
       this.controleur.coefficients.setCoef(coefName, value);
       this.updateLatexDisplay();
     },
@@ -188,17 +189,23 @@ export default {
       window.setInterval(this.enableAdditionOnClick, 500);    // important pour détecter les clicks
     },
     displayNewCurve() {
-      let a = this.menuS.getIntFromInputId("ap");
-      let b = this.menuS.getIntFromInputId("bp");
-      let p = this.menuS.getIntFromInputId("pp");
+      let a = this.menuS.getIntFromInputId("a-ShortWeierstrass");
+      let b = this.menuS.getIntFromInputId("b-ShortWeierstrass");
+      let p = this.menuS.getIntFromInputId("p-ShortWeierstrass");
       if (this.menuS.isPrime(p)) {
-        this.menuS.displayLaTeX('Short_Weierstrass-', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
+        if(this.controleur.getVue() == "vueFinie"){
+          this.graphS.displayShort(a, b, p);
+        }
+        else{
+          this.graphS.displayShortPeriodic(a, b, p);
+        }
+        this.menuS.displayLaTeX('Short_Weierstrass-actual-equation', 'y^2 \\underset{' + p + '}\\equiv  x^3 + ' + a + 'x + ' + b);
         this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', `~~~~~= ${-16 * (4 * a ** 3 + 27 * b ** 2)}`);
-        this.graphS.displayShortPeriodic(a, b, p);
         this.graphS.getGraph.addClickPoints();
       }
       else {
         alert("p must be a prime number");
+        document.getElementById('p-ShortWeierstrass').value = this.controleur.coefficients.p;
       }
     },
     enableAdditionOnClick() {

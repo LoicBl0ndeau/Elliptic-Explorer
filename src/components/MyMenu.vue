@@ -210,7 +210,7 @@ export default {
               );
               this.graphS.showAddition(-2, 1); // show a random addition on the graph
               break;
-            case "Short_Weierstrass":
+            case "ShortWeierstrass":
               this.graphS.displayWeierstrass(
                 0,
                 0,
