@@ -1,4 +1,4 @@
-# elliptic-explorer
+# Elliptic Explorer
 
 ![Elliptic Explorer v1](https://i.imgur.com/vnKWUWQ.gif)
 
@@ -26,6 +26,11 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Brève description de l'architecture du projet
+
+### Architecture du projet
+
+Ce projet utilise le framework [VueJs](https://vuejs.org/) pour la partie front-end et [NodeJs](https://nodejs.org/en/) pour la partie back-end.
+Les librairies utilisées sont documentées dans le fichier {\\color{'red'}package.json} .....
 
 ### Génération de graphiques
 
