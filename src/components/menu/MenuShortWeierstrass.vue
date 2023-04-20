@@ -32,7 +32,7 @@
       <br />
     </span>
 
-    <!-- <button id="updateCurveDisplay" @click="displayNewCurve">Update curve display</button> -->
+    <button id="updateCurveDisplay" @click="displayNewCurve">Update curve display</button>
     <br>
 
     <span id="update_for_periodic" style="display: none;">
@@ -71,13 +71,6 @@
       <label id="pointPshort">(P.x, P.y)</label>
       <input id="x1-y1-shortp" value="" readonly />
     </span>
-
-    <div id="addition-short">
-      <span class="parameter">
-        <label>(Q.x, Q.y)</label>
-        <input id="x2-y2-short" readonly />
-      </span>
-    </div>
 
     <div id="multiplication-short" style="display: none">
       <span class="parameter">
@@ -127,6 +120,10 @@ export default {
     const menuS = menuStore();
 
     return { graphS, menuS };
+  },
+  mounted() {
+    // update des valeurs dans le menu toutes les 500ms
+    setInterval(this.enableAdditionOnClick, 500);
   },
   methods: {
     updateAll() {
