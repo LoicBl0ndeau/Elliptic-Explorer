@@ -216,8 +216,8 @@ export default {
                 0,
                 0,
                 0,
-                controleur.coefficients.a,
-                controleur.coefficients.b
+                controleur.coefficients.a4,
+                controleur.coefficients.a6
               );
               this.graphS.showAddition(2, 0); // show a random addition on the graph
               break;
@@ -259,7 +259,12 @@ export default {
       this.openAbout();
 
       // close the actual form menu if it was open
-      if (actualForm != "Undefined") this.isOpen[actualForm] = false;
+      if (actualForm != "Undefined"){
+        //set all isOpen to false
+        Object.keys(this.isOpen).forEach((key) => {
+          this.isOpen[key] = false;
+        });
+      }
 
       // set the new corps and view in the controleur object
       controleur.setCorps(newCorps);
@@ -317,14 +322,31 @@ export default {
       document.getElementById('warningForm').style.display = actualForm == "Undefined" ? "block" : "none";
 
       // close the old form menu and open the new one
-      this.isOpen[oldForm] = false;
-      this.isOpen[actualForm] = true;
+      if(oldForm == "ShortWeierstrass"){
+        this.isOpen["Weierstrass"] = false;
+      }
+      else{
+        this.isOpen[oldForm] = false;
+      }
+
+      //If the user choose a short Weierstrass curve on R, it is like he choose a Weierstrass curve on R so we open the menu of Weierstrass curve
+      if(actualForm == "ShortWeierstrass" && actualCorps == "Reels"){
+        this.isOpen["Weierstrass"] = true;
+      }
+      else{
+        this.isOpen[actualForm] = true;
+      }
 
       if (actualForm == "Undefined") {
         this.openAbout();
       } else {
         // update the new form menu inputs value and latex display of the curve
-        this.$refs[actualForm].updateAll()
+        if(actualForm == "ShortWeierstrass" && actualCorps == "Reels"){
+          this.$refs["Weierstrass"].updateAll();
+        }
+        else{
+          this.$refs[actualForm].updateAll();
+        }
         // if the view is "Undefined", set the view to the default one depending the corps
         if (actualView == "Undefined") actualCorps == "Reels" ? this.setView("2DView") : this.setView("FiniteView");
         else this.displayCurve(actualView, actualForm); // else, refresh curve display

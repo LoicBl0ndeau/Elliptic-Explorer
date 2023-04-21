@@ -451,7 +451,6 @@ export class ModCurveGraph extends Graphic {
     // that.calculator.mathToPixels({ x: 0, y: 0 });
     // Find the math coordinates of the mouse
     var calculatorRect = that.element.getBoundingClientRect();
-    console.log(calculatorRect);
     this.element.addEventListener('click', function click(evt) {
       // when user click on the screen, we go into this function
       try {
@@ -461,7 +460,6 @@ export class ModCurveGraph extends Graphic {
         })
         var x = coordonnees_souris.x;
         var y = coordonnees_souris.y;
-        console.log('x: ' + x + ' y: ' + y);
         // We round the coordinates to have the same coordinates as the points
         var x_arrondi = Math.round(x);
         var y_arrondi = Math.round(y);

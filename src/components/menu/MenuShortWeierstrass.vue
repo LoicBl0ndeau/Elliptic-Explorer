@@ -13,13 +13,13 @@
 
     <span class="parameter">
       <label>a</label>
-      <input id="a-ShortWeierstrass" type="number" @change="setCoefficient('a-ShortWeierstrass')" />
+      <input id="a4-ShortWeierstrass" type="number" @change="setCoefficient('a4-ShortWeierstrass')" />
       <br />
     </span>
 
     <span class="parameter">
       <label>b</label>
-      <input id="b-ShortWeierstrass" type="number" @change="setCoefficient('b-ShortWeierstrass')" />
+      <input id="a6-ShortWeierstrass" type="number" @change="setCoefficient('a6-ShortWeierstrass')" />
       <br />
     </span>
     <div id="p_isNotPrime" style="display: none;">
@@ -132,8 +132,9 @@ export default {
     },
     setCoefficient(inputId) {
       let value = document.getElementById(inputId).value; //The value of the input (coeff)
-      let coefName = inputId[0];
+      var coefName = inputId[0];
       if (coefName != 'p') {
+        coefName = coefName + inputId[1];
         this.controleur.coefficients.setCoef(coefName, value);
         this.updateLatexDisplay();
       }
@@ -147,19 +148,15 @@ export default {
           document.getElementById("p_isNotPrime").style.display = "block";
         }
       }
-      // actualize automatically the graph display in real numbers field, not in modulo
-      if (this.controleur.getCorps() != "Modulo") {
-        this.displayNewCurve();
-      }
     },
     // Display the right inputs depending on the selected corps
     setAndDisplayInputsValue() {
-      let a = this.controleur.coefficients.a;
-      let b = this.controleur.coefficients.b;
+      let a = this.controleur.coefficients.a4;
+      let b = this.controleur.coefficients.a6;
       let p = this.controleur.coefficients.p;
 
-      document.getElementById('a-ShortWeierstrass').value = a;
-      document.getElementById('b-ShortWeierstrass').value = b;
+      document.getElementById('a4-ShortWeierstrass').value = a;
+      document.getElementById('a6-ShortWeierstrass').value = b;
       document.getElementById('p-ShortWeierstrass').value = p;
 
       let displayValue = this.controleur.getCorps() == "Modulo" ? "block" : "none";
@@ -170,8 +167,8 @@ export default {
     updateLatexDisplay() {
       let actualCorps = this.controleur.getCorps();
 
-      let a = this.controleur.coefficients.a
-      let b = this.controleur.coefficients.b
+      let a = this.controleur.coefficients.a4;
+      let b = this.controleur.coefficients.a6;
       let p = this.controleur.coefficients.p
 
       let highlightColor = 'cyan';
@@ -194,30 +191,17 @@ export default {
       this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', discriminantResult);
     },
     displayNewCurve() {
-      let corps = this.controleur.getCorps();
-      let a = this.controleur.coefficients.a;
-      let b = this.controleur.coefficients.b;
+      let a = this.controleur.coefficients.a4;
+      let b = this.controleur.coefficients.a6;
+      let p = this.controleur.coefficients.p;
 
-      if (corps == "Reels") {
-        this.graphS.displayWeierstrass(
-          0,
-          0,
-          0,
-          this.controleur.coefficients.a,
-          this.controleur.coefficients.b
-        );
-        this.graphS.showAddition(2, 0); // show a random addition on the graph
+      if (this.menuS.isPrime(p)) {
+        this.controleur.getView() == "FiniteView" ? this.graphS.displayShort(a, b, p) : this.graphS.displayShortPeriodic(a, b, p);
+        this.graphS.getGraph.addClickPoints();
       } else {
-        let p = this.controleur.coefficients.p;
-
-        if (this.menuS.isPrime(p)) {
-          this.controleur.getView() == "FiniteView" ? this.graphS.displayShort(a, b, p) : this.graphS.displayShortPeriodic(a, b, p);
-          this.graphS.getGraph.addClickPoints();
-        } else {
-          alert("p must be a prime number");
-          document.getElementById('p-ShortWeierstrass').value = this.controleur.coefficients.p;
-          document.getElementById("p_isNotPrime").style.display = "none";
-        }
+        alert("p must be a prime number");
+        document.getElementById('p-ShortWeierstrass').value = this.controleur.coefficients.p;
+        document.getElementById("p_isNotPrime").style.display = "none";
       }
     },
     enableAdditionOnClick() {
@@ -231,7 +215,7 @@ export default {
           `(${this.graphS.getGraph.selectedPoints[1][0]}, ${this.graphS.getGraph.selectedPoints[1][1]})`
         );
       } catch (err) {
-        // console.log(err);
+        console.warn(err);
       }
     },
     displayCurveWithSelectedOperation() {

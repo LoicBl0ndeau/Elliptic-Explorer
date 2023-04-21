@@ -103,9 +103,11 @@ export default {
     setCoefficient(inputId) {
       let value = document.getElementById(inputId).value;
       let coefName = inputId[0];
-      this.controleur.coefficients.setCoef(coefName, value);
-      this.updateLatexDisplay();
-      this.displayNewCurve();
+      if(this.verifyA() && this.verifyB()){
+        this.controleur.coefficients.setCoef(coefName, value);
+        this.updateLatexDisplay();
+        this.displayNewCurve();
+      }
     },
     setAndDisplayInputsValue() {
       let a = this.controleur.coefficients.a;
@@ -127,10 +129,10 @@ export default {
       let p = this.controleur.coefficients.p
 
       let highlightColor = 'cyan';
-      let generalEquationModulo = '{\\color{' + highlightColor + '}a}y^2 \\underset{p}\\equiv x^3 + {\\color{' + highlightColor + '}b}x + x';
-      let generalEquationReels = '{\\color{' + highlightColor + '}a}y^2 = x^3 + {\\color{' + highlightColor + '}b}x + x';
-      let actualEquationModulo = '{\\color{' + highlightColor + '}' + a + '}y^2 \\underset{' + p + '}\\equiv x^3 + {\\color{' + highlightColor + '}' + b + '}x + x';
-      let actualEquationReels = '{\\color{' + highlightColor + '}' + a + '}y^2 = x^3 + {\\color{' + highlightColor + '}' + b + '}x + x';
+      let generalEquationModulo = '{\\color{' + highlightColor + '}a}y^2 \\underset{p}\\equiv x^3 + {\\color{' + highlightColor + '}b}x^2 + x';
+      let generalEquationReels = '{\\color{' + highlightColor + '}a}y^2 = x^3 + {\\color{' + highlightColor + '}b}x^2 + x';
+      let actualEquationModulo = '{\\color{' + highlightColor + '}' + a + '}y^2 \\underset{' + p + '}\\equiv x^3 + {\\color{' + highlightColor + '}' + b + '}x^2 + x';
+      let actualEquationReels = '{\\color{' + highlightColor + '}' + a + '}y^2 = x^3 + {\\color{' + highlightColor + '}' + b + '}x^2 + x';
 
 
       let generalEquation = actualCorps == "Modulo" ? generalEquationModulo : generalEquationReels;
@@ -180,21 +182,37 @@ export default {
     },
     verifyA() {
       let value = this.menuS.getFloatFromInputId('a-Montgomery');
-      if (value <= 2 && value >= -2)
+      if (value <= 2 && value >= -2){
         this.menuS.displayLaTeX(
           "a-error-mess-montgomery",
           "\\color{yellow} a \\text{ must be defined such as : }\\newline a \\notin [-2, 2]\\newline");
-      else
-        this.menuS.displayLaTeX("a-error-mess-montgomery", "");
+        return false;
+      }
+      else if(this.menuS.getFloatFromInputId('b-Montgomery')*((value**2)-4) == 0){
+        this.menuS.displayLaTeX(
+          "a-error-mess-montgomery",
+          "\\color{yellow} a \\text{ must be defined such as : }\\newline a \\notin \\{0, b^2-4\\}\\newline");
+        return false;
+      }
+      this.menuS.displayLaTeX("a-error-mess-montgomery", "");
+      return true;
     },
     verifyB() {
       let value = this.menuS.getFloatFromInputId('b-Montgomery');
-      if (value == 0)
+      if (value == 0){
         this.menuS.displayLaTeX(
           "b-error-mess-montgomery",
           "\\color{yellow} b \\text{ must be non-null}\\newline");
-      else
-        this.menuS.displayLaTeX("b-error-mess-montgomery", "");
+        return false;
+      }
+      else if(value*((this.menuS.getFloatFromInputId('a-Montgomery')**2)-4) == 0){
+        this.menuS.displayLaTeX(
+          "b-error-mess-montgomery",
+          "\\color{yellow} b \\text{ must be defined such as : }\\newline b \\notin \\{0, a^2-4\\}\\newline");
+        return false;
+      }
+      this.menuS.displayLaTeX("b-error-mess-montgomery", "");
+      return true;
     },
     updateMenuInputWithGraphValue() {
       try {
