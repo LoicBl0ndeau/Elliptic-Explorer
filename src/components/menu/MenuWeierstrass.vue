@@ -177,7 +177,6 @@ export default {
       var generalEquationReels, actualEquationReels;
 
       let highlightColor = 'cyan';
-      console.log(actualForm);
       if(actualForm == 'Weierstrass'){
         document.getElementById('Short_Weierstrass-R-general-discriminant').parentElement.style.display = "none";
         generalEquationReels = 'y^2 + {\\color{' + highlightColor + '}a_1} xy + {\\color{' + highlightColor + '}a_3}y = \\newline x^3 + {\\color{' + highlightColor + '}a_2} x^2 + {\\color{' + highlightColor + '}a_4} x + {\\color{' + highlightColor + '}a_6}';

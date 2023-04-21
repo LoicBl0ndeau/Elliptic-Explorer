@@ -182,7 +182,6 @@ export default {
     },
     verifyA() {
       let value = this.menuS.getFloatFromInputId('a-Montgomery');
-      console.log(this.menuS.getFloatFromInputId('b-Montgomery')*((value**2)-4));
       if (value <= 2 && value >= -2){
         this.menuS.displayLaTeX(
           "a-error-mess-montgomery",

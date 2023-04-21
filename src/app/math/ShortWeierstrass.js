@@ -118,7 +118,6 @@ export class ShortWeierstrass extends ModCurveGraph {
         while (resCoordPoint[1] < -this.p / 2) {
             resCoordPoint[1] += this.p;
         }
-        console.log(resCoordPoint);
         return resCoordPoint;
     }
 
@@ -206,7 +205,6 @@ export class ShortWeierstrass extends ModCurveGraph {
                 }
             }
         }
-        console.log(listCoordPoints.length);
         listCoordPoints.push([0, 1.5 * this.p / 2 + 0.5]);
         listPoints.push(this.newPoint(null, null));
     }
@@ -409,7 +407,6 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
     addPoints(P, Q) {
         var resPoint = P.add(Q);
         let resCoordPoint = this.getCoord(resPoint);
-        console.log("resCoordPoint", resCoordPoint);
         return resCoordPoint;
     }
 
@@ -559,7 +556,6 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
      * @param {boolean} isInfinityAPointOnCurve true if one of the point is infinity
      */
     displayAddPoint(addPoint, isTheSamePoint, isInfinityAPointOnCurve) {
-        console.log(addPoint, isTheSamePoint, isInfinityAPointOnCurve);
         let listPoints = this.listPoints;
         var i = 1;
         var j = 1;

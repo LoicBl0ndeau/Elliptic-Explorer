@@ -132,7 +132,6 @@ export default {
     },
     setCoefficient(inputId) {
       let value = document.getElementById(inputId).value; //The value of the input (coeff)
-      console.log(inputId);
       var coefName = inputId[0];
       if (coefName != 'p') {
         coefName = coefName + inputId[1];
@@ -211,7 +210,7 @@ export default {
           `(${this.graphS.getGraph.selectedPoints[1][0]}, ${this.graphS.getGraph.selectedPoints[1][1]})`
         );
       } catch (err) {
-        // console.log(err);
+        console.warn(err);
       }
     },
     displayCurveWithSelectedOperation() {
