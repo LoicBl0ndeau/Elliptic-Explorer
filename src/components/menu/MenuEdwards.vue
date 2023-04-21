@@ -2,8 +2,12 @@
   <div class="submenu">
 
     <h3 class="section">Curve Equation</h3>
+    <div id="Edwards-general-equation"></div>
+    <div id="Edwards-actual-equation"></div>
 
-    <div id="edwards-eq"></div>
+    <!-- <h3 class="section">Discriminant</h3> -->
+    <div id="Edwards-general-discriminant"></div>
+    <div id="Edwards-actual-discriminant"></div>
 
     <h3 class="section">Parameters</h3>
 
@@ -11,12 +15,20 @@
 
     <span class="parameter">
       <label>c</label>
-      <input id="c" value="2" @input="menuS.setValueOnGraphFromUserInput('C', 'c'); verifyCandD();" /><br />
+      <input id="c-Edwards" type="number" @change="setCoefficient('c-Edwards');" />
+      <br />
     </span>
 
     <span class="parameter">
       <label>d</label>
-      <input id="d" value="1" @input="menuS.setValueOnGraphFromUserInput('D', 'd'); verifyCandD();" /><br />
+      <input id="d-Edwards" type="number" @change="setCoefficient('d-Edwards');" />
+      <br />
+    </span>
+
+    <span class="parameter" id="p_container_Edwards">
+      <label>p</label>
+      <input id="p-Edwards" type="number" placeholder="Prime number" @change="setCoefficient('p-Edwards')" />
+      <br />
     </span>
 
     <h3 class="section">Operations</h3>
@@ -29,15 +41,17 @@
     </span>
 
     <span class="parameter">
-      <label>x1</label>
-      <input id="x1-edwards" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')" />
+      <label id="pointP">P.x</label>
+      <input id="x1-edwards" type="number" class="coord"
+        @input="menuS.setValueOnGraphFromUserInput('x_{1}', 'x1-edwards')" />
       <button @click="graphS.switchPointOrdinate(1)">Switch</button><br />
     </span>
 
     <div id="addition-edwards">
       <span class="parameter">
-        <label>x2</label>
-        <input id="x2-edwards" class="coord" @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')" />
+        <label>Q.x</label>
+        <input id="x2-edwards" type="number" class="coord"
+          @input="menuS.setValueOnGraphFromUserInput('x_{2}', 'x2-edwards')" />
         <button @click="graphS.switchPointOrdinate(2)">Switch</button><br />
       </span>
     </div>
@@ -63,6 +77,12 @@ import { menuStore } from "@/stores/menu.js";
 
 export default {
   name: "MenuEdwards",
+  props: {
+    controleur: {
+      type: Object,
+      required: true
+    }
+  },
   setup() {
     const graphS = graphStore();
     const menuS = menuStore();
@@ -72,30 +92,65 @@ export default {
   mounted() {
     // update des valeurs dans le menu toutes les 500ms
     setInterval(this.updateMenuInputWithGraphValue, 500);
-    // display curve equation
-    this.menuS.displayLaTeX('edwards-eq', "x^2 + y^2 = c^2(1 +dx^2y^2)");
   },
   methods: {
-    displayDefaultCurve() {
-      let c = 2;
-      let d = -1;
+    updateAll() {
+      this.setAndDisplayInputsValue();
+      this.updateLatexDisplay();
+    },
+    setCoefficient(inputId) {
+      let value = document.getElementById(inputId).value;
+      let coefName = inputId[0];
+      this.controleur.coefficients.setCoef(coefName, value);
+      this.updateLatexDisplay();
+      if (this.checkCoeffs()) {
+        this.displayNewCurve();
+      }
+    },
+    setAndDisplayInputsValue() {
+      let c = this.controleur.coefficients.c;
+      let d = this.controleur.coefficients.d;
+      let p = this.controleur.coefficients.p;
 
-      let xP = -0.84;
-      let xQ = 1.5;
+      document.getElementById('c-Edwards').value = c;
+      document.getElementById('d-Edwards').value = d;
+      document.getElementById('p-Edwards').value = p;
 
-      this.graphS.displayEdwards(c, d);
-      this.graphS.showAddition(xP, xQ);
+      let displayValue = this.controleur.getCorps() == "Modulo" ? "block" : "none";
+      document.getElementById('p_container_Edwards').style.display = displayValue;
+    },
+    updateLatexDisplay() {
+      let actualCorps = this.controleur.getCorps();
 
-      // display default operation (Addition)
-      this.menuS.setValueById("choix-op-edwards", "Addition");
-      this.menuS.hideElementById("multiplication-edwards");
-      this.menuS.displayElementById("addition-edwards");
+      let c = this.controleur.coefficients.c
+      let d = this.controleur.coefficients.d
+      let p = this.controleur.coefficients.p
+
+      let highlightColor = 'cyan';
+      let generalEquationModulo = 'x^2 + y^2 \\underset{' + p + '}\\equiv c^2(1 +dx^2y^2)';
+      let generalEquationReels = 'x^2 + y^2 = {\\color{' + highlightColor + '}c}^2(1 +{\\color{' + highlightColor + '}d}x^2y^2)';
+      let actualEquationModulo = 'x^2 + y^2 \\underset{' + p + '}\\equiv ' + c + '^2(1 +' + d + 'x^2y^2)';
+      let actualEquationReels = 'x^2 + y^2 = {\\color{' + highlightColor + '}' + c + '}^2(1 +{\\color{' + highlightColor + '}' + d + '}x^2y^2)';
+
+      let generalEquation = actualCorps == "Modulo" ? generalEquationModulo : generalEquationReels;
+      let actualEquation = actualCorps == "Modulo" ? actualEquationModulo : actualEquationReels;
+
+      //let discriminantGeneralEquation = 'Δ = ?';
+      //let discriminantResult = 'Δ = ' + String(?);
+
+      // Display latex  
+      this.menuS.displayLaTeX('Edwards-general-equation', generalEquation);
+      this.menuS.displayLaTeX('Edwards-actual-equation', actualEquation);
+
+      //this.menuS.displayLaTeX('Short_Weierstrass-general-discriminant', discriminantGeneralEquation);
+      //this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', discriminantResult);
     },
     displayNewCurve() {
-      let c = this.menuS.getFloatFromInputId("c");
-      let d = this.menuS.getFloatFromInputId("d");
+      let c = this.menuS.getFloatFromInputId("c-Edwards");
+      let d = this.menuS.getFloatFromInputId("d-Edwards");
 
       this.graphS.displayEdwards(c, d);
+      this.graphS.showAddition(-2, 1); // show a random addition on the graph
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();
@@ -122,49 +177,56 @@ export default {
       this.displayNewCurve();
       this.graphS.showMul(currentPoint, k);
     },
-    verifyCandD() {
-      let c = this.menuS.getFloatFromInputId('c');
-      let d = this.menuS.getFloatFromInputId('d');
-      if (c == 0 || d == 0)
+    checkCoeffs() {
+      let c = this.menuS.getFloatFromInputId('c-Edwards');
+      let d = this.menuS.getFloatFromInputId('d-Edwards');
+      if (c == 0 || d == 0 || d == 1) {
         this.menuS.displayLaTeX(
           "error-mess-edwards",
-          "\\color{yellow} c \\text{ and } d \\text{ must be } \\newline \\text{defined such as : } \\newline c \\ne 0 \\text{ and } d \\ne 0 \\newline"
+          "\\color{yellow} c \\text{ and } d \\text{ must be } \\newline \\text{defined such as : } \\newline c \\ne 0 \\text{ and } d \\ne {0, 1} \\newline"
         );
+        return false;
+      }
+      else if (c * d * (1 - (c ** 4) * d) == 0) {
+        this.menuS.displayLaTeX(
+          "error-mess-edwards",
+          "\\color{yellow} c * d * (1 - c^4 * d) \\text{ must be } \\newline \\text{defined such as : } \\newline c * d * (1 - c^4 * d) \\ne 0 \\newline"
+        );
+        return false;
+      }
       else if (c != 0 && d == 1 / c ** 4) {
         this.menuS.displayLaTeX(
           "error-mess-edwards",
           "\\color{yellow} d \\text{ must be defined such as : }\\newline d \\ne \\frac{1}{c^4} \\newline"
         );
+        return false;
       }
       else
         this.menuS.displayLaTeX("error-mess-edwards", "");
+      return true;
     },
     updateMenuInputWithGraphValue() {
       try {
         // if graph not initialized yet
         if (this.graphS.getGraph == null) return;
-
-        this.menuS.setInputValueFromGraphExpValue("c", "C");
-        this.menuS.setInputValueFromGraphExpValue("d", "D");
-
-        this.menuS.setInputValueFromGraphExpValue("x1-edwards", "x_{1}");
-
         let op = this.menuS.getValueById("choix-op-edwards");
         let result_x = null;
         let result_y = null;
         if (op == "Addition") {
+          this.menuS.setInputValueFromGraphExpValue("x1-edwards", "x_{1}");
           this.menuS.setInputValueFromGraphExpValue("x2-edwards", "x_{2}");
           result_x = this.graphS.getExpValue(`x_{3}`);
           result_y = this.graphS.getExpValue(`y_{3}`);
         }
         if (op == "Multiplication") {
+          this.menuS.setInputValueFromGraphExpValue("x1-edwards", "x_{1}");
           let idResult = this.menuS.getIntFromInputId("factor-edwards");
           result_x = this.graphS.getExpValue(`x_{${idResult}}`);
           result_y = this.graphS.getExpValue(`y_{${idResult}}`);
         }
         document.getElementById("result-x-y-edwards").innerHTML = `(${result_x.toFixed(2)},   ${result_y.toFixed(2)})`;
       } catch (err) {
-        // console.log(err);
+        console.warn(err);
         return;
       }
     },

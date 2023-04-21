@@ -13,7 +13,8 @@
     </p>
     <p>
       En effet, la première utilisation des
-      <a href="https://fr.wikipedia.org/wiki/Cryptographie_sur_les_courbes_elliptiques">courbes elliptiques en cryptographie</a>
+      <a href="https://fr.wikipedia.org/wiki/Cryptographie_sur_les_courbes_elliptiques">courbes elliptiques en
+        cryptographie</a>
       remonte à seulement 1984, où Lenstra s’en est servi pour factoriser des
       nombres entiers. Puis en 1985, Victor Miller et Neal Koblitz ont proposé
       des utilisations cryptographiques des courbes elliptiques. La principale
@@ -29,7 +30,9 @@
     <p>
       Ainsi, de nombreux systèmes de chiffrement ont été développés, notamment
       pour les systèmes de clés publiques partagées tel que
-      <a href="https://fr.wikipedia.org/wiki/%C3%89change_de_cl%C3%A9s_Diffie-Hellman_bas%C3%A9_sur_les_courbes_elliptiques">ECDH</a>, qui actuellement largement utilisé dans les protocoles SSL/TLS de
+      <a
+        href="https://fr.wikipedia.org/wiki/%C3%89change_de_cl%C3%A9s_Diffie-Hellman_bas%C3%A9_sur_les_courbes_elliptiques">ECDH</a>,
+      qui actuellement largement utilisé dans les protocoles SSL/TLS de
       sécurisation des échanges par réseau informatique. Qui plus est, l’ECC est
       aussi généralement utilisée afin de réaliser des signatures électroniques
       via les protocoles
@@ -45,37 +48,37 @@
       facilement être démystifiées à l’aide d’une représentation graphique.
     </p>
     <p>
-        Avant d'utiliser ces courbes pour chiffrer nos messages, on doit les comprendre. 
-        Les courbes elliptiques se définissent en trois types de courbes usuelles : 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_elliptique'>Weierstrass</a>, 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_de_Montgomery'>Montgomery</a>, 
-        <a href='https://fr.wikipedia.org/wiki/Courbe_d%27Edwards'>Edwards</a>. 
-        En voici respectivement les équations :
+      Avant d'utiliser ces courbes pour chiffrer nos messages, on doit les comprendre.
+      Les courbes elliptiques se définissent en trois types de courbes usuelles :
+      <a href='https://fr.wikipedia.org/wiki/Courbe_elliptique'>Weierstrass</a>,
+      <a href='https://fr.wikipedia.org/wiki/Courbe_de_Montgomery'>Montgomery</a>,
+      <a href='https://fr.wikipedia.org/wiki/Courbe_d%27Edwards'>Edwards</a>.
+      En voici respectivement les équations :
     </p>
     <p align='center'>
-        y<sup>2</sup> = x<sup>3</sup> + Ax + B 
+      y<sup>2</sup> = x<sup>3</sup> + Ax + B
     </p>
     <p align='center'>
-        By<sup>2</sup> = x<sup>3</sup> + Ax<sup>2</sup> + x
+      By<sup>2</sup> = x<sup>3</sup> + Ax<sup>2</sup> + x
     </p>
     <p align='center'>
-        x<sup>2</sup> + y<sup>2</sup> = c<sup>2</sup>(1 + dx<sup>2</sup>y<sup>2</sup>) 
+      x<sup>2</sup> + y<sup>2</sup> = c<sup>2</sup>(1 + dx<sup>2</sup>y<sup>2</sup>)
     </p>
     <p>
       Nous vous invitons à parcourir cette application web intuitive et pédagogique
-      pour vous initier aux calculs simples sur des courbes elliptiques. Nous mettons à 
-      votre disposition les trois types de courbes usuelles. Vous pouvez créé vos propres 
-      courbes en modulaire et en continue !   
+      pour vous initier aux calculs simples sur des courbes elliptiques. Nous mettons à
+      votre disposition les trois types de courbes usuelles. Vous pouvez créé vos propres
+      courbes en modulaire et en continue !
     </p>
     <p align='center'>
-        Appréciez l'expérience !!!!
+      Appréciez l'expérience !!!!
     </p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "AccueilSite",
+  name: "FrenchIntroduction",
 };
 </script>
 
@@ -93,7 +96,6 @@ export default {
 }
 
 a {
-    color: #eb9671;
+  color: #eb9671;
 }
-
 </style>

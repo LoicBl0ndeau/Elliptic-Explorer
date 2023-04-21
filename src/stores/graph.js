@@ -13,6 +13,7 @@ import { WeierstrassGraph } from "@/app/graph/supported_curves_on_R/weierstrass/
 import { MontgomeryGraph } from "@/app/graph/supported_curves_on_R/montgomery/MontgomeryGraph.js";
 import { EdwardsCurve } from "@/app/graph/supported_curves_on_R/edwards/EdwardsCurve.js";
 import { ShortWeierstrass } from '@/app/math/ShortWeierstrass.js';
+import { PeriodicShortWeierstrass } from '@/app/math/ShortWeierstrass.js';
 
 export const graphStore = defineStore('graph', {
   state: () => ({
@@ -38,9 +39,7 @@ export const graphStore = defineStore('graph', {
      */
     displayWeierstrass(a1, a3, a2, a4, a6) {
       // verifie si un graphique est déjà tracé sur la page, si oui l'efface
-      if (this.graph != null) {
-        this.destroy();
-      }
+      this.destroy();
       // création du nouveau graphique
       this.graph = new WeierstrassGraph("calculator", a1, a3, a2, a4, a6);
       this.graph.showCurve();
@@ -56,8 +55,7 @@ export const graphStore = defineStore('graph', {
      * @param {number} b 
      * */
     displayMontgomery(a, b) {
-      if (this.graph != null)
-        this.destroy();
+      this.destroy();
       this.graph = new MontgomeryGraph("calculator", a, b);
       this.graph.showCurve();
     },
@@ -72,8 +70,7 @@ export const graphStore = defineStore('graph', {
      * @param {number} d
      */
     displayEdwards(c, d) {
-      if (this.graph != null)
-        this.destroy();
+      this.destroy();
       this.graph = new EdwardsCurve("calculator", c, d);
       this.graph.showCurve();
     },
@@ -88,11 +85,11 @@ export const graphStore = defineStore('graph', {
      * @param {integer ou string} p modulo
      */
     displayShort(a, b, p) {
-      if (this.graph != null)
-        this.destroy();
+      this.destroy();
       this.graph = new ShortWeierstrass("calculator", a, b, p);
-      const curveToggle = document.getElementById('curve-toggle');
-
+      document.getElementById('container_curve-toggle-periodic').style.display = 'none';
+      document.getElementById('container_curve-toggle-finite').style.display = 'block';
+      const curveToggle = document.getElementById('curve-toggle-finite');
       // Ajouter un gestionnaire d'événements pour le changement d'état du checkbox
       curveToggle.addEventListener('change', () => {
         if (curveToggle.checked) {
@@ -101,6 +98,40 @@ export const graphStore = defineStore('graph', {
           this.graph.hideCurve();
         }
       });
+
+      curveToggle.checked = false;
+
+      this.graph.findAllPoints();
+      this.graph.displayPoints();
+    },
+    /**
+     * Construct the curve with equation y^2 = x^3 + ax + b mod p
+     * 
+     * The following HTML code must be in web page:
+     * <div id="calculator"></div>
+     * 
+     * @param {integer ou string} a first parameter
+     * @param {integer ou string} b second parameter
+     * @param {integer ou string} p modulo
+     */
+    displayShortPeriodic(a, b, p) {
+      this.destroy();
+      this.graph = new PeriodicShortWeierstrass("calculator", a, b, p);
+      document.getElementById('container_curve-toggle-finite').style.display = 'none';
+      document.getElementById('container_curve-toggle-periodic').style.display = 'block';
+      const curveToggle = document.getElementById('curve-toggle-periodic');
+
+      // Ajouter un gestionnaire d'événements pour le changement d'état du checkbox
+      curveToggle.addEventListener('change', () => {
+        if (curveToggle.checked) {
+          this.graph.showCurvePeriodic();
+        } else {
+          this.graph.hideCurve();
+        }
+      });
+
+      curveToggle.checked = false;
+
       this.graph.findAllPoints();
       this.graph.displayPoints();
     },
@@ -127,7 +158,8 @@ export const graphStore = defineStore('graph', {
      * See official DesmosApi calculator.destroy() method documentation.
      */
     destroy() {
-      this.graph.calculator.destroy();
+      if (this.graph != null)
+        this.graph.calculator.destroy();
     },
     /**
      * Displays the addition of two points P and Q, namely

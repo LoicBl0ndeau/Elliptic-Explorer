@@ -1,20 +1,15 @@
-import Forme from './Forme.js';
-import Coefficients from './Coefficients.js';
 import Corps from './Corps.js';
-import Vues from './Vues.js';
+import Forms from './Forms.js';
+import Views from './Views.js';
+import Coefficients from './Coefficients.js';
 
 class Controleur {
 
     corps = Corps.UNDEFINED;
     modulo = 0;
-    vue = Vues.UNDEFINED;
-    forme = Forme.UNDEFINED;
+    view = Views.UNDEFINED;
+    form = Forms.UNDEFINED;
     coefficients = new Coefficients();
-
-
-    constructor() {
-
-    }
 
     getInformations() {
         console.table(this);
@@ -41,53 +36,53 @@ class Controleur {
         return this.corps;
     }
 
-    setVue(value) {
-        switch (value) {
-            case 'vue2D':
-                this.vue = Vues.VUE_2D;
+    setView(newView) {
+        switch (newView) {
+            case '2DView':
+                this.view = Views.VIEW_2D;
                 break;
-            case 'vue3D':
-                this.vue = Vues.VUE_3D;
+            case '3DView':
+                this.view = Views.VIEW_3D;
                 break;
-            case 'vuePeriodique':
-                this.vue = Vues.VUE_PERIODIQUE;
+            case 'PeriodicView':
+                this.view = Views.PERIODIC_VIEW;
                 break;
-            case 'vuePerspective':
-                this.vue = Vues.VUE_PERSPECTIVE;
+            case 'PerspectiveView':
+                this.view = Views.PERSPECTIVE_VIEW;
                 break;
-            case 'vueFinie':
-                this.vue = Vues.VUE_FINIE;
+            case 'FiniteView':
+                this.view = Views.FINITE_VIEW;
                 break;
             default:
-                this.vue = Vues.UNDEFINED;
+                this.view = Views.UNDEFINED;
                 break;
         }
     }
 
-    getVue() {
-        return this.vue;
+    getView() {
+        return this.view;
     }
 
-    getForme() {
-        return this.forme;
+    getForm() {
+        return this.form;
     }
 
-    setForme(value) {
-        switch (value) {
-            case 'Short_Weierstrass':
-                this.forme = Forme.SHORT_WEIERSTRASS;
+    setForm(newForm) {
+        switch (newForm) {
+            case 'ShortWeierstrass':
+                this.form = Forms.SHORT_WEIERSTRASS;
                 break;
             case 'Weierstrass':
-                this.forme = Forme.WEIERSTRASS;
+                this.form = Forms.WEIERSTRASS;
                 break;
             case 'Montgomery':
-                this.forme = Forme.MONTGOMERY;
+                this.form = Forms.MONTGOMERY;
                 break;
             case 'Edwards':
-                this.forme = Forme.EDWARDS;
+                this.form = Forms.EDWARDS;
                 break;
             default:
-                this.forme = Forme.UNDEFINED;
+                this.form = Forms.UNDEFINED;
                 break;
         }
     }

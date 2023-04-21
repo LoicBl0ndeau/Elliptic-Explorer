@@ -26,44 +26,46 @@ class Coefficients {
         return this.p;
     }
 
-    getD() {
-        return this.d;
-    }
-
-    setCoef(name, value) {
-        switch (name) {
+    setCoef(coefName, value) {
+        let newValue;
+        try {
+            newValue = parseInt(value);
+        } catch (error) {
+            console.log('Le coefficient en paramètre n\'est pas un nombre.');
+        }
+        switch (coefName) {
             case 'a1':
-                this.a1 = value;
+                this.a1 = newValue;
                 break;
             case 'a2':
-                this.a2 = value;
+                this.a2 = newValue;
                 break;
             case 'a3':
-                this.a3 = value;
+                this.a3 = newValue;
                 break;
             case 'a4':
-                this.a4 = value;
+                this.a4 = newValue;
                 break;
             case 'a6':
-                this.a6 = value;
+                this.a6 = newValue;
                 break;
             case 'a':
-                this.a = value;
+                this.a = newValue;
                 break;
             case 'b':
-                this.b = value;
+                this.b = newValue;
                 break;
             case 'c':
-                this.c = value;
+                this.c = newValue;
                 break;
             case 'd':
-                this.d = value;
+                this.d = newValue;
                 break;
             case 'p':
-                this.p = value;
+                this.p = newValue;
                 break;
             default:
-                console.log('Le coefficient n\'est pas défini.');
+                console.log('Le coefficient en paramètre n\'existe pas.');
                 break;
         }
     }
@@ -99,12 +101,6 @@ class Coefficients {
             d: this.d
         }
     }
-
-    // Fonction qui fait la conversion des coefficients d'une forme à une autre
-    equivalentCoefficients() {
-
-    }
-
 }
 
 export default Coefficients;

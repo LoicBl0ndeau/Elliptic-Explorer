@@ -1,11 +1,8 @@
 <template>
   <MyMenu />
-  <!-- the content outside the menu should always be
-  in this "main" div. -->
   <div id="main">
     <div id="about-div">
-      <!-- english by default -->
-      <AccueilAnglais />
+      <EnglishIntroduction />
     </div>
     <div id="graph-div">
       <MyGraph />
@@ -15,16 +12,16 @@
 
 <script>
 // @ is an alias to /src
-import MyMenu from "@/components/MyMenu.vue";
+import MyMenu from "@/components/menu/MyMenu.vue";
 import MyGraph from "@/components/graph/MyGraph.vue";
-import AccueilAnglais from "@/components/AccueilAnglais.vue";
+import EnglishIntroduction from "@/components/introduction/EnglishIntroduction.vue";
 
 export default {
   name: "GraphView",
   components: {
     MyMenu,
     MyGraph,
-    AccueilAnglais,
+    EnglishIntroduction,
   },
 };
 </script>

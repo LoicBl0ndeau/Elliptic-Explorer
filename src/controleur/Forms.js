@@ -1,9 +1,9 @@
-const Forme = Object.freeze({
+const Forms = Object.freeze({
     UNDEFINED: 'Undefined',
     WEIERSTRASS: 'Weierstrass',
-    SHORT_WEIERSTRASS: 'Short_Weierstrass',
+    SHORT_WEIERSTRASS: 'ShortWeierstrass',
     MONTGOMERY: 'Montgomery',
     EDWARDS: 'Edwards'
 });
 
-export default Forme;
+export default Forms;
