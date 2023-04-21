@@ -205,6 +205,7 @@ export default {
       }
     },
     enableAdditionOnClick() {
+      if (this.graphS == null || this.graphS.getGraph == null) return;
       try {
         this.menuS.setValueById(
           "x1-y1-shortp",

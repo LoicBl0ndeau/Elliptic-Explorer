@@ -1,8 +1,6 @@
 <template>
   <div id="titre">
-    <center>
-      <h2>Welcome to our elliptical curve explorer !</h2>
-    </center>
+    <h2>Welcome to our elliptical curve explorer !</h2>
   </div>
   <div id="corps">
     <p>
