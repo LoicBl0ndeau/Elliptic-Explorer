@@ -11,14 +11,6 @@ class Controleur {
     form = Forms.UNDEFINED;
     coefficients = new Coefficients();
 
-    getInformations() {
-        console.table(this);
-    }
-
-    getCoefficients() {
-        return this.coefficients;
-    }
-
     setCorps(value) {
         switch (value) {
             case 'R':
@@ -32,6 +24,7 @@ class Controleur {
                 break;
         }
     }
+
     getCorps() {
         return this.corps;
     }
@@ -63,10 +56,6 @@ class Controleur {
         return this.view;
     }
 
-    getForm() {
-        return this.form;
-    }
-
     setForm(newForm) {
         switch (newForm) {
             case 'ShortWeierstrass':
@@ -85,6 +74,10 @@ class Controleur {
                 this.form = Forms.UNDEFINED;
                 break;
         }
+    }
+
+    getForm() {
+        return this.form;
     }
 }
 

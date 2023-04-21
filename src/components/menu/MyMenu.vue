@@ -67,8 +67,8 @@
 
       <MenuShortWeierstrass v-show="isOpen.ShortWeierstrass" ref="ShortWeierstrass" :controleur='controleurReference' />
       <MenuWeierstrass v-show="isOpen.Weierstrass" ref="Weierstrass" :controleur='controleurReference' />
-      <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurReference' />
       <MenuMontgomery v-show="isOpen.Montgomery" ref="Montgomery" :controleur='controleurReference' />
+      <MenuEdwards v-show="isOpen.Edwards" ref="Edwards" :controleur='controleurReference' />
     </div>
 
     <!-- Views section -->
