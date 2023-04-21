@@ -103,7 +103,7 @@ export default {
     setCoefficient(inputId) {
       let value = document.getElementById(inputId).value;
       let coefName = inputId[0];
-      if(this.verifyA() && this.verifyB()){
+      if(this.verifyAB()){
         this.controleur.coefficients.setCoef(coefName, value);
         this.updateLatexDisplay();
         this.displayNewCurve();
@@ -180,37 +180,28 @@ export default {
       this.displayNewCurve();
       this.graphS.showMul(currentPoint, k);
     },
-    verifyA() {
-      let value = this.menuS.getFloatFromInputId('a-Montgomery');
-      if (value <= 2 && value >= -2){
+    verifyAB() {
+      let valueA = this.menuS.getFloatFromInputId('a-Montgomery');
+      let valueB = this.menuS.getFloatFromInputId('b-Montgomery');
+      if (valueA <= 2 && valueA >= -2){
         this.menuS.displayLaTeX(
           "a-error-mess-montgomery",
           "\\color{yellow} a \\text{ must be defined such as : }\\newline a \\notin [-2, 2]\\newline");
         return false;
       }
-      else if(this.menuS.getFloatFromInputId('b-Montgomery')*((value**2)-4) == 0){
-        this.menuS.displayLaTeX(
-          "a-error-mess-montgomery",
-          "\\color{yellow} a \\text{ must be defined such as : }\\newline a \\notin \\{0, b^2-4\\}\\newline");
-        return false;
-      }
-      this.menuS.displayLaTeX("a-error-mess-montgomery", "");
-      return true;
-    },
-    verifyB() {
-      let value = this.menuS.getFloatFromInputId('b-Montgomery');
-      if (value == 0){
+      else if(valueB == 0){
         this.menuS.displayLaTeX(
           "b-error-mess-montgomery",
           "\\color{yellow} b \\text{ must be non-null}\\newline");
         return false;
       }
-      else if(value*((this.menuS.getFloatFromInputId('a-Montgomery')**2)-4) == 0){
+      else if(valueB*((valueA**2)-4) == 0){
         this.menuS.displayLaTeX(
-          "b-error-mess-montgomery",
-          "\\color{yellow} b \\text{ must be defined such as : }\\newline b \\notin \\{0, a^2-4\\}\\newline");
+          "a-error-mess-montgomery",
+          "\\color{yellow} b*(a^2-4) \\text{ must be non-null}\\newline");
         return false;
       }
+      this.menuS.displayLaTeX("a-error-mess-montgomery", "");
       this.menuS.displayLaTeX("b-error-mess-montgomery", "");
       return true;
     },
