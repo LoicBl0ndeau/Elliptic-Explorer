@@ -374,48 +374,48 @@ export default {
 
         this.displayCurve(newView, actualForm);
       }
-    }
-  },
-  toggleSidebar() {
-    if (!this.isPinned) {
-      // hide sidebar on mouse over if menu not pinnned
-      if (this.isMinimized) {
-        // open sidebar menu
-        document.getElementById("mySidebar").style.width = this.width;
-        document.getElementById("main").style.marginLeft =
-          this.mainIDMarginLeft;
-      } else {
-        // close sidebar menu
-        document.getElementById("mySidebar").style.width = this.miniWidth;
-        document.getElementById("main").style.marginLeft =
-          this.mainIDMarginLeftMinimized;
+    },
+    toggleSidebar() {
+      if (!this.isPinned) {
+        // hide sidebar on mouse over if menu not pinnned
+        if (this.isMinimized) {
+          // open sidebar menu
+          document.getElementById("mySidebar").style.width = this.width;
+          document.getElementById("main").style.marginLeft =
+            this.mainIDMarginLeft;
+        } else {
+          // close sidebar menu
+          document.getElementById("mySidebar").style.width = this.miniWidth;
+          document.getElementById("main").style.marginLeft =
+            this.mainIDMarginLeftMinimized;
+        }
+        this.isMinimized = !this.isMinimized;
       }
-      this.isMinimized = !this.isMinimized;
-    }
-  },
-  changePinStatus() {
-    if (this.isPinned) {
-      // change pin icon to its outlined version
-      document.getElementById("pin").className =
-        "material-icons-outlined filter-orange";
-      document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
-    } else {
-      // fill pin icon
-      document.getElementById("pin").className =
-        "material-icons filter-orange";
-      document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
-    }
-    this.isPinned = !this.isPinned;
-  },
-  changeGraphParamDisplay() {
-    let status = document.getElementById("graph-settings").style.display;
-    if (status == "block")
-      document.getElementById("graph-settings").style.display = "none";
-    else
-      document.getElementById("graph-settings").style.display = "block";
-  },
-  getCheckBoxValue(htmlID) {
-    return document.getElementById(htmlID).checked;
+    },
+    changePinStatus() {
+      if (this.isPinned) {
+        // change pin icon to its outlined version
+        document.getElementById("pin").className =
+          "material-icons-outlined filter-orange";
+        document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
+      } else {
+        // fill pin icon
+        document.getElementById("pin").className =
+          "material-icons filter-orange";
+        document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
+      }
+      this.isPinned = !this.isPinned;
+    },
+    changeGraphParamDisplay() {
+      let status = document.getElementById("graph-settings").style.display;
+      if (status == "block")
+        document.getElementById("graph-settings").style.display = "none";
+      else
+        document.getElementById("graph-settings").style.display = "block";
+    },
+    getCheckBoxValue(htmlID) {
+      return document.getElementById(htmlID).checked;
+    },
   },
 }
 </script>
