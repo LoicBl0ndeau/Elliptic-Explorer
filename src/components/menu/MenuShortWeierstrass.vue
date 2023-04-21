@@ -147,10 +147,6 @@ export default {
           document.getElementById("p_isNotPrime").style.display = "block";
         }
       }
-      // actualize automatically the graph display in real numbers field, not in modulo
-      if (this.controleur.getCorps() != "Modulo") {
-        this.displayNewCurve();
-      }
     },
     // Display the right inputs depending on the selected corps
     setAndDisplayInputsValue() {
@@ -161,10 +157,6 @@ export default {
       document.getElementById('a-ShortWeierstrass').value = a;
       document.getElementById('b-ShortWeierstrass').value = b;
       document.getElementById('p-ShortWeierstrass').value = p;
-
-      let displayValue = this.controleur.getCorps() == "Modulo" ? "block" : "none";
-
-      document.getElementById('p_container_ShortWeierstrass').style.display = displayValue;
     },
     updateLatexDisplay() {
       let actualCorps = this.controleur.getCorps();
@@ -193,30 +185,17 @@ export default {
       this.menuS.displayLaTeX('Short_Weierstrass-actual-discriminant', discriminantResult);
     },
     displayNewCurve() {
-      let corps = this.controleur.getCorps();
       let a = this.controleur.coefficients.a;
       let b = this.controleur.coefficients.b;
+      let p = this.controleur.coefficients.p;
 
-      if (corps == "Reels") {
-        this.graphS.displayWeierstrass(
-          0,
-          0,
-          0,
-          this.controleur.coefficients.a,
-          this.controleur.coefficients.b
-        );
-        this.graphS.showAddition(2, 0); // show a random addition on the graph
+      if (this.menuS.isPrime(p)) {
+        this.controleur.getView() == "FiniteView" ? this.graphS.displayShort(a, b, p) : this.graphS.displayShortPeriodic(a, b, p);
+        this.graphS.getGraph.addClickPoints();
       } else {
-        let p = this.controleur.coefficients.p;
-
-        if (this.menuS.isPrime(p)) {
-          this.controleur.getView() == "FiniteView" ? this.graphS.displayShort(a, b, p) : this.graphS.displayShortPeriodic(a, b, p);
-          this.graphS.getGraph.addClickPoints();
-        } else {
-          alert("p must be a prime number");
-          document.getElementById('p-ShortWeierstrass').value = this.controleur.coefficients.p;
-          document.getElementById("p_isNotPrime").style.display = "none";
-        }
+        alert("p must be a prime number");
+        document.getElementById('p-ShortWeierstrass').value = this.controleur.coefficients.p;
+        document.getElementById("p_isNotPrime").style.display = "none";
       }
     },
     enableAdditionOnClick() {

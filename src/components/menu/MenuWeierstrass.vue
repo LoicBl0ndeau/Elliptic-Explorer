@@ -34,14 +34,14 @@
     </span>
 
     <span class="parameter">
-      <label>a4</label>
+      <label id="label-a4-Weierstrass">a4</label>
       <input id="a4-Weierstrass" type="number" @change="setCoefficient('a4-Weierstrass')" />
       <!-- @input="menuS.setValueOnGraphFromUserInput('a_{4}', 'a4-Weierstrass')" -->
       <br />
     </span>
 
     <span class="parameter">
-      <label>a6</label>
+      <label id="label-a6-Weierstrass">a6</label>
       <input id="a6-Weierstrass" type="number" @change="setCoefficient('a6-Weierstrass')" />
       <!-- @input="menuS.setValueOnGraphFromUserInput('a_{6}', 'a6-Weierstrass')" -->
       <br />
@@ -126,18 +126,37 @@ export default {
       this.displayNewCurve();
     },
     setAndDisplayInputsValue() {
-      let a1 = this.controleur.coefficients.a1;
-      let a2 = this.controleur.coefficients.a2;
-      let a3 = this.controleur.coefficients.a3;
-      let a4 = this.controleur.coefficients.a4;
-      let a6 = this.controleur.coefficients.a6;
       let p = this.controleur.coefficients.p;
+      if(this.controleur.getForm() == 'Weierstrass'){
+        document.getElementById('label-a4-Weierstrass').innerHTML = "a4";
+        document.getElementById('label-a6-Weierstrass').innerHTML = "a6";
+        document.getElementById('a1-Weierstrass').parentElement.style.display = "block";
+        document.getElementById('a2-Weierstrass').parentElement.style.display = "block";
+        document.getElementById('a3-Weierstrass').parentElement.style.display = "block";
+        let a1 = this.controleur.coefficients.a1;
+        let a2 = this.controleur.coefficients.a2;
+        let a3 = this.controleur.coefficients.a3;
+        let a4 = this.controleur.coefficients.a4;
+        let a6 = this.controleur.coefficients.a6;
+        document.getElementById('a1-Weierstrass').value = a1;
+        document.getElementById('a2-Weierstrass').value = a2;
+        document.getElementById('a3-Weierstrass').value = a3;
+        document.getElementById('a4-Weierstrass').value = a4;
+        document.getElementById('a6-Weierstrass').value = a6;
+      }
+      //Else "ShortWeierstrass"
+      else{
+        document.getElementById('label-a4-Weierstrass').innerHTML = "a";
+        document.getElementById('label-a6-Weierstrass').innerHTML = "b";
+        document.getElementById('a1-Weierstrass').parentElement.style.display = "none";
+        document.getElementById('a2-Weierstrass').parentElement.style.display = "none";
+        document.getElementById('a3-Weierstrass').parentElement.style.display = "none";
+        let a = this.controleur.coefficients.a4;
+        let b = this.controleur.coefficients.a6;
+        document.getElementById('a4-Weierstrass').value = a;
+        document.getElementById('a6-Weierstrass').value = b;
 
-      document.getElementById('a1-Weierstrass').value = a1;
-      document.getElementById('a2-Weierstrass').value = a2;
-      document.getElementById('a3-Weierstrass').value = a3;
-      document.getElementById('a4-Weierstrass').value = a4;
-      document.getElementById('a6-Weierstrass').value = a6;
+      }
       document.getElementById('p-Weierstrass').value = p;
 
       let displayValue = this.controleur.getCorps() == "Modulo" ? "block" : "none";
@@ -145,7 +164,7 @@ export default {
     },
     updateLatexDisplay() {
       let actualCorps = this.controleur.getCorps();
-
+      let actualForm = this.controleur.getForm();
       let a1 = this.controleur.coefficients.a1;
       let a2 = this.controleur.coefficients.a2;
       let a3 = this.controleur.coefficients.a3;
@@ -153,11 +172,21 @@ export default {
       let a6 = this.controleur.coefficients.a6;
       let p = this.controleur.coefficients.p;
 
+      var generalEquationReels, actualEquationReels;
+
       let highlightColor = 'cyan';
+      console.log(actualForm);
+      if(actualForm == 'Weierstrass'){
+        generalEquationReels = 'y^2 + {\\color{' + highlightColor + '}a_1} xy + {\\color{' + highlightColor + '}a_3}y = \\newline x^3 + {\\color{' + highlightColor + '}a_2} x^2 + {\\color{' + highlightColor + '}a_4} x + {\\color{' + highlightColor + '}a_6}';
+        actualEquationReels = 'y^2 + {\\color{' + highlightColor + '}' + a1 + '} xy + {\\color{' + highlightColor + '}' + a3 + '}y =\\newline x^3 + {\\color{' + highlightColor + '}' + a2 + '}x^2 + {\\color{' + highlightColor + '}' + a4 + '}x + {\\color{' + highlightColor + '}' + a6 + '}';
+      }
+      //Else "ShortWeierstrass"
+      else{
+        generalEquationReels = 'y^2 =  x^3 + {\\color{' + highlightColor + '}a}x + {\\color{' + highlightColor + '}b}';
+        actualEquationReels = 'y^2 =  x^3 + {\\color{' + highlightColor + '}' + a4 + '}x + {\\color{' + highlightColor + '}' + a6 + '}';
+      }
       let generalEquationModulo = 'y^2 + {\\color{' + highlightColor + '}a_1} xy + {\\color{' + highlightColor + '}a_3}y \\underset{p}\\equiv \\newline x^3 + {\\color{' + highlightColor + '}a_2} x^2 + {\\color{' + highlightColor + '}a_4} x + {\\color{' + highlightColor + '}a_6}';
-      let generalEquationReels = 'y^2 + {\\color{' + highlightColor + '}a_1} xy + {\\color{' + highlightColor + '}a_3}y = \\newline x^3 + {\\color{' + highlightColor + '}a_2} x^2 + {\\color{' + highlightColor + '}a_4} x + {\\color{' + highlightColor + '}a_6}';
       let actualEquationModulo = 'y^2 + {\\color{' + highlightColor + '}' + a1 + '} xy + {\\color{' + highlightColor + '}' + a3 + '}y \\underset{' + p + '}\\equiv \\newline x^3 + {\\color{' + highlightColor + '}' + a2 + '}x^2 + {\\color{' + highlightColor + '}' + a4 + '}x + {\\color{' + highlightColor + '}' + a6 + '}';
-      let actualEquationReels = 'y^2 + {\\color{' + highlightColor + '}' + a1 + '} xy + {\\color{' + highlightColor + '}' + a3 + '}y =\\newline x^3 + {\\color{' + highlightColor + '}' + a2 + '}x^2 + {\\color{' + highlightColor + '}' + a4 + '}x + {\\color{' + highlightColor + '}' + a6 + '}';
 
       let generalEquation = actualCorps == "Modulo" ? generalEquationModulo : generalEquationReels;
       let actualEquation = actualCorps == "Modulo" ? actualEquationModulo : actualEquationReels;
@@ -178,8 +207,15 @@ export default {
       let a3 = this.menuS.getFloatFromInputId("a3-Weierstrass");
       let a4 = this.menuS.getFloatFromInputId("a4-Weierstrass");
       let a6 = this.menuS.getFloatFromInputId("a6-Weierstrass");
-      this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
-      this.graphS.showAddition(-2, 1); // show a random addition on the graph
+      if(this.controleur.getForm() == "Weierstrass"){
+        this.graphS.displayWeierstrass(a1, a3, a2, a4, a6);
+        this.graphS.showAddition(-2, 1); // show a random addition on the graph
+      }
+      //Else "ShortWeierstrass"
+      else{
+        this.graphS.displayWeierstrass(0, 0, 0, a4, a6);
+        this.graphS.showAddition(2, 0); // show a random addition on the graph
+      }
     },
     displayCurveWithSelectedOperation() {
       this.displayNewCurve();

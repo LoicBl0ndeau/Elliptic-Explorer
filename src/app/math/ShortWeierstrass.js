@@ -575,8 +575,9 @@ export class PeriodicShortWeierstrass extends PModCurveGraph {
                 isExactlyTheSamePoint = true;
             }
             for (i = 1; i < listPoints.length + 1; i++) {
+                console.log('Computing...'+i+'/'+listPoints.length); //Don't delete this console.log, it's useful to know the progress of the algorithm
+
                 // If the values of the additionnal point are in the listCoordPoints, we display the point in red
-                console.log('Computing...'+i);
                 if ((addPoint[0] == this.getValueOfParameter(`x_{${i}}`)) && (addPoint[1] == this.getValueOfParameter(`y_{${i}}`))) {
                     this.setExpressionParameters(`p_{${i}}`, { color: Graphic.Colors.finalPoint });
                     var idAdd = i;
