@@ -259,7 +259,12 @@ export default {
       this.openAbout();
 
       // close the actual form menu if it was open
-      if (actualForm != "Undefined") this.isOpen[actualForm] = false;
+      if (actualForm != "Undefined"){
+        //set all isOpen to false
+        Object.keys(this.isOpen).forEach((key) => {
+          this.isOpen[key] = false;
+        });
+      }
 
       // set the new corps and view in the controleur object
       controleur.setCorps(newCorps);
