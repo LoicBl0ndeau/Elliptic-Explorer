@@ -127,10 +127,10 @@ export default {
       let p = this.controleur.coefficients.p
 
       let highlightColor = 'cyan';
-      let generalEquationModulo = '{\\color{' + highlightColor + '}a}y^2 \\underset{p}\\equiv x^3 + {\\color{' + highlightColor + '}b}x + x';
-      let generalEquationReels = '{\\color{' + highlightColor + '}a}y^2 = x^3 + {\\color{' + highlightColor + '}b}x + x';
-      let actualEquationModulo = '{\\color{' + highlightColor + '}' + a + '}y^2 \\underset{' + p + '}\\equiv x^3 + {\\color{' + highlightColor + '}' + b + '}x + x';
-      let actualEquationReels = '{\\color{' + highlightColor + '}' + a + '}y^2 = x^3 + {\\color{' + highlightColor + '}' + b + '}x + x';
+      let generalEquationModulo = '{\\color{' + highlightColor + '}a}y^2 \\underset{p}\\equiv x^3 + {\\color{' + highlightColor + '}b}x^2 + x';
+      let generalEquationReels = '{\\color{' + highlightColor + '}a}y^2 = x^3 + {\\color{' + highlightColor + '}b}x^2 + x';
+      let actualEquationModulo = '{\\color{' + highlightColor + '}' + a + '}y^2 \\underset{' + p + '}\\equiv x^3 + {\\color{' + highlightColor + '}' + b + '}x^2 + x';
+      let actualEquationReels = '{\\color{' + highlightColor + '}' + a + '}y^2 = x^3 + {\\color{' + highlightColor + '}' + b + '}x^2 + x';
 
 
       let generalEquation = actualCorps == "Modulo" ? generalEquationModulo : generalEquationReels;

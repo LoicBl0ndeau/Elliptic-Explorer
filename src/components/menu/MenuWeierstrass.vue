@@ -6,9 +6,11 @@
     <br>
     <div id="Weierstrass-actual-equation"></div>
 
-    <!-- <h3 class="section">Discriminant</h3> -->
-    <div id="Weierstrass-general-discriminant"></div>
-    <div id="Weierstrass-actual-discriminant"></div>
+    <h3 class="section" style="display: none;">
+      Discriminant
+      <div id="Short_Weierstrass-R-general-discriminant"></div>
+      <div id="Short_Weierstrass-R-actual-discriminant"></div>
+    </h3>
 
     <h3 class="section">Parameters</h3>
 
@@ -177,6 +179,7 @@ export default {
       let highlightColor = 'cyan';
       console.log(actualForm);
       if(actualForm == 'Weierstrass'){
+        document.getElementById('Short_Weierstrass-R-general-discriminant').parentElement.style.display = "none";
         generalEquationReels = 'y^2 + {\\color{' + highlightColor + '}a_1} xy + {\\color{' + highlightColor + '}a_3}y = \\newline x^3 + {\\color{' + highlightColor + '}a_2} x^2 + {\\color{' + highlightColor + '}a_4} x + {\\color{' + highlightColor + '}a_6}';
         actualEquationReels = 'y^2 + {\\color{' + highlightColor + '}' + a1 + '} xy + {\\color{' + highlightColor + '}' + a3 + '}y =\\newline x^3 + {\\color{' + highlightColor + '}' + a2 + '}x^2 + {\\color{' + highlightColor + '}' + a4 + '}x + {\\color{' + highlightColor + '}' + a6 + '}';
       }
@@ -184,6 +187,12 @@ export default {
       else{
         generalEquationReels = 'y^2 =  x^3 + {\\color{' + highlightColor + '}a}x + {\\color{' + highlightColor + '}b}';
         actualEquationReels = 'y^2 =  x^3 + {\\color{' + highlightColor + '}' + a4 + '}x + {\\color{' + highlightColor + '}' + a6 + '}';
+
+        let discriminantGeneralEquation = 'Δ = -16 * (4{\\color{' + highlightColor + '}a}^3 + 27{\\color{' + highlightColor + '}b}^2)';
+        let discriminantResult = 'Δ = ' + String((-16) * (4 * Math.pow(a4, 3) + 27 * Math.pow(a6, 2)));
+        document.getElementById('Short_Weierstrass-R-general-discriminant').parentElement.style.display = "block";
+        this.menuS.displayLaTeX('Short_Weierstrass-R-general-discriminant', discriminantGeneralEquation);
+        this.menuS.displayLaTeX('Short_Weierstrass-R-actual-discriminant', discriminantResult);
       }
       let generalEquationModulo = 'y^2 + {\\color{' + highlightColor + '}a_1} xy + {\\color{' + highlightColor + '}a_3}y \\underset{p}\\equiv \\newline x^3 + {\\color{' + highlightColor + '}a_2} x^2 + {\\color{' + highlightColor + '}a_4} x + {\\color{' + highlightColor + '}a_6}';
       let actualEquationModulo = 'y^2 + {\\color{' + highlightColor + '}' + a1 + '} xy + {\\color{' + highlightColor + '}' + a3 + '}y \\underset{' + p + '}\\equiv \\newline x^3 + {\\color{' + highlightColor + '}' + a2 + '}x^2 + {\\color{' + highlightColor + '}' + a4 + '}x + {\\color{' + highlightColor + '}' + a6 + '}';
@@ -191,15 +200,9 @@ export default {
       let generalEquation = actualCorps == "Modulo" ? generalEquationModulo : generalEquationReels;
       let actualEquation = actualCorps == "Modulo" ? actualEquationModulo : actualEquationReels;
 
-      //let discriminantGeneralEquation = 'Δ = -16 * (4a^3 + 27b^2)';
-      //let discriminantResult = 'Δ = ' + String((-16) * (4 * Math.pow(a, 3) + 27 * Math.pow(b, 2)));
-
       // Display latex  
       this.menuS.displayLaTeX('Weierstrass-general-equation', generalEquation);
       this.menuS.displayLaTeX('Weierstrass-actual-equation', actualEquation);
-
-      //this.menuS.displayLaTeX('Weierstrass-general-discriminant', discriminantGeneralEquation);
-      //this.menuS.displayLaTeX('Weierstrass-actual-discriminant', discriminantResult);
     },
     displayNewCurve() {
       let a1 = this.menuS.getFloatFromInputId("a1-Weierstrass");
