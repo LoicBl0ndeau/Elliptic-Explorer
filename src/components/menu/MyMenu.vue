@@ -259,7 +259,7 @@ export default {
       this.openAbout();
 
       // close the actual form menu if it was open
-      if (actualForm != "Undefined"){
+      if (actualForm != "Undefined") {
         //set all isOpen to false
         Object.keys(this.isOpen).forEach((key) => {
           this.isOpen[key] = false;
@@ -322,18 +322,18 @@ export default {
       document.getElementById('warningForm').style.display = actualForm == "Undefined" ? "block" : "none";
 
       // close the old form menu and open the new one
-      if(oldForm == "ShortWeierstrass"){
+      if (oldForm == "ShortWeierstrass") {
         this.isOpen["Weierstrass"] = false;
       }
-      else{
+      else {
         this.isOpen[oldForm] = false;
       }
 
       //If the user choose a short Weierstrass curve on R, it is like he choose a Weierstrass curve on R so we open the menu of Weierstrass curve
-      if(actualForm == "ShortWeierstrass" && actualCorps == "Reels"){
+      if (actualForm == "ShortWeierstrass" && actualCorps == "Reels") {
         this.isOpen["Weierstrass"] = true;
       }
-      else{
+      else {
         this.isOpen[actualForm] = true;
       }
 
@@ -341,10 +341,10 @@ export default {
         this.openAbout();
       } else {
         // update the new form menu inputs value and latex display of the curve
-        if(actualForm == "ShortWeierstrass" && actualCorps == "Reels"){
+        if (actualForm == "ShortWeierstrass" && actualCorps == "Reels") {
           this.$refs["Weierstrass"].updateAll();
         }
-        else{
+        else {
           this.$refs[actualForm].updateAll();
         }
         // if the view is "Undefined", set the view to the default one depending the corps
@@ -374,50 +374,50 @@ export default {
 
         this.displayCurve(newView, actualForm);
       }
-    }
-  },
-  toggleSidebar() {
-    if (!this.isPinned) {
-      // hide sidebar on mouse over if menu not pinnned
-      if (this.isMinimized) {
-        // open sidebar menu
-        document.getElementById("mySidebar").style.width = this.width;
-        document.getElementById("main").style.marginLeft =
-          this.mainIDMarginLeft;
-      } else {
-        // close sidebar menu
-        document.getElementById("mySidebar").style.width = this.miniWidth;
-        document.getElementById("main").style.marginLeft =
-          this.mainIDMarginLeftMinimized;
+    },
+    toggleSidebar() {
+      if (!this.isPinned) {
+        // hide sidebar on mouse over if menu not pinnned
+        if (this.isMinimized) {
+          // open sidebar menu
+          document.getElementById("mySidebar").style.width = this.width;
+          document.getElementById("main").style.marginLeft =
+            this.mainIDMarginLeft;
+        } else {
+          // close sidebar menu
+          document.getElementById("mySidebar").style.width = this.miniWidth;
+          document.getElementById("main").style.marginLeft =
+            this.mainIDMarginLeftMinimized;
+        }
+        this.isMinimized = !this.isMinimized;
       }
-      this.isMinimized = !this.isMinimized;
-    }
-  },
-  changePinStatus() {
-    if (this.isPinned) {
-      // change pin icon to its outlined version
-      document.getElementById("pin").className =
-        "material-icons-outlined filter-orange";
-      document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
-    } else {
-      // fill pin icon
-      document.getElementById("pin").className =
-        "material-icons filter-orange";
-      document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
-    }
-    this.isPinned = !this.isPinned;
-  },
-  changeGraphParamDisplay() {
-    let status = document.getElementById("graph-settings").style.display;
-    if (status == "block")
-      document.getElementById("graph-settings").style.display = "none";
-    else
-      document.getElementById("graph-settings").style.display = "block";
-  },
-  getCheckBoxValue(htmlID) {
-    return document.getElementById(htmlID).checked;
-  },
-}
+    },
+    changePinStatus() {
+      if (this.isPinned) {
+        // change pin icon to its outlined version
+        document.getElementById("pin").className =
+          "material-icons-outlined filter-orange";
+        document.getElementById("pin").src = "images/push_pin_black_24dp.svg";
+      } else {
+        // fill pin icon
+        document.getElementById("pin").className =
+          "material-icons filter-orange";
+        document.getElementById("pin").src = "images/push_pin_black_24dp-filled.svg";
+      }
+      this.isPinned = !this.isPinned;
+    },
+    changeGraphParamDisplay() {
+      let status = document.getElementById("graph-settings").style.display;
+      if (status == "block")
+        document.getElementById("graph-settings").style.display = "none";
+      else
+        document.getElementById("graph-settings").style.display = "block";
+    },
+    getCheckBoxValue(htmlID) {
+      return document.getElementById(htmlID).checked;
+    },
+  }
+};
 </script>
 
 <style lang="css" scoped>

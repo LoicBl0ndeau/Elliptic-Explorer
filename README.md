@@ -254,9 +254,34 @@ isOpen: {
     shortmod: false,
     weierstrass: false,
     montgomery: false,
-    edwards: false,
-    <YourCurveName>: false,    // <-- new line added
+    edwards: false,    
+    YourComponentName: false,    // <-- new line added
     },
 ```
 
 3. Fini !
+
+## Améliorations apportées au projet
+
+Ne jamais oublier ceux qui ont contribué à ce projet !
+
+### **Equipe V1**
+Aucune donnée
+
+### **Equipe V2**
+Aucune donnée
+
+### **Equipe V3**
+Aucune donnée
+
+### **Equipe V4** 
+Equipe : Sheron Millien, Loïc Blondeau, Loïc Géneau de Lamarlière, Maxence Verbeke, Swan Jean-de-Dieu, Paul Hornain 
+- Harmonisation du projet en anglais **EVERYWHERE** (variables, fonctions, commentaires, etc...)
+- Restructuration de l'arborescence de fichiers de manière logique et cohérente
+- Restructuration et refonte du menu et des sous-menus 
+- Centralisation des propriétés de la courbe (corps, forme, vue) dans un controleur unique et accessible depuis tous les sous-menus
+- Implémentation des interactions "utilisateur-contrôleur"
+- Implémentation de la vue 2D et périodique pour la forme Short Weierstrass
+- Fixes de bugs de la vue finie sous la forme Short Weierstrass
+- Fixes de problèmes de sécurité liées aux dépendances
+- Amélioration des affichages LaTex des équations et des discrimiants (affichage de l'équation générale et actuelle, affichage dynamique de la valeur des variables, mise en évidence des variables, affichage du discrimiant et de son résultat) 
