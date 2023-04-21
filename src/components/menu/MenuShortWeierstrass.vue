@@ -165,6 +165,7 @@ export default {
       let displayValue = this.controleur.getCorps() == "Modulo" ? "block" : "none";
 
       document.getElementById('p_container_ShortWeierstrass').style.display = displayValue;
+      document.getElementById('updateCurveDisplay').style.display = displayValue;
     },
     updateLatexDisplay() {
       let actualCorps = this.controleur.getCorps();
