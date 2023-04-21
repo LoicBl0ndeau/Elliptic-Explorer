@@ -32,11 +32,11 @@
       <br />
     </span>
 
-    <button id="updateCurveDisplay" @click="displayNewCurve">Update curve display</button>
+    <button id="updateCurveDisplay" @click="displayNewCurve">Validate inputs</button>
     <br>
 
     <span id="update_for_periodic" style="display: none;">
-      <button id="update">Update</button>
+      <button id="update">Update to screen size</button>
     </span>
 
     <h3 class="section container_curve-toggle" id="container_curve-toggle-finite">
