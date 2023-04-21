@@ -229,8 +229,8 @@ export default {
         case "FiniteView":
           document.getElementById("update_for_periodic").style.display = "none";
           this.graphS.displayShort(
-            controleur.coefficients.a,
-            controleur.coefficients.b,
+            controleur.coefficients.a4,
+            controleur.coefficients.a6,
             controleur.coefficients.p
           );
           this.graphS.getGraph.addClickPoints(); // enable the click on the points
@@ -241,8 +241,8 @@ export default {
         case "PeriodicView":
           document.getElementById("update_for_periodic").style.display = "block";
           this.graphS.displayShortPeriodic(
-            controleur.coefficients.a,
-            controleur.coefficients.b,
+            controleur.coefficients.a4,
+            controleur.coefficients.a6,
             controleur.coefficients.p
           );
           this.graphS.getGraph.addClickPoints(); // enable the click on the points
